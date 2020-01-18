@@ -1,0 +1,9 @@
+C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.csprojAssemblyReference.cache
+C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.Properties.Resources.resources
+C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.csproj.GenerateResource.cache
+C:\Users\taune\source\repos\USBRead\USBRead\bin\Debug\USBRead.exe.config
+C:\Users\taune\source\repos\USBRead\USBRead\bin\Debug\USBRead.exe
+C:\Users\taune\source\repos\USBRead\USBRead\bin\Debug\USBRead.pdb
+C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.exe
+C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.pdb
+C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.MainMenu.resources
