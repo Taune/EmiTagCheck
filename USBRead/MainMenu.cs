@@ -20,7 +20,6 @@ namespace USBRead
     {
 
         static SerialPort mySerialPort;
-        static bool _continue;
         private bool _stop;
         public string ActiveUsbPort;
         public string ecardRead;
@@ -153,7 +152,6 @@ namespace USBRead
           
         private void ReadStartList_btn_Click(object sender, EventArgs e)
         {
-                        
             try
             {
                 using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "CSV|*.csv", ValidateNames = true, Multiselect = false })
@@ -190,17 +188,24 @@ namespace USBRead
 
         private void SearchCard_btn_Click(object sender, EventArgs e)
         {
+            string expression;
+            expression = SearchCard_Txtbox.Text;
+            SearchEcard(expression);
+        }
+
+        private void SearchEcard(string _ecardNo)
+        {
             // Get the DataTable of a DataSet.
             DataTable csvTable;
             csvTable = ReadCsv();
-            
+
             Boolean EcardFoundOK = false;
-            string expression;
-            expression = SearchCard_Txtbox.Text;
+            //string expression;
+            //expression = SearchCard_Txtbox.Text;
             DataRow[] foundRows;
 
             // Use the Select method to find all rows matching the filter.
-            foundRows = csvTable.Select("ecard =" + expression);
+            foundRows = csvTable.Select("ecard =" + _ecardNo);
             if (foundRows.Length > 0)
             {
                 EcardFoundOK = true;
@@ -208,13 +213,13 @@ namespace USBRead
 
             if (EcardFoundOK == false)
             {
-                foundRows = csvTable.Select("ecard2 =" + expression);
+                foundRows = csvTable.Select("ecard2 =" + _ecardNo);
                 if (foundRows.Length > 0) EcardFoundOK = true;
             }
 
             if (EcardFoundOK == true)
-            { 
-                       
+            {
+
                 for (int i = 0; i < foundRows.Length; i++)
                 {
                     var StartNr = foundRows[i][7];
@@ -226,7 +231,7 @@ namespace USBRead
                     var Ecard2 = foundRows[i][6];
 
                     StartNr_box.Text = StartNr.ToString();
-                    Navn_box.Text = Fornavn.ToString() +" "+ Etternavn.ToString();
+                    Navn_box.Text = Fornavn.ToString() + " " + Etternavn.ToString();
                     Klubb_box.Text = Klubb.ToString();
                     Klasse_box.Text = Klasse.ToString();
                     Ecard_box.Text = Ecard1.ToString();
@@ -239,10 +244,11 @@ namespace USBRead
                 Navn_box.Text = "Ukjent brikke";
                 Klubb_box.Text = "XX";
                 Klasse_box.Text = "XX";
-                Ecard_box.Text = expression;
+                Ecard_box.Text = _ecardNo;
                 Ecard2_box.Text = "";
             }
         }
+
 
         private void StartNr_box_TextChanged(object sender, EventArgs e)
         {
@@ -252,16 +258,12 @@ namespace USBRead
 
         public void SerialPortProgram2()
         {
-
             Thread readThreadUsb = new Thread(ReadUsb);
             readThreadUsb.Start();
-           
         }
 
         public void ReadUsb()
         {
-            _continue = true;
- 
             StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
 
             mySerialPort = new SerialPort();
@@ -286,9 +288,10 @@ namespace USBRead
                     string usbMessage = mySerialPort.ReadLine();
                     Console.WriteLine(usbMessage);
                     EmitagParser(usbMessage);
-                    if (ecardRead != null)
+                    if (ecardRead == "3903382")
                     {
                         usbMessage = ecardRead;
+                        SearchEcard(ecardRead);
                     }
 
                     if (!this.IsHandleCreated)
@@ -341,7 +344,7 @@ namespace USBRead
             {
                     case 'M':
                     {           // number of messages today
-                            ecardRead = info;
+                            ecardRead = ecbMessage;
                             break;
                     }
                     case 'I':
@@ -358,8 +361,16 @@ namespace USBRead
                     {           // Clock - when the message was sent
                         break;
                     }
+                    case 'A':
+                    { // unit health
+                        break;
+                    }
+                    case 'V':
+                    {   //EmitagInternalInfo
+                        break;
+                    }
+                }
             }
-        }
     }
 
     }

@@ -50,14 +50,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.UnknownEcard_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // ReadUsb_btn
             // 
             this.ReadUsb_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ReadUsb_btn.Location = new System.Drawing.Point(215, 283);
+            this.ReadUsb_btn.Location = new System.Drawing.Point(206, 342);
             this.ReadUsb_btn.Margin = new System.Windows.Forms.Padding(2);
             this.ReadUsb_btn.Name = "ReadUsb_btn";
             this.ReadUsb_btn.Size = new System.Drawing.Size(122, 24);
@@ -82,7 +82,7 @@
             // RefreshUsbPort_btn
             // 
             this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(173, 72);
+            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(20, 175);
             this.RefreshUsbPort_btn.Margin = new System.Windows.Forms.Padding(2);
             this.RefreshUsbPort_btn.Name = "RefreshUsbPort_btn";
             this.RefreshUsbPort_btn.Size = new System.Drawing.Size(90, 28);
@@ -94,7 +94,7 @@
             // Close_btn
             // 
             this.Close_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Close_btn.Location = new System.Drawing.Point(173, 104);
+            this.Close_btn.Location = new System.Drawing.Point(115, 9);
             this.Close_btn.Margin = new System.Windows.Forms.Padding(2);
             this.Close_btn.Name = "Close_btn";
             this.Close_btn.Size = new System.Drawing.Size(90, 28);
@@ -118,7 +118,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(354, 287);
+            this.label2.Location = new System.Drawing.Point(345, 346);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(69, 17);
@@ -131,7 +131,7 @@
             this.Clock_lbl.BackColor = System.Drawing.SystemColors.Control;
             this.Clock_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Clock_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Clock_lbl.Location = new System.Drawing.Point(173, 11);
+            this.Clock_lbl.Location = new System.Drawing.Point(20, 9);
             this.Clock_lbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Clock_lbl.Name = "Clock_lbl";
             this.Clock_lbl.Size = new System.Drawing.Size(82, 26);
@@ -141,7 +141,7 @@
             // ReadStartList_btn
             // 
             this.ReadStartList_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ReadStartList_btn.Location = new System.Drawing.Point(827, 283);
+            this.ReadStartList_btn.Location = new System.Drawing.Point(942, 342);
             this.ReadStartList_btn.Margin = new System.Windows.Forms.Padding(2);
             this.ReadStartList_btn.Name = "ReadStartList_btn";
             this.ReadStartList_btn.Size = new System.Drawing.Size(152, 24);
@@ -153,12 +153,12 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(357, 312);
+            this.dataGridView1.Location = new System.Drawing.Point(348, 378);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(622, 228);
+            this.dataGridView1.Size = new System.Drawing.Size(746, 293);
             this.dataGridView1.TabIndex = 11;
             // 
             // SearchCard_btn
@@ -174,7 +174,7 @@
             // 
             // SearchCard_Txtbox
             // 
-            this.SearchCard_Txtbox.Location = new System.Drawing.Point(325, 38);
+            this.SearchCard_Txtbox.Location = new System.Drawing.Point(325, 42);
             this.SearchCard_Txtbox.Margin = new System.Windows.Forms.Padding(2);
             this.SearchCard_Txtbox.Name = "SearchCard_Txtbox";
             this.SearchCard_Txtbox.Size = new System.Drawing.Size(76, 20);
@@ -183,24 +183,24 @@
             // StartNr_box
             // 
             this.StartNr_box.BackColor = System.Drawing.SystemColors.Control;
-            this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartNr_box.ForeColor = System.Drawing.Color.Red;
             this.StartNr_box.Location = new System.Drawing.Point(431, 9);
             this.StartNr_box.Margin = new System.Windows.Forms.Padding(2);
             this.StartNr_box.Name = "StartNr_box";
-            this.StartNr_box.Size = new System.Drawing.Size(106, 49);
+            this.StartNr_box.Size = new System.Drawing.Size(106, 62);
             this.StartNr_box.TabIndex = 18;
             this.StartNr_box.TextChanged += new System.EventHandler(this.StartNr_box_TextChanged);
             // 
             // Navn_box
             // 
             this.Navn_box.BackColor = System.Drawing.SystemColors.Control;
-            this.Navn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Navn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Navn_box.ForeColor = System.Drawing.Color.Red;
-            this.Navn_box.Location = new System.Drawing.Point(431, 67);
+            this.Navn_box.Location = new System.Drawing.Point(431, 77);
             this.Navn_box.Margin = new System.Windows.Forms.Padding(2);
             this.Navn_box.Name = "Navn_box";
-            this.Navn_box.Size = new System.Drawing.Size(548, 62);
+            this.Navn_box.Size = new System.Drawing.Size(663, 80);
             this.Navn_box.TabIndex = 19;
             // 
             // Klubb_box
@@ -208,10 +208,10 @@
             this.Klubb_box.BackColor = System.Drawing.SystemColors.Control;
             this.Klubb_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klubb_box.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.Klubb_box.Location = new System.Drawing.Point(431, 137);
+            this.Klubb_box.Location = new System.Drawing.Point(431, 165);
             this.Klubb_box.Margin = new System.Windows.Forms.Padding(2);
             this.Klubb_box.Name = "Klubb_box";
-            this.Klubb_box.Size = new System.Drawing.Size(548, 38);
+            this.Klubb_box.Size = new System.Drawing.Size(663, 38);
             this.Klubb_box.TabIndex = 20;
             // 
             // Klasse_box
@@ -219,37 +219,37 @@
             this.Klasse_box.BackColor = System.Drawing.SystemColors.Control;
             this.Klasse_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klasse_box.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.Klasse_box.Location = new System.Drawing.Point(431, 183);
+            this.Klasse_box.Location = new System.Drawing.Point(431, 211);
             this.Klasse_box.Margin = new System.Windows.Forms.Padding(2);
             this.Klasse_box.Name = "Klasse_box";
-            this.Klasse_box.Size = new System.Drawing.Size(548, 38);
+            this.Klasse_box.Size = new System.Drawing.Size(663, 38);
             this.Klasse_box.TabIndex = 21;
             // 
             // Ecard_box
             // 
             this.Ecard_box.BackColor = System.Drawing.SystemColors.Control;
-            this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard_box.Location = new System.Drawing.Point(635, 26);
+            this.Ecard_box.Location = new System.Drawing.Point(750, 28);
             this.Ecard_box.Margin = new System.Windows.Forms.Padding(2);
             this.Ecard_box.Name = "Ecard_box";
-            this.Ecard_box.Size = new System.Drawing.Size(165, 32);
+            this.Ecard_box.Size = new System.Drawing.Size(165, 38);
             this.Ecard_box.TabIndex = 22;
             // 
             // Ecard2_box
             // 
             this.Ecard2_box.BackColor = System.Drawing.SystemColors.Control;
-            this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard2_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard2_box.Location = new System.Drawing.Point(814, 26);
+            this.Ecard2_box.Location = new System.Drawing.Point(929, 28);
             this.Ecard2_box.Margin = new System.Windows.Forms.Padding(2);
             this.Ecard2_box.Name = "Ecard2_box";
-            this.Ecard2_box.Size = new System.Drawing.Size(165, 32);
+            this.Ecard2_box.Size = new System.Drawing.Size(165, 38);
             this.Ecard2_box.TabIndex = 23;
             // 
             // ActiveUsb_box
             // 
-            this.ActiveUsb_box.Location = new System.Drawing.Point(173, 137);
+            this.ActiveUsb_box.Location = new System.Drawing.Point(20, 211);
             this.ActiveUsb_box.Margin = new System.Windows.Forms.Padding(2);
             this.ActiveUsb_box.Name = "ActiveUsb_box";
             this.ActiveUsb_box.Size = new System.Drawing.Size(90, 20);
@@ -258,17 +258,17 @@
             // UsbRead_listBox
             // 
             this.UsbRead_listBox.FormattingEnabled = true;
-            this.UsbRead_listBox.Location = new System.Drawing.Point(20, 312);
+            this.UsbRead_listBox.Location = new System.Drawing.Point(11, 378);
             this.UsbRead_listBox.Margin = new System.Windows.Forms.Padding(2);
             this.UsbRead_listBox.Name = "UsbRead_listBox";
-            this.UsbRead_listBox.Size = new System.Drawing.Size(317, 225);
+            this.UsbRead_listBox.Size = new System.Drawing.Size(317, 290);
             this.UsbRead_listBox.TabIndex = 25;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(20, 287);
+            this.label3.Location = new System.Drawing.Point(11, 346);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(84, 17);
@@ -279,7 +279,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(632, 7);
+            this.label4.Location = new System.Drawing.Point(747, 9);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 17);
@@ -290,29 +290,29 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(811, 7);
+            this.label5.Location = new System.Drawing.Point(926, 9);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(59, 17);
             this.label5.TabIndex = 28;
             this.label5.Text = "Brikke 2";
             // 
-            // button1
+            // UnknownEcard_btn
             // 
-            this.button1.Location = new System.Drawing.Point(431, 236);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(174, 23);
-            this.button1.TabIndex = 29;
-            this.button1.Text = "Koble ukjent brikke til startnr";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.UnknownEcard_btn.Location = new System.Drawing.Point(431, 265);
+            this.UnknownEcard_btn.Name = "UnknownEcard_btn";
+            this.UnknownEcard_btn.Size = new System.Drawing.Size(174, 23);
+            this.UnknownEcard_btn.TabIndex = 29;
+            this.UnknownEcard_btn.Text = "Koble ukjent brikke til startnr";
+            this.UnknownEcard_btn.UseVisualStyleBackColor = true;
+            this.UnknownEcard_btn.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(999, 574);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(1117, 679);
+            this.Controls.Add(this.UnknownEcard_btn);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -369,7 +369,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button UnknownEcard_btn;
     }
 }
 
