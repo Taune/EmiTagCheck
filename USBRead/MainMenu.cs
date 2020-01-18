@@ -11,32 +11,32 @@ using System.Windows.Forms;
 using System.Data.OleDb;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
+using System.Threading;
+
 
 namespace USBRead
 {
     public partial class MainMenu : Form
     {
 
+        static SerialPort mySerialPort;
+        static bool _continue;
+        public string ActiveUsbPort;
+
         public MainMenu()
         {
             InitializeComponent();
         }
 
-        Timer t = new Timer();
+        System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
 
         public string StartlistFilename;
         public string messageText;
-        public string ActiveUsbPort;
-
+ 
         private void button1_Click(object sender, EventArgs e)
         {
             SerialPortProgram usb = new SerialPortProgram(messageText);
-            UsbOutText.Text = messageText;
-        }
-
-        private void UsbOutText_TextChanged(object sender, EventArgs e)
-        {
-
+            //UsbOutText.Text = messageText;
         }
 
         private void MainMenu_Load(object sender, EventArgs e)
@@ -56,8 +56,9 @@ namespace USBRead
             {
                 UsbPort_listBox.Items.Add("COM-port ikke funnet");
             }
-            Close_btn.Enabled = false;
+            Close_btn.Enabled = true;
         }
+
 
         private void t_Tick(object sender, EventArgs e)
         {
@@ -98,6 +99,7 @@ namespace USBRead
 
             Clock_lbl.Text = time;
         }
+
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e) //Velger ønsket Usb Port
         {
             ActiveUsbPort = UsbPort_listBox.GetItemText(UsbPort_listBox.SelectedItem);
@@ -118,48 +120,33 @@ namespace USBRead
             {
                 UsbPort_listBox.Items.Add("COM-port ikke funnet");
             }
-            Close_btn.Enabled = false;
+            //Close_btn.Enabled = false;
         }
 
         private void Close_btn_Click(object sender, EventArgs e)
         {
-            //            btnOpen.Enabled = true;
-            Close_btn.Enabled = false;
-            try
-            {
-                //SerialPort.GetPortNames.;
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
+            this.Close();
         }
 
-        private void OpenComm_btn_Click(object sender, EventArgs e)
-        {
-            OpenComm_btn.Enabled = false;
-            Close_btn.Enabled = true;
-
-            try
-            {
-                //SerialPort.PortName = UsbPort_listBox.Text;
-                //SerialPort.Open();
-            }
-
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-        }
 
         private void ReadUsb_btn_Click(object sender, EventArgs e)
         {
-            UsbOutText.Text = ("Open communication ...\n");
-            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " Open Communication");
-            SerialPortProgram usb = new SerialPortProgram(ActiveUsbPort);
+
+            if (ReadUsb_btn.Text == "Start")
+            {
+                ReadUsb_btn.Text = "Stop";
+                UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " Open Communication");
+ 
+                //SerialPortProgram usb = new SerialPortProgram(ActiveUsbPort);
+                SerialPortProgram2();
+
+            }
+            else
+            {
+                ReadUsb_btn.Text = "Start";
+
+            }
+
         }
 
         public void UpdateTextBox(string UsbMessage)
@@ -180,16 +167,7 @@ namespace USBRead
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-        
+          
         private void ReadStartList_btn_Click(object sender, EventArgs e)
         {
                         
@@ -221,12 +199,10 @@ namespace USBRead
                 var query = "SELECT * FROM [" + Path.GetFileName(StartlistFilename) + "]";
                 using (var adapter = new OleDbDataAdapter(query, cn))
                 {
-                    adapter.Fill(ds);                 
+                    adapter.Fill(ds);
                 }
             }
             return ds;
-
-
         }
 
         private void SearchCard_btn_Click(object sender, EventArgs e)
@@ -259,7 +235,6 @@ namespace USBRead
                 for (int i = 0; i < foundRows.Length; i++)
                 {
                     var StartNr = foundRows[i][7];
-                    //String StartNr = (string)(foundRows[i][0]);
                     var Fornavn = foundRows[i][1];
                     var Etternavn = foundRows[i][2];
                     var Klubb = foundRows[i][4];
@@ -278,10 +253,12 @@ namespace USBRead
             
             else
             {
+                StartNr_box.Text = "XX";
                 Navn_box.Text = "Ukjent brikke";
-                Klubb_box.Text = "";
-                Klasse_box.Text = "";
+                Klubb_box.Text = "XX";
+                Klasse_box.Text = "XX";
                 Ecard_box.Text = expression;
+                Ecard2_box.Text = "";
             }
 
         }
@@ -290,5 +267,79 @@ namespace USBRead
         {
 
         }
+
+
+        public void SerialPortProgram2()
+        {
+
+            Thread readThreadUsb = new Thread(ReadUsb);
+            readThreadUsb.Start();
+           
+        }
+
+        public void ReadUsb()
+        {
+            _continue = true;
+            StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
+
+            mySerialPort = new SerialPort();
+            mySerialPort.PortName = ActiveUsbPort;
+            mySerialPort.BaudRate = 115200;
+            mySerialPort.Parity = Parity.None;
+            mySerialPort.StopBits = StopBits.One;
+            mySerialPort.DataBits = 8;
+            mySerialPort.Handshake = Handshake.None;
+            mySerialPort.RtsEnable = true;
+            mySerialPort.DtrEnable = true;
+            mySerialPort.ReadTimeout = 5000;
+            mySerialPort.WriteTimeout = 200;
+            mySerialPort.Open();
+
+            MainMenu write = new MainMenu();
+            while (write.ReadUsb_btn.Text == "Start") 
+            {
+                try
+                {
+                    string usbMessage = mySerialPort.ReadLine();
+                    Console.WriteLine(usbMessage);
+
+                    write.WriteTextSafe2(usbMessage);
+                }
+                catch (TimeoutException) {
+                    Console.WriteLine("USB read timed out. Check the flux capacitor");
+                }
+                Thread.Sleep(100);
+            }
+
+            mySerialPort.Close();
+        }
+
+        public void WriteTextSafe2(object text)
+        {
+            if (!this.IsHandleCreated)
+            {
+                this.CreateHandle();
+            }
+
+            if (UsbRead_listBox != null && !UsbRead_listBox.IsDisposed)
+            {
+                
+                UsbRead_listBox.BeginInvoke(new MethodInvoker(delegate
+                {
+                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("hh:mm:ss") );
+                }));
+            }
+            else
+            {
+
+            }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
+
+
 }
