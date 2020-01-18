@@ -12,7 +12,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
-
+using System.Security.Cryptography.X509Certificates;
 
 namespace USBRead
 {
@@ -21,7 +21,10 @@ namespace USBRead
 
         static SerialPort mySerialPort;
         static bool _continue;
+        private bool _stop;
         public string ActiveUsbPort;
+        public string ecardRead;
+
 
         public MainMenu()
         {
@@ -136,35 +139,15 @@ namespace USBRead
             {
                 ReadUsb_btn.Text = "Stop";
                 UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " Open Communication");
- 
-                //SerialPortProgram usb = new SerialPortProgram(ActiveUsbPort);
+                _stop = false;
                 SerialPortProgram2();
-
             }
             else
             {
                 ReadUsb_btn.Text = "Start";
-
+                _stop = true;
             }
 
-        }
-
-        public void UpdateTextBox(string UsbMessage)
-        {
-            try
-            { 
-            if (UsbPort_listBox != null && !UsbPort_listBox.IsDisposed)
-            {
-                UsbPort_listBox.Invoke(new MethodInvoker(delegate
-                {
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " " + UsbMessage);
-                }));
-            }
-            }
-            catch 
-            {
-
-            }
         }
 
           
@@ -250,7 +233,6 @@ namespace USBRead
                     Ecard2_box.Text = Ecard2.ToString();
                 }
             }
-            
             else
             {
                 StartNr_box.Text = "XX";
@@ -260,7 +242,6 @@ namespace USBRead
                 Ecard_box.Text = expression;
                 Ecard2_box.Text = "";
             }
-
         }
 
         private void StartNr_box_TextChanged(object sender, EventArgs e)
@@ -280,6 +261,7 @@ namespace USBRead
         public void ReadUsb()
         {
             _continue = true;
+ 
             StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
 
             mySerialPort = new SerialPort();
@@ -296,50 +278,90 @@ namespace USBRead
             mySerialPort.Open();
 
             MainMenu write = new MainMenu();
-            while (write.ReadUsb_btn.Text == "Start") 
+            //while (write.ReadUsb_btn.Text == "Start")
+            while (!_stop)
             {
                 try
                 {
                     string usbMessage = mySerialPort.ReadLine();
                     Console.WriteLine(usbMessage);
+                    EmitagParser(usbMessage);
+                    if (ecardRead != null)
+                    {
+                        usbMessage = ecardRead;
+                    }
 
-                    write.WriteTextSafe2(usbMessage);
+                    if (!this.IsHandleCreated)
+                    {
+                        this.CreateHandle();
+                    }
+
+                    if (UsbRead_listBox != null && !UsbRead_listBox.IsDisposed)
+                    {
+
+                        UsbRead_listBox.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("hh:mm:ss") + " " + usbMessage);
+                        }));
+                    }
+                    else
+                    {
+                        
+                    }
                 }
                 catch (TimeoutException) {
                     Console.WriteLine("USB read timed out. Check the flux capacitor");
                 }
                 Thread.Sleep(100);
+                }
+
+                mySerialPort.Close();
             }
 
-            mySerialPort.Close();
-        }
-
-        public void WriteTextSafe2(object text)
-        {
-            if (!this.IsHandleCreated)
-            {
-                this.CreateHandle();
-            }
-
-            if (UsbRead_listBox != null && !UsbRead_listBox.IsDisposed)
-            {
-                
-                UsbRead_listBox.BeginInvoke(new MethodInvoker(delegate
-                {
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("hh:mm:ss") );
-                }));
-            }
-            else
-            {
-
-            }
-        }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
 
         }
+ 
+    public void EmitagParser(string ecbMessage)
+    {
+        //Statusmelding fra ECU (ikke lest brikke):
+        //IECU - HW1 - SW5 - V1.72  M1 - 103  Y878100473 W12:00:42.216   C253 X7
+        //Brikke lest fra ECU:
+        //D-02 05	N3903382	Y878100473	W12:00:36.391	V301-2082	S3903382	RemiTag II	L0112	X7
+
+        string[] ecbText = ecbMessage.Split(new[] { "\t" }, StringSplitOptions.None);
+
+        foreach (string s in ecbText)
+        {
+            char type = s[0];
+            string info = s.Substring(1);
+            switch (type)
+            {
+                    case 'M':
+                    {           // number of messages today
+                            ecardRead = info;
+                            break;
+                    }
+                    case 'I':
+                    {           // unit info (HW/SW)
+                        ecardRead = info;
+                        break;
+                    }
+                    case 'N':
+                    {          // EmiTag-No
+                        ecardRead = info;
+                        break;
+                    }
+                    case 'W':
+                    {           // Clock - when the message was sent
+                        break;
+                    }
+            }
+        }
     }
 
+    }
 
 }
