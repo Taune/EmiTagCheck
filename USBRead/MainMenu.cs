@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
+using System.Net;
 using System.Windows.Forms;
 using System.Data.OleDb;
 using System.IO;
@@ -23,6 +24,7 @@ namespace USBRead
         private bool _stop;
         public string ActiveUsbPort;
         public string ecardRead;
+        private bool _ecardfound;
 
 
         public MainMenu()
@@ -105,11 +107,10 @@ namespace USBRead
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e) //Velger ønsket Usb Port
         {
             ActiveUsbPort = UsbPort_listBox.GetItemText(UsbPort_listBox.SelectedItem);
-            ActiveUsb_box.Text = ActiveUsbPort;
-            //UsbOutText.Text = ActiveUsbPort;
+            //ActiveUsb_box.Text = ActiveUsbPort;
         }
 
-        private void button2_Click(object sender, EventArgs e) //Oppdaterer Usb Port-liste
+        private void RefreshUsbPort_btn_Click(object sender, EventArgs e) //Oppdaterer Usb Port-liste
         {
             UsbPort_listBox.Items.Clear();
             string[] ports = SerialPort.GetPortNames();
@@ -133,20 +134,25 @@ namespace USBRead
 
         private void ReadUsb_btn_Click(object sender, EventArgs e)
         {
-
-            if (ReadUsb_btn.Text == "Start")
+            if (ActiveUsbPort == null)
             {
-                ReadUsb_btn.Text = "Stop";
-                UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " Open Communication");
-                _stop = false;
-                SerialPortProgram2();
+                MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                ReadUsb_btn.Text = "Start";
-                _stop = true;
+                if (ReadUsb_btn.Text == "Start")
+                {
+                    ReadUsb_btn.Text = "Stop";
+                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " Open Communication");
+                    _stop = false;
+                    SerialPortProgram2();
+                }
+                else
+                {
+                    ReadUsb_btn.Text = "Start";
+                    _stop = true;
+                }
             }
-
         }
 
           
@@ -230,34 +236,86 @@ namespace USBRead
                     var Ecard1 = foundRows[i][5];
                     var Ecard2 = foundRows[i][6];
 
-                    StartNr_box.Text = StartNr.ToString();
-                    Navn_box.Text = Fornavn.ToString() + " " + Etternavn.ToString();
-                    Klubb_box.Text = Klubb.ToString();
-                    Klasse_box.Text = Klasse.ToString();
-                    Ecard_box.Text = Ecard1.ToString();
-                    Ecard2_box.Text = Ecard2.ToString();
+                    if (StartNr_box != null && !StartNr_box.IsDisposed)
+                    {
+                        StartNr_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            StartNr_box.Text = StartNr.ToString();
+                        }));
+                    }
+                    if (Navn_box != null && !Navn_box.IsDisposed)
+                    {
+                        Navn_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Navn_box.Text = Fornavn.ToString() + " " + Etternavn.ToString();
+                        }));
+                    }
+                    if (Klubb_box != null && !Klubb_box.IsDisposed)
+                    {
+                        Klubb_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Klubb_box.Text = Klubb.ToString();
+                        }));
+                    }
+                    if (Klasse_box != null && !Klasse_box.IsDisposed)
+                    {
+                        Klasse_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Klasse_box.Text = Klasse.ToString();
+                        }));
+                    }
+                    if (Ecard_box != null && !Ecard_box.IsDisposed)
+                    {
+                        Ecard_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Ecard_box.Text = Ecard1.ToString();
+                        }));
+                    }
+                    if (Ecard2_box != null && !Ecard2_box.IsDisposed)
+                    {
+                        Ecard2_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Ecard2_box.Text = Ecard2.ToString();
+                        }));
+                    }
+                    //Navn_box.Text = Fornavn.ToString() + " " + Etternavn.ToString();
+                    //Klubb_box.Text = Klubb.ToString();
+                    //Klasse_box.Text = Klasse.ToString();
+                    //Ecard_box.Text = Ecard1.ToString();
+                    //Ecard2_box.Text = Ecard2.ToString();
                 }
             }
             else
             {
-                StartNr_box.Text = "XX";
-                Navn_box.Text = "Ukjent brikke";
-                Klubb_box.Text = "XX";
-                Klasse_box.Text = "XX";
-                Ecard_box.Text = _ecardNo;
-                Ecard2_box.Text = "";
+                if (StartNr_box != null && !StartNr_box.IsDisposed)
+                {
+
+                    StartNr_box.BeginInvoke(new MethodInvoker(delegate
+                    {
+                        StartNr_box.Text = "XX";
+                    }));
+                }
+                if (Navn_box != null && !Navn_box.IsDisposed)
+                {
+                    Navn_box.BeginInvoke(new MethodInvoker(delegate
+                    {
+                        Navn_box.Text = "Ukjent brikke";
+                    }));
+                }
+ 
+                //StartNr_box.Text = "XX";
+                //Navn_box.Text = "Ukjent brikke";
+                //Klubb_box.Text = "XX";
+                //Klasse_box.Text = "XX";
+                //Ecard_box.Text = _ecardNo;
+                //Ecard2_box.Text = "";
             }
-        }
-
-
-        private void StartNr_box_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
 
         public void SerialPortProgram2()
         {
+            _ecardfound = false;
             Thread readThreadUsb = new Thread(ReadUsb);
             readThreadUsb.Start();
         }
@@ -279,8 +337,6 @@ namespace USBRead
             mySerialPort.WriteTimeout = 200;
             mySerialPort.Open();
 
-            MainMenu write = new MainMenu();
-            //while (write.ReadUsb_btn.Text == "Start")
             while (!_stop)
             {
                 try
@@ -288,10 +344,11 @@ namespace USBRead
                     string usbMessage = mySerialPort.ReadLine();
                     Console.WriteLine(usbMessage);
                     EmitagParser(usbMessage);
-                    if (ecardRead == "3903382")
+                    if (_ecardfound == true)
                     {
                         usbMessage = ecardRead;
                         SearchEcard(ecardRead);
+                        _ecardfound = false;
                     }
 
                     if (!this.IsHandleCreated)
@@ -317,14 +374,20 @@ namespace USBRead
                 }
                 Thread.Sleep(100);
                 }
+            mySerialPort.Close();
 
-                mySerialPort.Close();
-            }
+        }
 
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-
+            using (var client = new WebClient())
+            {
+                var a = 50;
+                var b = 100;
+                var result = client.DownloadString(string.Format("http://example.com/add.php?a={0}&b={1}", a, b));
+                Console.WriteLine(result);
+            }
         }
  
     public void EmitagParser(string ecbMessage)
@@ -342,34 +405,35 @@ namespace USBRead
             string info = s.Substring(1);
             switch (type)
             {
-                    case 'M':
-                    {           // number of messages today
-                            ecardRead = ecbMessage;
-                            break;
-                    }
-                    case 'I':
-                    {           // unit info (HW/SW)
-                        ecardRead = info;
+                case 'M':
+                {           // number of messages today
+                        ecardRead = ecbMessage;
                         break;
-                    }
-                    case 'N':
-                    {          // EmiTag-No
-                        ecardRead = info;
-                        break;
-                    }
-                    case 'W':
-                    {           // Clock - when the message was sent
-                        break;
-                    }
-                    case 'A':
-                    { // unit health
-                        break;
-                    }
-                    case 'V':
-                    {   //EmitagInternalInfo
-                        break;
-                    }
                 }
+                case 'I':
+                {           // unit info (HW/SW)
+                    ecardRead = info;
+                    break;
+                }
+                case 'N':
+                {          // EmiTag-No
+                    ecardRead = info;
+                    _ecardfound = true;
+                    break;
+                }
+                case 'W':
+                {           // Clock - when the message was sent
+                    break;
+                }
+                case 'A':
+                { // unit health
+                    break;
+                }
+                case 'V':
+                {   //EmitagInternalInfo
+                    break;
+                }
+            }
             }
     }
 
