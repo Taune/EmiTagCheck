@@ -24,11 +24,12 @@ namespace USBRead
         {
             using (var client = new WebClient())
             {
-                var lopid = 14872;
+                var lopid = "(12345)";
                 var tidsp = DateTime.Now.ToString("hh:mm:ss");
                 var Melding = "Brikke 999 til startnr 222";
-                var result = client.DownloadString(string.Format("http://liveres.freidig.idrett.no/liveres_helpers/log.php?lopid={0}&Melding={1}", 
-                    lopid, Melding));
+                var navn = "222277766";
+                var result = client.DownloadString(string.Format("http://liveres.freidig.idrett.no/liveres_helpers/log.php?lopid={0}&Melding={1}&tidsp={2}&navn{3}", 
+                    lopid, Melding, tidsp, navn));
                 Console.WriteLine(result);
             }
             this.Close();

@@ -73,7 +73,7 @@
             this.UsbPort_listBox.Location = new System.Drawing.Point(27, 89);
             this.UsbPort_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbPort_listBox.Name = "UsbPort_listBox";
-            this.UsbPort_listBox.Size = new System.Drawing.Size(129, 84);
+            this.UsbPort_listBox.Size = new System.Drawing.Size(129, 104);
             this.UsbPort_listBox.Sorted = true;
             this.UsbPort_listBox.TabIndex = 2;
             this.UsbPort_listBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -159,10 +159,10 @@
             // 
             // SearchCard_btn
             // 
-            this.SearchCard_btn.Location = new System.Drawing.Point(464, 13);
+            this.SearchCard_btn.Location = new System.Drawing.Point(464, 17);
             this.SearchCard_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchCard_btn.Name = "SearchCard_btn";
-            this.SearchCard_btn.Size = new System.Drawing.Size(147, 34);
+            this.SearchCard_btn.Size = new System.Drawing.Size(147, 30);
             this.SearchCard_btn.TabIndex = 12;
             this.SearchCard_btn.Text = "Søk brikke manuelt";
             this.SearchCard_btn.UseVisualStyleBackColor = true;
@@ -199,25 +199,23 @@
             // 
             // StartNr_box
             // 
-            this.StartNr_box.BackColor = System.Drawing.SystemColors.Control;
+            this.StartNr_box.BackColor = System.Drawing.SystemColors.ControlLight;
             this.StartNr_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.StartNr_box.Enabled = false;
-            this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartNr_box.ForeColor = System.Drawing.Color.Red;
             this.StartNr_box.Location = new System.Drawing.Point(464, 56);
             this.StartNr_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StartNr_box.Name = "StartNr_box";
-            this.StartNr_box.Size = new System.Drawing.Size(140, 68);
+            this.StartNr_box.Size = new System.Drawing.Size(243, 91);
             this.StartNr_box.TabIndex = 18;
             // 
             // Navn_box
             // 
-            this.Navn_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Navn_box.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Navn_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Navn_box.Enabled = false;
             this.Navn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Navn_box.ForeColor = System.Drawing.Color.Red;
-            this.Navn_box.Location = new System.Drawing.Point(464, 139);
+            this.Navn_box.Location = new System.Drawing.Point(464, 158);
             this.Navn_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Navn_box.Name = "Navn_box";
             this.Navn_box.Size = new System.Drawing.Size(994, 91);
@@ -225,24 +223,26 @@
             // 
             // Klubb_box
             // 
-            this.Klubb_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Klubb_box.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Klubb_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Klubb_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klubb_box.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.Klubb_box.Location = new System.Drawing.Point(464, 247);
+            this.Klubb_box.Location = new System.Drawing.Point(464, 266);
             this.Klubb_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klubb_box.Name = "Klubb_box";
-            this.Klubb_box.Size = new System.Drawing.Size(994, 46);
+            this.Klubb_box.Size = new System.Drawing.Size(994, 39);
             this.Klubb_box.TabIndex = 20;
             // 
             // Klasse_box
             // 
-            this.Klasse_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Klasse_box.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Klasse_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Klasse_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klasse_box.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.Klasse_box.Location = new System.Drawing.Point(464, 304);
+            this.Klasse_box.Location = new System.Drawing.Point(464, 323);
             this.Klasse_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klasse_box.Name = "Klasse_box";
-            this.Klasse_box.Size = new System.Drawing.Size(994, 46);
+            this.Klasse_box.Size = new System.Drawing.Size(994, 39);
             this.Klasse_box.TabIndex = 21;
             // 
             // Ecard_box
@@ -250,7 +250,7 @@
             this.Ecard_box.BackColor = System.Drawing.SystemColors.Control;
             this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard_box.Location = new System.Drawing.Point(1000, 78);
+            this.Ecard_box.Location = new System.Drawing.Point(1000, 101);
             this.Ecard_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard_box.Name = "Ecard_box";
             this.Ecard_box.Size = new System.Drawing.Size(219, 46);
@@ -261,7 +261,7 @@
             this.Ecard2_box.BackColor = System.Drawing.SystemColors.Control;
             this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard2_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard2_box.Location = new System.Drawing.Point(1239, 78);
+            this.Ecard2_box.Location = new System.Drawing.Point(1239, 101);
             this.Ecard2_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard2_box.Name = "Ecard2_box";
             this.Ecard2_box.Size = new System.Drawing.Size(219, 46);
@@ -271,7 +271,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(996, 55);
+            this.label4.Location = new System.Drawing.Point(996, 78);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 20);
             this.label4.TabIndex = 27;
@@ -281,7 +281,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1235, 55);
+            this.label5.Location = new System.Drawing.Point(1235, 78);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(70, 20);
             this.label5.TabIndex = 28;
@@ -289,10 +289,10 @@
             // 
             // UnknownEcard_btn
             // 
-            this.UnknownEcard_btn.Location = new System.Drawing.Point(792, 17);
+            this.UnknownEcard_btn.Location = new System.Drawing.Point(788, 17);
             this.UnknownEcard_btn.Margin = new System.Windows.Forms.Padding(4);
             this.UnknownEcard_btn.Name = "UnknownEcard_btn";
-            this.UnknownEcard_btn.Size = new System.Drawing.Size(232, 32);
+            this.UnknownEcard_btn.Size = new System.Drawing.Size(232, 30);
             this.UnknownEcard_btn.TabIndex = 29;
             this.UnknownEcard_btn.Text = "Koble ukjent brikke til startnr";
             this.UnknownEcard_btn.UseVisualStyleBackColor = true;

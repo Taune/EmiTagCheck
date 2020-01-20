@@ -128,6 +128,10 @@ namespace USBRead
 
         private void Close_btn_Click(object sender, EventArgs e)
         {
+            if (mySerialPort.IsOpen)
+            {
+                mySerialPort.Close();
+            }
             this.Close();
         }
 
@@ -194,9 +198,17 @@ namespace USBRead
 
         private void SearchCard_btn_Click(object sender, EventArgs e)
         {
-            string expression;
-            expression = SearchCard_Txtbox.Text;
-            SearchEcard(expression);
+            if (dataGridView1.Rows.Count > 1 && dataGridView1.Rows != null)
+            {
+                string expression;
+                expression = SearchCard_Txtbox.Text;
+                SearchEcard(expression);
+            }
+            else
+            {
+                MessageBox.Show("Les inn startliste!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
         }
 
         private void SearchEcard(string _ecardNo)
@@ -358,7 +370,6 @@ namespace USBRead
 
                     if (UsbRead_listBox != null && !UsbRead_listBox.IsDisposed)
                     {
-
                         UsbRead_listBox.BeginInvoke(new MethodInvoker(delegate
                         {
                             UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("hh:mm:ss") + " " + usbMessage);
@@ -378,7 +389,6 @@ namespace USBRead
 
         }
 
-
         private void UnknownEcard_btn_Click_1(object sender, EventArgs e)
         {
             SetValueForEmitag = SearchCard_Txtbox.Text;
@@ -386,53 +396,51 @@ namespace USBRead
             f2.Show();
         }
  
-    public void EmitagParser(string ecbMessage)
-    {
-        //Statusmelding fra ECU (ikke lest brikke):
-        //IECU - HW1 - SW5 - V1.72  M1 - 103  Y878100473 W12:00:42.216   C253 X7
-        //Brikke lest fra ECU:
-        //D-02 05	N3903382	Y878100473	W12:00:36.391	V301-2082	S3903382	RemiTag II	L0112	X7
-
-        string[] ecbText = ecbMessage.Split(new[] { "\t" }, StringSplitOptions.None);
-
-        foreach (string s in ecbText)
+        public void EmitagParser(string ecbMessage)
         {
-            char type = s[0];
-            string info = s.Substring(1);
-            switch (type)
+            //Statusmelding fra ECU (ikke lest brikke):
+            //IECU - HW1 - SW5 - V1.72  M1 - 103  Y878100473 W12:00:42.216   C253 X7
+            //Brikke lest fra ECU:
+            //D-02 05	N3903382	Y878100473	W12:00:36.391	V301-2082	S3903382	RemiTag II	L0112	X7
+
+            string[] ecbText = ecbMessage.Split(new[] { "\t" }, StringSplitOptions.None);
+
+            foreach (string s in ecbText)
             {
-                case 'M':
-                {           // number of messages today
-                        ecardRead = ecbMessage;
+                char type = s[0];
+                string info = s.Substring(1);
+                switch (type)
+                {
+                    case 'M':
+                    {           // number of messages today
+                            ecardRead = ecbMessage;
+                            break;
+                    }
+                    case 'I':
+                    {           // unit info (HW/SW)
+                        ecardRead = info;
                         break;
-                }
-                case 'I':
-                {           // unit info (HW/SW)
-                    ecardRead = info;
-                    break;
-                }
-                case 'N':
-                {          // EmiTag-No
-                    ecardRead = info;
-                    _ecardfound = true;
-                    break;
-                }
-                case 'W':
-                {           // Clock - when the message was sent
-                    break;
-                }
-                case 'A':
-                { // unit health
-                    break;
-                }
-                case 'V':
-                {   //EmitagInternalInfo
-                    break;
+                    }
+                    case 'N':
+                    {          // EmiTag-No
+                        ecardRead = info;
+                        _ecardfound = true;
+                        break;
+                    }
+                    case 'W':
+                    {           // Clock - when the message was sent
+                        break;
+                    }
+                    case 'A':
+                    { // unit health
+                        break;
+                    }
+                    case 'V':
+                    {   //EmitagInternalInfo
+                        break;
+                    }
                 }
             }
-            }
+        }
     }
-
-    }
-
 }
