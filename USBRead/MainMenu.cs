@@ -25,7 +25,7 @@ namespace USBRead
         public string ActiveUsbPort;
         public string ecardRead;
         private bool _ecardfound;
-
+        public static string SetValueForEmitag;
 
         public MainMenu()
         {
@@ -379,15 +379,11 @@ namespace USBRead
         }
 
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void UnknownEcard_btn_Click_1(object sender, EventArgs e)
         {
-            using (var client = new WebClient())
-            {
-                var a = 50;
-                var b = 100;
-                var result = client.DownloadString(string.Format("http://example.com/add.php?a={0}&b={1}", a, b));
-                Console.WriteLine(result);
-            }
+            SetValueForEmitag = SearchCard_Txtbox.Text;
+            SendMessage_form f2 = new SendMessage_form();
+            f2.Show();
         }
  
     public void EmitagParser(string ecbMessage)

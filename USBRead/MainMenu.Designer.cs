@@ -201,6 +201,7 @@
             // 
             this.StartNr_box.BackColor = System.Drawing.SystemColors.Control;
             this.StartNr_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.StartNr_box.Enabled = false;
             this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartNr_box.ForeColor = System.Drawing.Color.Red;
             this.StartNr_box.Location = new System.Drawing.Point(464, 56);
@@ -213,6 +214,7 @@
             // 
             this.Navn_box.BackColor = System.Drawing.SystemColors.Control;
             this.Navn_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Navn_box.Enabled = false;
             this.Navn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Navn_box.ForeColor = System.Drawing.Color.Red;
             this.Navn_box.Location = new System.Drawing.Point(464, 139);
@@ -294,7 +296,7 @@
             this.UnknownEcard_btn.TabIndex = 29;
             this.UnknownEcard_btn.Text = "Koble ukjent brikke til startnr";
             this.UnknownEcard_btn.UseVisualStyleBackColor = true;
-            this.UnknownEcard_btn.Click += new System.EventHandler(this.button1_Click_1);
+            this.UnknownEcard_btn.Click += new System.EventHandler(this.UnknownEcard_btn_Click_1);
             // 
             // MainMenu
             // 
