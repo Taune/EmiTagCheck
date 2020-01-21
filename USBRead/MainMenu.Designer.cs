@@ -161,7 +161,7 @@
             this.SearchCard_btn.Location = new System.Drawing.Point(464, 11);
             this.SearchCard_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchCard_btn.Name = "SearchCard_btn";
-            this.SearchCard_btn.Size = new System.Drawing.Size(169, 34);
+            this.SearchCard_btn.Size = new System.Drawing.Size(194, 34);
             this.SearchCard_btn.TabIndex = 12;
             this.SearchCard_btn.Text = "Søk brikke manuelt";
             this.SearchCard_btn.UseVisualStyleBackColor = true;
@@ -170,7 +170,7 @@
             // SearchCard_Txtbox
             // 
             this.SearchCard_Txtbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchCard_Txtbox.Location = new System.Drawing.Point(639, 14);
+            this.SearchCard_Txtbox.Location = new System.Drawing.Point(664, 15);
             this.SearchCard_Txtbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchCard_Txtbox.Name = "SearchCard_Txtbox";
             this.SearchCard_Txtbox.Size = new System.Drawing.Size(154, 30);
