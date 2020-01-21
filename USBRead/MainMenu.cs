@@ -1,19 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Net;
 using System.Windows.Forms;
 using System.Data.OleDb;
+using System.Collections.Specialized;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Security.Cryptography.X509Certificates;
+using System.Configuration;
+
 
 namespace USBRead
 {
@@ -25,7 +24,12 @@ namespace USBRead
         public string ActiveUsbPort;
         public string ecardRead;
         private bool _ecardfound;
+        private bool _serialportfound;
+        private bool _fileloaded = false;
         public static string SetValueForEmitag;
+        public static string SetValueForLopsid;
+        public static string SetValueForLopsNavn;
+
 
         public MainMenu()
         {
@@ -45,6 +49,10 @@ namespace USBRead
 
         private void MainMenu_Load(object sender, EventArgs e)
         {
+            // Read a keys from the config file            
+            lopsid_box.Text = ConfigurationManager.AppSettings.Get("lopid");
+            lopsnavn_box.Text = ConfigurationManager.AppSettings.Get("lopnavn");
+
             //Starter klokke
             t.Interval = 1000; //Tidsintervall for klokke
             t.Tick += new EventHandler(this.t_Tick);
@@ -55,10 +63,12 @@ namespace USBRead
             {
                 UsbPort_listBox.Items.AddRange(ports);
                 UsbPort_listBox.SelectedIndex = 0;
+                _serialportfound = true;
             }
             else
             {
                 UsbPort_listBox.Items.Add("COM-port ikke funnet");
+                _serialportfound = false;
             }
             Close_btn.Enabled = true;
         }
@@ -107,7 +117,6 @@ namespace USBRead
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e) //Velger ønsket Usb Port
         {
             ActiveUsbPort = UsbPort_listBox.GetItemText(UsbPort_listBox.SelectedItem);
-            //ActiveUsb_box.Text = ActiveUsbPort;
         }
 
         private void RefreshUsbPort_btn_Click(object sender, EventArgs e) //Oppdaterer Usb Port-liste
@@ -116,11 +125,13 @@ namespace USBRead
             string[] ports = SerialPort.GetPortNames();
             if (ports != null && ports.Length != 0)
             {
+                _serialportfound = true;
                 UsbPort_listBox.Items.AddRange(ports);
                 UsbPort_listBox.SelectedIndex = 0;
             }
             else
             {
+                _serialportfound = false;
                 UsbPort_listBox.Items.Add("COM-port ikke funnet");
             }
             //Close_btn.Enabled = false;
@@ -128,10 +139,21 @@ namespace USBRead
 
         private void Close_btn_Click(object sender, EventArgs e)
         {
-            if (mySerialPort.IsOpen)
+            _stop = true;
+            if (_serialportfound == true)
             {
-                mySerialPort.Close();
+                if (mySerialPort.IsOpen)
+                {
+                    mySerialPort.Close();
+                }
             }
+
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            AppSettingsSection app = config.AppSettings;
+            config.AppSettings.Settings["lopid"].Value = lopsid_box.Text;
+            config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
+            config.Save(ConfigurationSaveMode.Modified);
+
             this.Close();
         }
 
@@ -170,12 +192,14 @@ namespace USBRead
                     {
                         StartlistFilename = ofd.FileName;
                         dataGridView1.DataSource = ReadCsv();
+                        _fileloaded = true;
                     }
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _fileloaded = false;
             }
         }
 
@@ -218,8 +242,6 @@ namespace USBRead
             csvTable = ReadCsv();
 
             Boolean EcardFoundOK = false;
-            //string expression;
-            //expression = SearchCard_Txtbox.Text;
             DataRow[] foundRows;
 
             // Use the Select method to find all rows matching the filter.
@@ -290,40 +312,65 @@ namespace USBRead
                             Ecard2_box.Text = Ecard2.ToString();
                         }));
                     }
-                    //Navn_box.Text = Fornavn.ToString() + " " + Etternavn.ToString();
-                    //Klubb_box.Text = Klubb.ToString();
-                    //Klasse_box.Text = Klasse.ToString();
-                    //Ecard_box.Text = Ecard1.ToString();
-                    //Ecard2_box.Text = Ecard2.ToString();
-                }
+               }
             }
             else
             {
-                if (StartNr_box != null && !StartNr_box.IsDisposed)
-                {
+                UnknownEcard(_ecardNo);
+                //if (StartNr_box != null && !StartNr_box.IsDisposed)
+                //{
 
-                    StartNr_box.BeginInvoke(new MethodInvoker(delegate
-                    {
-                        StartNr_box.Text = "XX";
-                    }));
-                }
-                if (Navn_box != null && !Navn_box.IsDisposed)
-                {
-                    Navn_box.BeginInvoke(new MethodInvoker(delegate
-                    {
-                        Navn_box.Text = "Ukjent brikke";
-                    }));
-                }
- 
-                //StartNr_box.Text = "XX";
-                //Navn_box.Text = "Ukjent brikke";
-                //Klubb_box.Text = "XX";
-                //Klasse_box.Text = "XX";
-                //Ecard_box.Text = _ecardNo;
-                //Ecard2_box.Text = "";
-            }
+                //    StartNr_box.BeginInvoke(new MethodInvoker(delegate
+                //    {
+                //        StartNr_box.Text = "XX";
+                //    }));
+                //}
+                //if (Navn_box != null && !Navn_box.IsDisposed)
+                //{
+                //    Navn_box.BeginInvoke(new MethodInvoker(delegate
+                //    {
+                //        Navn_box.Text = "Ukjent brikke";
+                //        if (File.Exists(@"c:\temp\ringout.wav"))
+                //        {
+                //            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\temp\ringout.wav");
+                //            player.Play();
+                //        }                       
+                //    }));
+                //}
+           }
         }
 
+        private void UnknownEcard(string ecardname)
+        {
+            if (StartNr_box != null && !StartNr_box.IsDisposed)
+            {
+                StartNr_box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    StartNr_box.Text = "XX";
+                }));
+            }
+            if (Ecard_box != null && !Ecard_box.IsDisposed)
+            {
+                Ecard_box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    Ecard_box.Text = ecardname;
+                }));
+            }
+
+            if (Navn_box != null && !Navn_box.IsDisposed)
+            {
+                Navn_box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    Navn_box.Text = "Ukjent brikke";
+                    if (File.Exists(@"c:\temp\ringout.wav"))
+                    {
+                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\temp\ringout.wav");
+                        player.Play();
+                    }
+                }));
+            }
+
+        }
 
         public void SerialPortProgram2()
         {
@@ -334,8 +381,6 @@ namespace USBRead
 
         public void ReadUsb()
         {
-            StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
-
             mySerialPort = new SerialPort();
             mySerialPort.PortName = ActiveUsbPort;
             mySerialPort.BaudRate = 115200;
@@ -356,10 +401,16 @@ namespace USBRead
                     string usbMessage = mySerialPort.ReadLine();
                     Console.WriteLine(usbMessage);
                     EmitagParser(usbMessage);
-                    if (_ecardfound == true)
+                    if (_ecardfound == true && _fileloaded == true)
                     {
                         usbMessage = ecardRead;
                         SearchEcard(ecardRead);
+                        _ecardfound = false;
+                    }
+                    if (_ecardfound == true && _fileloaded == false)
+                    {
+                        usbMessage = ecardRead;
+                        UnknownEcard(ecardRead);
                         _ecardfound = false;
                     }
 
@@ -386,12 +437,13 @@ namespace USBRead
                 Thread.Sleep(100);
                 }
             mySerialPort.Close();
-
         }
 
         private void UnknownEcard_btn_Click_1(object sender, EventArgs e)
         {
-            SetValueForEmitag = SearchCard_Txtbox.Text;
+            SetValueForEmitag = Ecard_box.Text;
+            SetValueForLopsid = lopsid_box.Text;
+            SetValueForLopsNavn = lopsnavn_box.Text;
             SendMessage_form f2 = new SendMessage_form();
             f2.Show();
         }
@@ -442,5 +494,7 @@ namespace USBRead
                 }
             }
         }
+
+  
     }
 }

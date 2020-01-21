@@ -24,12 +24,12 @@ namespace USBRead
         {
             using (var client = new WebClient())
             {
-                var lopid = "(12345)";
-                var tidsp = DateTime.Now.ToString("hh:mm:ss");
-                var Melding = "Brikke 999 til startnr 222";
-                var navn = "222277766";
-                var result = client.DownloadString(string.Format("http://liveres.freidig.idrett.no/liveres_helpers/log.php?lopid={0}&Melding={1}&tidsp={2}&navn{3}", 
-                    lopid, Melding, tidsp, navn));
+                var lopid = "("+ MainMenu.SetValueForLopsid +") "+ MainMenu.SetValueForLopsNavn;
+                var tidsp = "00:00:00";
+                var melding = label2.Text + " kobles til " + NewStartNo_box.Text;
+                var navn = "Ukjent brikke";
+                var result = client.DownloadString(string.Format("http://liveres.freidig.idrett.no/liveres_helpers/log.php?lopid={0}&Melding={1}&tidsp={2}&Navn={3}", 
+                    lopid, melding, tidsp, navn));
                 Console.WriteLine(result);
             }
             this.Close();
@@ -42,7 +42,7 @@ namespace USBRead
 
         private void SendMessage_form_Load(object sender, EventArgs e)
         {
-            label2.Text = MainMenu.SetValueForEmitag +" -->>";
+            label2.Text = MainMenu.SetValueForEmitag;
         }
 
         private void label1_Click(object sender, EventArgs e)

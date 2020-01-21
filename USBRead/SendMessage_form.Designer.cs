@@ -39,7 +39,7 @@
             // NewStartNo_box
             // 
             this.NewStartNo_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NewStartNo_box.Location = new System.Drawing.Point(160, 52);
+            this.NewStartNo_box.Location = new System.Drawing.Point(173, 52);
             this.NewStartNo_box.Name = "NewStartNo_box";
             this.NewStartNo_box.Size = new System.Drawing.Size(123, 27);
             this.NewStartNo_box.TabIndex = 0;
@@ -48,7 +48,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(158, 23);
+            this.label1.Location = new System.Drawing.Point(169, 23);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(93, 20);
             this.label1.TabIndex = 1;
@@ -58,7 +58,7 @@
             // SendMessage_btn
             // 
             this.SendMessage_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SendMessage_btn.Location = new System.Drawing.Point(161, 85);
+            this.SendMessage_btn.Location = new System.Drawing.Point(173, 85);
             this.SendMessage_btn.Name = "SendMessage_btn";
             this.SendMessage_btn.Size = new System.Drawing.Size(123, 31);
             this.SendMessage_btn.TabIndex = 2;
@@ -94,15 +94,15 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(12, 23);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(105, 20);
+            this.label3.Size = new System.Drawing.Size(142, 20);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Ukjent brikke";
+            this.label3.Text = "Ukjent brikke -->>";
             // 
             // SendMessage_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(304, 140);
+            this.ClientSize = new System.Drawing.Size(315, 140);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Close_btn);
@@ -110,6 +110,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.NewStartNo_box);
             this.Name = "SendMessage_form";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tildel brikke";
             this.Load += new System.EventHandler(this.SendMessage_form_Load);
             this.ResumeLayout(false);

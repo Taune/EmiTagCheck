@@ -22,7 +22,6 @@ namespace USBRead
         {
             string name;
             _continue = true;
-            StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
             
             mySerialPort = new SerialPort();
             mySerialPort.PortName = mActiveUsb;

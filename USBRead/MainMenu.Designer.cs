@@ -32,7 +32,6 @@
             this.UsbPort_listBox = new System.Windows.Forms.ListBox();
             this.RefreshUsbPort_btn = new System.Windows.Forms.Button();
             this.Close_btn = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.Clock_lbl = new System.Windows.Forms.Label();
             this.ReadStartList_btn = new System.Windows.Forms.Button();
@@ -50,7 +49,16 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.UnknownEcard_btn = new System.Windows.Forms.Button();
+            this.lopsid_box = new System.Windows.Forms.TextBox();
+            this.lopsnavn_box = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ReadUsb_btn
@@ -70,10 +78,10 @@
             this.UsbPort_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UsbPort_listBox.FormattingEnabled = true;
             this.UsbPort_listBox.ItemHeight = 20;
-            this.UsbPort_listBox.Location = new System.Drawing.Point(27, 89);
+            this.UsbPort_listBox.Location = new System.Drawing.Point(16, 34);
             this.UsbPort_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbPort_listBox.Name = "UsbPort_listBox";
-            this.UsbPort_listBox.Size = new System.Drawing.Size(129, 104);
+            this.UsbPort_listBox.Size = new System.Drawing.Size(142, 104);
             this.UsbPort_listBox.Sorted = true;
             this.UsbPort_listBox.TabIndex = 2;
             this.UsbPort_listBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -81,10 +89,10 @@
             // RefreshUsbPort_btn
             // 
             this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(27, 190);
+            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 154);
             this.RefreshUsbPort_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RefreshUsbPort_btn.Name = "RefreshUsbPort_btn";
-            this.RefreshUsbPort_btn.Size = new System.Drawing.Size(129, 34);
+            this.RefreshUsbPort_btn.Size = new System.Drawing.Size(142, 34);
             this.RefreshUsbPort_btn.TabIndex = 3;
             this.RefreshUsbPort_btn.Text = "Oppfrisk";
             this.RefreshUsbPort_btn.UseVisualStyleBackColor = true;
@@ -93,24 +101,14 @@
             // Close_btn
             // 
             this.Close_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Close_btn.Location = new System.Drawing.Point(27, 237);
+            this.Close_btn.Location = new System.Drawing.Point(15, 14);
             this.Close_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Close_btn.Name = "Close_btn";
-            this.Close_btn.Size = new System.Drawing.Size(129, 34);
+            this.Close_btn.Size = new System.Drawing.Size(142, 34);
             this.Close_btn.TabIndex = 4;
-            this.Close_btn.Text = "Avslutt";
+            this.Close_btn.Text = "Avslutt program";
             this.Close_btn.UseVisualStyleBackColor = true;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(32, 65);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(76, 20);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "Velg port";
             // 
             // label2
             // 
@@ -128,7 +126,7 @@
             this.Clock_lbl.BackColor = System.Drawing.SystemColors.Info;
             this.Clock_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Clock_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Clock_lbl.Location = new System.Drawing.Point(27, 11);
+            this.Clock_lbl.Location = new System.Drawing.Point(1330, 11);
             this.Clock_lbl.Name = "Clock_lbl";
             this.Clock_lbl.Size = new System.Drawing.Size(129, 34);
             this.Clock_lbl.TabIndex = 9;
@@ -159,10 +157,11 @@
             // 
             // SearchCard_btn
             // 
-            this.SearchCard_btn.Location = new System.Drawing.Point(464, 17);
+            this.SearchCard_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SearchCard_btn.Location = new System.Drawing.Point(464, 11);
             this.SearchCard_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchCard_btn.Name = "SearchCard_btn";
-            this.SearchCard_btn.Size = new System.Drawing.Size(147, 30);
+            this.SearchCard_btn.Size = new System.Drawing.Size(169, 34);
             this.SearchCard_btn.TabIndex = 12;
             this.SearchCard_btn.Text = "Søk brikke manuelt";
             this.SearchCard_btn.UseVisualStyleBackColor = true;
@@ -171,7 +170,7 @@
             // SearchCard_Txtbox
             // 
             this.SearchCard_Txtbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchCard_Txtbox.Location = new System.Drawing.Point(617, 17);
+            this.SearchCard_Txtbox.Location = new System.Drawing.Point(639, 14);
             this.SearchCard_Txtbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchCard_Txtbox.Name = "SearchCard_Txtbox";
             this.SearchCard_Txtbox.Size = new System.Drawing.Size(154, 30);
@@ -247,24 +246,26 @@
             // 
             // Ecard_box
             // 
-            this.Ecard_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Ecard_box.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Ecard_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard_box.ForeColor = System.Drawing.Color.Blue;
             this.Ecard_box.Location = new System.Drawing.Point(1000, 101);
             this.Ecard_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard_box.Name = "Ecard_box";
-            this.Ecard_box.Size = new System.Drawing.Size(219, 46);
+            this.Ecard_box.Size = new System.Drawing.Size(219, 39);
             this.Ecard_box.TabIndex = 22;
             // 
             // Ecard2_box
             // 
-            this.Ecard2_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Ecard2_box.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Ecard2_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard2_box.ForeColor = System.Drawing.Color.Blue;
             this.Ecard2_box.Location = new System.Drawing.Point(1239, 101);
             this.Ecard2_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard2_box.Name = "Ecard2_box";
-            this.Ecard2_box.Size = new System.Drawing.Size(219, 46);
+            this.Ecard2_box.Size = new System.Drawing.Size(219, 39);
             this.Ecard2_box.TabIndex = 23;
             // 
             // label4
@@ -289,20 +290,96 @@
             // 
             // UnknownEcard_btn
             // 
-            this.UnknownEcard_btn.Location = new System.Drawing.Point(788, 17);
+            this.UnknownEcard_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UnknownEcard_btn.Location = new System.Drawing.Point(1000, 10);
             this.UnknownEcard_btn.Margin = new System.Windows.Forms.Padding(4);
             this.UnknownEcard_btn.Name = "UnknownEcard_btn";
-            this.UnknownEcard_btn.Size = new System.Drawing.Size(232, 30);
+            this.UnknownEcard_btn.Size = new System.Drawing.Size(248, 34);
             this.UnknownEcard_btn.TabIndex = 29;
             this.UnknownEcard_btn.Text = "Koble ukjent brikke til startnr";
             this.UnknownEcard_btn.UseVisualStyleBackColor = true;
             this.UnknownEcard_btn.Click += new System.EventHandler(this.UnknownEcard_btn_Click_1);
+            // 
+            // lopsid_box
+            // 
+            this.lopsid_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lopsid_box.Location = new System.Drawing.Point(79, 61);
+            this.lopsid_box.Name = "lopsid_box";
+            this.lopsid_box.Size = new System.Drawing.Size(336, 27);
+            this.lopsid_box.TabIndex = 30;
+            // 
+            // lopsnavn_box
+            // 
+            this.lopsnavn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lopsnavn_box.Location = new System.Drawing.Point(79, 94);
+            this.lopsnavn_box.Name = "lopsnavn_box";
+            this.lopsnavn_box.Size = new System.Drawing.Size(336, 27);
+            this.lopsnavn_box.TabIndex = 31;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(14, 64);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(26, 20);
+            this.label6.TabIndex = 32;
+            this.label6.Text = "ID";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(14, 97);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(47, 20);
+            this.label7.TabIndex = 33;
+            this.label7.Text = "Navn";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.lopsnavn_box);
+            this.groupBox1.Controls.Add(this.lopsid_box);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(15, 257);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(421, 137);
+            this.groupBox1.TabIndex = 34;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Arrangementsinfo";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(14, 27);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(231, 20);
+            this.label8.TabIndex = 35;
+            this.label8.Text = "Benyttes for meldingstjeneste";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.UsbPort_listBox);
+            this.groupBox2.Controls.Add(this.RefreshUsbPort_btn);
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Location = new System.Drawing.Point(264, 10);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(172, 199);
+            this.groupBox2.TabIndex = 35;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Velg Port";
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1489, 836);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.UnknownEcard_btn);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -320,16 +397,16 @@
             this.Controls.Add(this.ReadStartList_btn);
             this.Controls.Add(this.Clock_lbl);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.Close_btn);
-            this.Controls.Add(this.RefreshUsbPort_btn);
-            this.Controls.Add(this.UsbPort_listBox);
             this.Controls.Add(this.ReadUsb_btn);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainMenu";
             this.Text = "Brikkesjekk";
             this.Load += new System.EventHandler(this.MainMenu_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -341,7 +418,6 @@
         private System.Windows.Forms.ListBox UsbPort_listBox;
         private System.Windows.Forms.Button RefreshUsbPort_btn;
         private System.Windows.Forms.Button Close_btn;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label Clock_lbl;
         private System.Windows.Forms.Button ReadStartList_btn;
@@ -359,6 +435,13 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button UnknownEcard_btn;
+        private System.Windows.Forms.TextBox lopsid_box;
+        private System.Windows.Forms.TextBox lopsnavn_box;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }
 
