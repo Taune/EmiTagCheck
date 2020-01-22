@@ -89,7 +89,7 @@
             // RefreshUsbPort_btn
             // 
             this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 154);
+            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 147);
             this.RefreshUsbPort_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RefreshUsbPort_btn.Name = "RefreshUsbPort_btn";
             this.RefreshUsbPort_btn.Size = new System.Drawing.Size(142, 34);
@@ -170,11 +170,12 @@
             // SearchCard_Txtbox
             // 
             this.SearchCard_Txtbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchCard_Txtbox.Location = new System.Drawing.Point(664, 15);
+            this.SearchCard_Txtbox.Location = new System.Drawing.Point(664, 13);
             this.SearchCard_Txtbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchCard_Txtbox.Name = "SearchCard_Txtbox";
             this.SearchCard_Txtbox.Size = new System.Drawing.Size(154, 30);
             this.SearchCard_Txtbox.TabIndex = 13;
+            this.SearchCard_Txtbox.Leave += new System.EventHandler(this.SearchCard_btn_Click);
             // 
             // UsbRead_listBox
             // 

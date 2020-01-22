@@ -25,12 +25,19 @@ namespace USBRead
             using (var client = new WebClient())
             {
                 var lopid = "("+ MainMenu.SetValueForLopsid +") "+ MainMenu.SetValueForLopsNavn;
-                var tidsp = "00:00:00";
+                var tidsp = "12:00:00";
                 var melding = label2.Text + " kobles til " + NewStartNo_box.Text;
-                var navn = "Ukjent brikke";
-                var result = client.DownloadString(string.Format("http://liveres.freidig.idrett.no/liveres_helpers/log.php?lopid={0}&Melding={1}&tidsp={2}&Navn={3}", 
+                var navn = Comment_box.Text;
+                try 
+                {
+                    var result = client.DownloadString(string.Format("http://liveres.freidig.idrett.no/liveres_helpers/log.php?lopid={0}&Melding={1}&tidsp={2}&Navn={3}",
                     lopid, melding, tidsp, navn));
-                Console.WriteLine(result);
+                    Console.WriteLine(result);
+                }
+                catch
+                {
+                    MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             this.Close();
         }

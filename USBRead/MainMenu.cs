@@ -139,21 +139,33 @@ namespace USBRead
 
         private void Close_btn_Click(object sender, EventArgs e)
         {
-            _stop = true;
-            if (_serialportfound == true)
+            if (_stop == false)
             {
-                if (mySerialPort.IsOpen)
+                MessageBox.Show("Stopp kommunikasjon før program avsluttes!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                _stop = true;
+                if (_serialportfound == true)
                 {
-                    mySerialPort.Close();
+                    try
+                    {
+                        mySerialPort.Close();
+                    }
+                    catch
+                    {
+                    }
                 }
             }
 
+            //Update config file when exit
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             AppSettingsSection app = config.AppSettings;
             config.AppSettings.Settings["lopid"].Value = lopsid_box.Text;
             config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
             config.Save(ConfigurationSaveMode.Modified);
 
+            System.Windows.Forms.Application.ExitThread(); 
             this.Close();
         }
 
@@ -169,13 +181,14 @@ namespace USBRead
                 if (ReadUsb_btn.Text == "Start")
                 {
                     ReadUsb_btn.Text = "Stop";
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " Open Communication");
+                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
                     _stop = false;
                     SerialPortProgram2();
                 }
                 else
                 {
                     ReadUsb_btn.Text = "Start";
+                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
                     _stop = true;
                 }
             }
@@ -222,17 +235,23 @@ namespace USBRead
 
         private void SearchCard_btn_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.Rows.Count > 1 && dataGridView1.Rows != null)
-            {
-                string expression;
-                expression = SearchCard_Txtbox.Text;
-                SearchEcard(expression);
+            if (SearchCard_Txtbox.Text != "")
+            { 
+                if (dataGridView1.Rows.Count > 1 && dataGridView1.Rows != null)
+                {
+                    string expression;
+                    expression = SearchCard_Txtbox.Text;
+                    SearchEcard(expression);
+                }
+                else
+                {
+                    MessageBox.Show("Les inn startliste!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {
-                MessageBox.Show("Les inn startliste!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Brikkefelt er tomt!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
 
         private void SearchEcard(string _ecardNo)
@@ -317,26 +336,6 @@ namespace USBRead
             else
             {
                 UnknownEcard(_ecardNo);
-                //if (StartNr_box != null && !StartNr_box.IsDisposed)
-                //{
-
-                //    StartNr_box.BeginInvoke(new MethodInvoker(delegate
-                //    {
-                //        StartNr_box.Text = "XX";
-                //    }));
-                //}
-                //if (Navn_box != null && !Navn_box.IsDisposed)
-                //{
-                //    Navn_box.BeginInvoke(new MethodInvoker(delegate
-                //    {
-                //        Navn_box.Text = "Ukjent brikke";
-                //        if (File.Exists(@"c:\temp\ringout.wav"))
-                //        {
-                //            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\temp\ringout.wav");
-                //            player.Play();
-                //        }                       
-                //    }));
-                //}
            }
         }
 
@@ -388,7 +387,7 @@ namespace USBRead
             mySerialPort.StopBits = StopBits.One;
             mySerialPort.DataBits = 8;
             mySerialPort.Handshake = Handshake.None;
-            mySerialPort.RtsEnable = true;
+            mySerialPort.RtsEnable = false;
             mySerialPort.DtrEnable = true;
             mySerialPort.ReadTimeout = 5000;
             mySerialPort.WriteTimeout = 200;
@@ -399,7 +398,7 @@ namespace USBRead
                 try
                 {
                     string usbMessage = mySerialPort.ReadLine();
-                    Console.WriteLine(usbMessage);
+                    //Console.WriteLine(usbMessage);
                     EmitagParser(usbMessage);
                     if (_ecardfound == true && _fileloaded == true)
                     {
@@ -423,7 +422,7 @@ namespace USBRead
                     {
                         UsbRead_listBox.BeginInvoke(new MethodInvoker(delegate
                         {
-                            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("hh:mm:ss") + " " + usbMessage);
+                            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " " + usbMessage);
                         }));
                     }
                     else
@@ -435,7 +434,7 @@ namespace USBRead
                     Console.WriteLine("USB read timed out. Check the flux capacitor");
                 }
                 Thread.Sleep(100);
-                }
+            }
             mySerialPort.Close();
         }
 
@@ -495,6 +494,5 @@ namespace USBRead
             }
         }
 
-  
     }
 }

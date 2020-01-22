@@ -34,12 +34,14 @@
             this.Close_btn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.Comment_box = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // NewStartNo_box
             // 
             this.NewStartNo_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NewStartNo_box.Location = new System.Drawing.Point(173, 52);
+            this.NewStartNo_box.Location = new System.Drawing.Point(173, 37);
             this.NewStartNo_box.Name = "NewStartNo_box";
             this.NewStartNo_box.Size = new System.Drawing.Size(123, 27);
             this.NewStartNo_box.TabIndex = 0;
@@ -48,7 +50,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(169, 23);
+            this.label1.Location = new System.Drawing.Point(169, 12);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(93, 20);
             this.label1.TabIndex = 1;
@@ -58,7 +60,7 @@
             // SendMessage_btn
             // 
             this.SendMessage_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SendMessage_btn.Location = new System.Drawing.Point(173, 85);
+            this.SendMessage_btn.Location = new System.Drawing.Point(173, 146);
             this.SendMessage_btn.Name = "SendMessage_btn";
             this.SendMessage_btn.Size = new System.Drawing.Size(123, 31);
             this.SendMessage_btn.TabIndex = 2;
@@ -69,7 +71,7 @@
             // Close_btn
             // 
             this.Close_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Close_btn.Location = new System.Drawing.Point(16, 86);
+            this.Close_btn.Location = new System.Drawing.Point(16, 147);
             this.Close_btn.Name = "Close_btn";
             this.Close_btn.Size = new System.Drawing.Size(123, 30);
             this.Close_btn.TabIndex = 4;
@@ -82,7 +84,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(12, 55);
+            this.label2.Location = new System.Drawing.Point(12, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 20);
             this.label2.TabIndex = 6;
@@ -92,17 +94,38 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(12, 23);
+            this.label3.Location = new System.Drawing.Point(12, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(142, 20);
             this.label3.TabIndex = 7;
             this.label3.Text = "Ukjent brikke -->>";
             // 
+            // Comment_box
+            // 
+            this.Comment_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Comment_box.Location = new System.Drawing.Point(16, 103);
+            this.Comment_box.Name = "Comment_box";
+            this.Comment_box.Size = new System.Drawing.Size(280, 27);
+            this.Comment_box.TabIndex = 8;
+            this.Comment_box.Text = "Ukjent brikke";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(12, 80);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(95, 20);
+            this.label4.TabIndex = 9;
+            this.label4.Text = "Kommentar";
+            // 
             // SendMessage_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(315, 140);
+            this.ClientSize = new System.Drawing.Size(315, 192);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.Comment_box);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Close_btn);
@@ -126,5 +149,7 @@
         private System.Windows.Forms.Button Close_btn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox Comment_box;
+        private System.Windows.Forms.Label label4;
     }
 }
