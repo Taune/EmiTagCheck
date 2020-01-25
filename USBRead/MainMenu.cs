@@ -12,6 +12,8 @@ using System.Runtime.Remoting.Messaging;
 using System.Threading;
 using System.Security.Cryptography.X509Certificates;
 using System.Configuration;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace USBRead
@@ -493,6 +495,78 @@ namespace USBRead
                 }
             }
         }
+        public void Read250()
+        {
+            mySerialPort = new SerialPort();
+            mySerialPort.PortName = ActiveUsbPort;
+            mySerialPort.BaudRate = 9600;
+            mySerialPort.Parity = Parity.None;
+            mySerialPort.StopBits = StopBits.One;
+            mySerialPort.DataBits = 8;
+            mySerialPort.Handshake = Handshake.None;
+            mySerialPort.RtsEnable = false;
+            mySerialPort.DtrEnable = true;
+            mySerialPort.ReadTimeout = 7000;
+            mySerialPort.WriteTimeout = 200;
+            mySerialPort.Open();
 
+            while (!_stop)
+            {
+                try
+                {
+                    int length = mySerialPort.BytesToRead;
+                    byte[] buf = new byte[length];
+
+                    mySerialPort.Read(buf, 0, length);
+                    System.Diagnostics.Debug.WriteLine("Received Data:" + buf);
+
+
+
+                    //byte[] data = new byte[mySerialPort.BytesToRead];
+                    //mySerialPort.Read(data, 0, data.Length);
+                    //string usbMessage = Encoding.UTF32.GetString(data, 0, data.Length);
+
+                    //string usbMessage = data.ToString();
+                    //Console.WriteLine(usbMessage);
+                }
+                catch (TimeoutException)
+                {
+                    Console.WriteLine("USB read timed out. Check the flux capacitor");
+                    mySerialPort.Close();
+                }
+            }
+            mySerialPort.Close();
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Read250();
+        }
+
+        public class Startliste
+        {
+            public string bib;
+            public string name;
+            public string club;
+            public string klasse;
+            public string ecard1;
+            public string ecard2;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            WebClient client = new WebClient();
+            string downloadString = client.DownloadString("http://api.freidig.idrett.no/api.php?method=getrunners&comp=10002");
+
+            DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(downloadString);
+            DataTable dataTable = dataSet.Tables["runners"];
+            Console.WriteLine(dataTable.Rows.Count);
+
+            //DataTable dtValue = (DataTable)JsonConvert.DeserializeObject(downloadString, (typeof(DataTable)));
+            //var data = JsonConvert.DeserializeObject<DataTable>(downloadString);
+            //DataTable dataTable = data.["Runners"];
+ 
+        }
     }
 }
