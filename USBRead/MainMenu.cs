@@ -6,14 +6,12 @@ using System.IO.Ports;
 using System.Net;
 using System.Windows.Forms;
 using System.Data.OleDb;
-using System.Collections.Specialized;
 using System.IO;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
-using System.Security.Cryptography.X509Certificates;
 using System.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+
 
 
 namespace USBRead
@@ -42,7 +40,7 @@ namespace USBRead
 
         public string StartlistFilename;
         public string messageText;
- 
+
         private void button1_Click(object sender, EventArgs e)
         {
             SerialPortProgram usb = new SerialPortProgram(messageText);
@@ -167,7 +165,7 @@ namespace USBRead
             config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
             config.Save(ConfigurationSaveMode.Modified);
 
-            System.Windows.Forms.Application.ExitThread(); 
+            System.Windows.Forms.Application.ExitThread();
             this.Close();
         }
 
@@ -196,8 +194,8 @@ namespace USBRead
             }
         }
 
-          
-        private void ReadStartList_btn_Click(object sender, EventArgs e)
+
+        private void ReadStartList_btn_Click(object sender, EventArgs e)  //Old version
         {
             try
             {
@@ -238,12 +236,12 @@ namespace USBRead
         private void SearchCard_btn_Click(object sender, EventArgs e)
         {
             if (SearchCard_Txtbox.Text != "")
-            { 
+            {
                 if (dataGridView1.Rows.Count > 1 && dataGridView1.Rows != null)
                 {
                     string expression;
                     expression = SearchCard_Txtbox.Text;
-                    SearchEcard(expression);
+                    SearchEcardNew(expression);
                 }
                 else
                 {
@@ -256,7 +254,7 @@ namespace USBRead
             }
         }
 
-        private void SearchEcard(string _ecardNo)
+        private void SearchEcard(string _ecardNo) //Old search can be deleted
         {
             // Get the DataTable of a DataSet.
             DataTable csvTable;
@@ -333,12 +331,12 @@ namespace USBRead
                             Ecard2_box.Text = Ecard2.ToString();
                         }));
                     }
-               }
+                }
             }
             else
             {
                 UnknownEcard(_ecardNo);
-           }
+            }
         }
 
         private void UnknownEcard(string ecardname)
@@ -357,7 +355,6 @@ namespace USBRead
                     Ecard_box.Text = ecardname;
                 }));
             }
-
             if (Navn_box != null && !Navn_box.IsDisposed)
             {
                 Navn_box.BeginInvoke(new MethodInvoker(delegate
@@ -370,7 +367,27 @@ namespace USBRead
                     }
                 }));
             }
-
+            if (Klubb_box != null && !Klubb_box.IsDisposed)
+            {
+                Klubb_box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    Klubb_box.Text = "XX";
+                }));
+            }
+            if (Klasse_box != null && !Klasse_box.IsDisposed)
+            {
+                Klasse_box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    Klasse_box.Text = "XX";
+                }));
+            }
+            if (Ecard2_box != null && !Ecard2_box.IsDisposed)
+            {
+                Ecard2_box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    Ecard2_box.Text = "";
+                }));
+            }
         }
 
         public void SerialPortProgram2()
@@ -405,7 +422,7 @@ namespace USBRead
                     if (_ecardfound == true && _fileloaded == true)
                     {
                         usbMessage = ecardRead;
-                        SearchEcard(ecardRead);
+                        SearchEcardNew(ecardRead);
                         _ecardfound = false;
                     }
                     if (_ecardfound == true && _fileloaded == false)
@@ -429,10 +446,11 @@ namespace USBRead
                     }
                     else
                     {
-                        
+
                     }
                 }
-                catch (TimeoutException) {
+                catch (TimeoutException)
+                {
                     Console.WriteLine("USB read timed out. Check the flux capacitor");
                 }
                 Thread.Sleep(100);
@@ -448,7 +466,7 @@ namespace USBRead
             SendMessage_form f2 = new SendMessage_form();
             f2.Show();
         }
- 
+
         public void EmitagParser(string ecbMessage)
         {
             //Statusmelding fra ECU (ikke lest brikke):
@@ -465,33 +483,33 @@ namespace USBRead
                 switch (type)
                 {
                     case 'M':
-                    {           // number of messages today
+                        {           // number of messages today
                             ecardRead = ecbMessage;
                             break;
-                    }
+                        }
                     case 'I':
-                    {           // unit info (HW/SW)
-                        ecardRead = info;
-                        break;
-                    }
+                        {           // unit info (HW/SW)
+                            ecardRead = info;
+                            break;
+                        }
                     case 'N':
-                    {          // EmiTag-No
-                        ecardRead = info;
-                        _ecardfound = true;
-                        break;
-                    }
+                        {          // EmiTag-No
+                            ecardRead = info;
+                            _ecardfound = true;
+                            break;
+                        }
                     case 'W':
-                    {           // Clock - when the message was sent
-                        break;
-                    }
+                        {           // Clock - when the message was sent
+                            break;
+                        }
                     case 'A':
-                    { // unit health
-                        break;
-                    }
+                        { // unit health
+                            break;
+                        }
                     case 'V':
-                    {   //EmitagInternalInfo
-                        break;
-                    }
+                        {   //EmitagInternalInfo
+                            break;
+                        }
                 }
             }
         }
@@ -501,7 +519,7 @@ namespace USBRead
             mySerialPort.PortName = ActiveUsbPort;
             mySerialPort.BaudRate = 9600;
             mySerialPort.Parity = Parity.None;
-            mySerialPort.StopBits = StopBits.One;
+            mySerialPort.StopBits = StopBits.Two;
             mySerialPort.DataBits = 8;
             mySerialPort.Handshake = Handshake.None;
             mySerialPort.RtsEnable = false;
@@ -519,9 +537,6 @@ namespace USBRead
 
                     mySerialPort.Read(buf, 0, length);
                     System.Diagnostics.Debug.WriteLine("Received Data:" + buf);
-
-
-
                     //byte[] data = new byte[mySerialPort.BytesToRead];
                     //mySerialPort.Read(data, 0, data.Length);
                     //string usbMessage = Encoding.UTF32.GetString(data, 0, data.Length);
@@ -543,30 +558,189 @@ namespace USBRead
             Read250();
         }
 
-        public class Startliste
+
+        private void readLiveResfil_btn_Click(object sender, EventArgs e) //Read start list from LiveRes
         {
-            public string bib;
-            public string name;
-            public string club;
-            public string klasse;
-            public string ecard1;
-            public string ecard2;
+    
+            try
+            {
+                WebClient client = new WebClient();
+                string downloadString = client.DownloadString("http://api.freidig.idrett.no/api.php?method=getrunners&comp=" + lopsid_box.Text);
+
+                var objects = JsonConvert.DeserializeObject<dynamic>(downloadString);
+                if (objects.status == "OK")
+                {
+                    JArray items = (JArray)objects["runners"];
+
+                    //int length = items.Count;
+                    //var verdi = items[18]["name"];
+                    //Console.WriteLine(length);
+
+                    dataGridView1.Rows.Clear();
+                    dataGridView1.Refresh();
+                    dataGridView1.ColumnCount = 6;
+                    dataGridView1.Columns[0].Name = "bib";
+                    dataGridView1.Columns[1].Name = "name";
+                    dataGridView1.Columns[2].Name = "club";
+                    dataGridView1.Columns[3].Name = "class";
+                    dataGridView1.Columns[4].Name = "ecard";
+                    dataGridView1.Columns[5].Name = "ecard2";
+
+                    foreach (JObject element in items)
+                    {
+                        var NameConv = element["name"].ToString();
+                        var ClubConv = element["club"].ToString();
+                        var ClassConv = element["class"].ToString();
+                        byte[] bytes = Encoding.Default.GetBytes(NameConv);
+
+                        NameConv = Encoding.UTF8.GetString(bytes);
+                        byte[] bytes1 = Encoding.Default.GetBytes(ClubConv);
+                        try
+                        {
+                            string[] Nameresult = NameConv.Split(')');
+                            NameConv = Nameresult[1].Trim();
+                        }
+                        catch
+                        {
+                        }
+                        ClubConv = Encoding.UTF8.GetString(bytes1);
+                        byte[] bytes2 = Encoding.Default.GetBytes(ClassConv);
+                        ClassConv = Encoding.UTF8.GetString(bytes2);
+
+                        dataGridView1.Rows.Add(element["bib"], NameConv, ClubConv, ClassConv, element["ecard1"], element["ecard2"]);
+                        //Console.WriteLine(element["name"]);
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+
+        private void SearchEcardNew(string searchString) //Search for Ecard in "Ecard" and "Ecard2"
         {
+            //string searchString = SearchCard_Txtbox.Text;
 
-            WebClient client = new WebClient();
-            string downloadString = client.DownloadString("http://api.freidig.idrett.no/api.php?method=getrunners&comp=10002");
+            var MaxRows = dataGridView1.Rows.Count;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            DataSet dataSet = JsonConvert.DeserializeObject<DataSet>(downloadString);
-            DataTable dataTable = dataSet.Tables["runners"];
-            Console.WriteLine(dataTable.Rows.Count);
+            try
+            {
+                bool _valueFound = false;
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if ((row.Cells["ecard"].Value.ToString().Equals(searchString)) || (row.Cells["ecard2"].Value.ToString().Equals(searchString)))
+                    {
+                        dataGridView1.Rows[row.Index].Selected = true;
+                        if (StartNr_box != null && !StartNr_box.IsDisposed)
+                        {
+                            StartNr_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                StartNr_box.Text = dataGridView1.Rows[row.Index].Cells[0].Value.ToString();
+                            }));
+                        }
+                        if (Navn_box != null && !Navn_box.IsDisposed)
+                        {
+                            Navn_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Navn_box.Text = dataGridView1.Rows[row.Index].Cells[1].Value.ToString();
+                            }));
+                        }
+                        if (Klubb_box != null && !Klubb_box.IsDisposed)
+                        {
+                            Klubb_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Klubb_box.Text = dataGridView1.Rows[row.Index].Cells[2].Value.ToString();
+                            }));
+                        }
+                        if (Klasse_box != null && !Klasse_box.IsDisposed)
+                        {
+                            Klasse_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Klasse_box.Text = dataGridView1.Rows[row.Index].Cells[3].Value.ToString();
+                            }));
+                        }
+                        if (Ecard_box != null && !Ecard_box.IsDisposed)
+                        {
+                            Ecard_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Ecard_box.Text = dataGridView1.Rows[row.Index].Cells[4].Value.ToString();
+                            }));
+                        }
+                        if (Ecard2_box != null && !Ecard2_box.IsDisposed)
+                        {
+                            Ecard2_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Ecard2_box.Text = dataGridView1.Rows[row.Index].Cells[5].Value.ToString();
+                            }));
+                        }
+                        _valueFound = true;
+                        //_ecardfound = true;
+                        break;
+                    }
+                }
+                if (_valueFound == false)
+                {
+                    UnknownEcard(SearchCard_Txtbox.Text);
+                }
+            }
+            catch (Exception) //Ecard not found in datagrid
+            {
+                UnknownEcard(SearchCard_Txtbox.Text);
+            }
 
-            //DataTable dtValue = (DataTable)JsonConvert.DeserializeObject(downloadString, (typeof(DataTable)));
-            //var data = JsonConvert.DeserializeObject<DataTable>(downloadString);
-            //DataTable dataTable = data.["Runners"];
- 
         }
-    }
+
+        private void readBrikkesjekkfil_btn_Click(object sender, EventArgs e) //Read startlist from "brikkesjekkfil"
+        {
+            dataGridView1.Rows.Clear();
+            dataGridView1.Refresh();
+            dataGridView1.ColumnCount = 6;
+            dataGridView1.Columns[0].Name = "bib";
+            dataGridView1.Columns[1].Name = "name";
+            dataGridView1.Columns[2].Name = "club";
+            dataGridView1.Columns[3].Name = "class";
+            dataGridView1.Columns[4].Name = "ecard";
+            dataGridView1.Columns[5].Name = "ecard2";
+
+            try
+            {
+                DataTable ds = new DataTable("Data");
+                using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "CSV|*.csv", ValidateNames = true, Multiselect = false })
+                {
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        StartlistFilename = ofd.FileName;
+                        var connString = string.Format(@"Provider=Microsoft.Jet.OleDb.4.0; Data Source={0};Extended Properties=""Text;HDR=YES;FMT=Delimited""",
+                                                        Path.GetDirectoryName(StartlistFilename));
+                        using (var cn = new OleDbConnection(connString))
+                        {
+                            cn.Open();
+                            var query = "SELECT * FROM [" + Path.GetFileName(StartlistFilename) + "]";
+                            using (var adapter = new OleDbDataAdapter(query, cn))
+                            {
+                                adapter.Fill(ds);
+                            }
+                        }
+                        _fileloaded = true;
+                    }
+                }
+
+                foreach (DataRow row in ds.Rows)
+                {
+                    var nyttnavn = row["id"];
+                    dataGridView1.Rows.Add(row["startno"], row["name"] + " " + row["ename"], row["name_1"], row["class"], row["ecard"], row["ecard2"]);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _fileloaded = false;
+            }
+
+        }
+
+   }
 }

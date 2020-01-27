@@ -11,3 +11,4 @@ C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.SendMessage_form.r
 C:\Users\taune\source\repos\USBRead\USBRead\bin\Debug\Newtonsoft.Json.dll
 C:\Users\taune\source\repos\USBRead\USBRead\bin\Debug\Newtonsoft.Json.xml
 C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.csproj.CopyComplete
+C:\Users\taune\source\repos\USBRead\USBRead\obj\Debug\USBRead.csproj.CoreCompileInputs.cache

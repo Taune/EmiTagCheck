@@ -34,7 +34,6 @@
             this.Close_btn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Clock_lbl = new System.Windows.Forms.Label();
-            this.ReadStartList_btn = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.SearchCard_btn = new System.Windows.Forms.Button();
             this.SearchCard_Txtbox = new System.Windows.Forms.TextBox();
@@ -56,8 +55,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.readLiveResfil_btn = new System.Windows.Forms.Button();
+            this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -134,18 +133,6 @@
             this.Clock_lbl.TabIndex = 9;
             this.Clock_lbl.Text = "00:00:00";
             // 
-            // ReadStartList_btn
-            // 
-            this.ReadStartList_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ReadStartList_btn.Location = new System.Drawing.Point(1256, 421);
-            this.ReadStartList_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ReadStartList_btn.Name = "ReadStartList_btn";
-            this.ReadStartList_btn.Size = new System.Drawing.Size(203, 30);
-            this.ReadStartList_btn.TabIndex = 10;
-            this.ReadStartList_btn.Text = "Les Startliste";
-            this.ReadStartList_btn.UseVisualStyleBackColor = true;
-            this.ReadStartList_btn.Click += new System.EventHandler(this.ReadStartList_btn_Click);
-            // 
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -177,7 +164,6 @@
             this.SearchCard_Txtbox.Name = "SearchCard_Txtbox";
             this.SearchCard_Txtbox.Size = new System.Drawing.Size(154, 30);
             this.SearchCard_Txtbox.TabIndex = 13;
-            this.SearchCard_Txtbox.Leave += new System.EventHandler(this.SearchCard_btn_Click);
             // 
             // UsbRead_listBox
             // 
@@ -228,7 +214,7 @@
             this.Klubb_box.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Klubb_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Klubb_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Klubb_box.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.Klubb_box.ForeColor = System.Drawing.Color.Red;
             this.Klubb_box.Location = new System.Drawing.Point(464, 266);
             this.Klubb_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klubb_box.Name = "Klubb_box";
@@ -240,7 +226,7 @@
             this.Klasse_box.BackColor = System.Drawing.SystemColors.ControlLight;
             this.Klasse_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Klasse_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Klasse_box.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.Klasse_box.ForeColor = System.Drawing.Color.Red;
             this.Klasse_box.Location = new System.Drawing.Point(464, 323);
             this.Klasse_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klasse_box.Name = "Klasse_box";
@@ -376,33 +362,35 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Velg Port";
             // 
-            // button1
+            // readLiveResfil_btn
             // 
-            this.button1.Location = new System.Drawing.Point(743, 399);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(129, 23);
-            this.button1.TabIndex = 36;
-            this.button1.Text = "250 enhet";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.readLiveResfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.readLiveResfil_btn.Location = new System.Drawing.Point(1187, 421);
+            this.readLiveResfil_btn.Name = "readLiveResfil_btn";
+            this.readLiveResfil_btn.Size = new System.Drawing.Size(272, 30);
+            this.readLiveResfil_btn.TabIndex = 37;
+            this.readLiveResfil_btn.Text = "Les startliste fra LiveRes";
+            this.readLiveResfil_btn.UseVisualStyleBackColor = true;
+            this.readLiveResfil_btn.Click += new System.EventHandler(this.readLiveResfil_btn_Click);
             // 
-            // button2
+            // readBrikkesjekkfil_btn
             // 
-            this.button2.Location = new System.Drawing.Point(911, 394);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(136, 27);
-            this.button2.TabIndex = 37;
-            this.button2.Text = "Les Liveres";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.readBrikkesjekkfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(894, 421);
+            this.readBrikkesjekkfil_btn.Name = "readBrikkesjekkfil_btn";
+            this.readBrikkesjekkfil_btn.Size = new System.Drawing.Size(272, 30);
+            this.readBrikkesjekkfil_btn.TabIndex = 39;
+            this.readBrikkesjekkfil_btn.Text = "Les startliste fra Brikkesjekkfil";
+            this.readBrikkesjekkfil_btn.UseVisualStyleBackColor = true;
+            this.readBrikkesjekkfil_btn.Click += new System.EventHandler(this.readBrikkesjekkfil_btn_Click);
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1489, 836);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.readBrikkesjekkfil_btn);
+            this.Controls.Add(this.readLiveResfil_btn);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.UnknownEcard_btn);
@@ -419,7 +407,6 @@
             this.Controls.Add(this.SearchCard_Txtbox);
             this.Controls.Add(this.SearchCard_btn);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.ReadStartList_btn);
             this.Controls.Add(this.Clock_lbl);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Close_btn);
@@ -445,7 +432,6 @@
         private System.Windows.Forms.Button Close_btn;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label Clock_lbl;
-        private System.Windows.Forms.Button ReadStartList_btn;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button SearchCard_btn;
         private System.Windows.Forms.TextBox SearchCard_Txtbox;
@@ -467,8 +453,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button readLiveResfil_btn;
+        private System.Windows.Forms.Button readBrikkesjekkfil_btn;
     }
 }
 

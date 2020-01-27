@@ -32,10 +32,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.SendMessage_btn = new System.Windows.Forms.Button();
             this.Close_btn = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.Comment_box = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.NewEcard_Box = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // NewStartNo_box
@@ -79,17 +79,6 @@
             this.Close_btn.UseVisualStyleBackColor = true;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.Color.Red;
-            this.label2.Location = new System.Drawing.Point(12, 40);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 20);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "label2";
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -119,15 +108,24 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Kommentar";
             // 
+            // NewEcard_Box
+            // 
+            this.NewEcard_Box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NewEcard_Box.ForeColor = System.Drawing.Color.Red;
+            this.NewEcard_Box.Location = new System.Drawing.Point(16, 37);
+            this.NewEcard_Box.Name = "NewEcard_Box";
+            this.NewEcard_Box.Size = new System.Drawing.Size(123, 27);
+            this.NewEcard_Box.TabIndex = 10;
+            // 
             // SendMessage_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(315, 192);
+            this.Controls.Add(this.NewEcard_Box);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.Comment_box);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.Close_btn);
             this.Controls.Add(this.SendMessage_btn);
             this.Controls.Add(this.label1);
@@ -147,9 +145,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button SendMessage_btn;
         private System.Windows.Forms.Button Close_btn;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox Comment_box;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox NewEcard_Box;
     }
 }

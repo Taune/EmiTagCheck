@@ -26,7 +26,7 @@ namespace USBRead
             {
                 var lopid = "("+ MainMenu.SetValueForLopsid +") "+ MainMenu.SetValueForLopsNavn;
                 var tidsp = "12:00:00";
-                var melding = label2.Text + " kobles til " + NewStartNo_box.Text;
+                var melding = NewEcard_Box.Text + " kobles til " + NewStartNo_box.Text;
                 var navn = Comment_box.Text;
                 try 
                 {
@@ -49,7 +49,7 @@ namespace USBRead
 
         private void SendMessage_form_Load(object sender, EventArgs e)
         {
-            label2.Text = MainMenu.SetValueForEmitag;
+            NewEcard_Box.Text = MainMenu.SetValueForEmitag;
         }
 
         private void label1_Click(object sender, EventArgs e)
