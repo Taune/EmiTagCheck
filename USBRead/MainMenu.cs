@@ -52,6 +52,7 @@ namespace USBRead
             // Read a keys from the config file            
             lopsid_box.Text = ConfigurationManager.AppSettings.Get("lopid");
             lopsnavn_box.Text = ConfigurationManager.AppSettings.Get("lopnavn");
+            _stop = true;
 
             //Starter klokke
             t.Interval = 1000; //Tidsintervall for klokke
@@ -72,7 +73,6 @@ namespace USBRead
             }
             Close_btn.Enabled = true;
         }
-
 
         private void t_Tick(object sender, EventArgs e)
         {
@@ -137,17 +137,19 @@ namespace USBRead
             //Close_btn.Enabled = false;
         }
 
-        private void Close_btn_Click(object sender, EventArgs e)
+        private void Close_btn_Click(object sender, EventArgs e) //Close MainMenu form
         {
             if (_stop == false)
             {
-                MessageBox.Show("Stopp kommunikasjon før program avsluttes!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //                MessageBox.Show("Stopp kommunikasjon før program avsluttes!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
             }
             else
             {
                 _stop = true;
                 if (_serialportfound == true)
                 {
+                    Thread.Sleep(3000); //Stops thread to ensure USB-reading is ended
                     try
                     {
                         mySerialPort.Close();
@@ -558,7 +560,6 @@ namespace USBRead
             Read250();
         }
 
-
         private void readLiveResfil_btn_Click(object sender, EventArgs e) //Read start list from LiveRes
         {
     
@@ -617,7 +618,6 @@ namespace USBRead
                 MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
         private void SearchEcardNew(string searchString) //Search for Ecard in "Ecard" and "Ecard2"
         {

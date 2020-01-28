@@ -57,15 +57,18 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.readLiveResfil_btn = new System.Windows.Forms.Button();
             this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.Løperinfo = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.Løperinfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // ReadUsb_btn
             // 
             this.ReadUsb_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ReadUsb_btn.Location = new System.Drawing.Point(275, 421);
+            this.ReadUsb_btn.Location = new System.Drawing.Point(275, 455);
             this.ReadUsb_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ReadUsb_btn.Name = "ReadUsb_btn";
             this.ReadUsb_btn.Size = new System.Drawing.Size(163, 30);
@@ -115,7 +118,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(460, 426);
+            this.label2.Location = new System.Drawing.Point(460, 460);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(81, 20);
             this.label2.TabIndex = 8;
@@ -136,12 +139,12 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(464, 465);
+            this.dataGridView1.Location = new System.Drawing.Point(464, 495);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(995, 361);
+            this.dataGridView1.Size = new System.Drawing.Size(995, 331);
             this.dataGridView1.TabIndex = 11;
             // 
             // SearchCard_btn
@@ -169,17 +172,17 @@
             // 
             this.UsbRead_listBox.FormattingEnabled = true;
             this.UsbRead_listBox.ItemHeight = 16;
-            this.UsbRead_listBox.Location = new System.Drawing.Point(15, 465);
+            this.UsbRead_listBox.Location = new System.Drawing.Point(15, 497);
             this.UsbRead_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbRead_listBox.Name = "UsbRead_listBox";
-            this.UsbRead_listBox.Size = new System.Drawing.Size(421, 356);
+            this.UsbRead_listBox.Size = new System.Drawing.Size(421, 324);
             this.UsbRead_listBox.TabIndex = 25;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(15, 426);
+            this.label3.Location = new System.Drawing.Point(15, 460);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(99, 20);
             this.label3.TabIndex = 26;
@@ -187,81 +190,81 @@
             // 
             // StartNr_box
             // 
-            this.StartNr_box.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.StartNr_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.StartNr_box.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartNr_box.ForeColor = System.Drawing.Color.Red;
-            this.StartNr_box.Location = new System.Drawing.Point(464, 56);
+            this.StartNr_box.Location = new System.Drawing.Point(16, 23);
             this.StartNr_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StartNr_box.Name = "StartNr_box";
-            this.StartNr_box.Size = new System.Drawing.Size(243, 91);
+            this.StartNr_box.ReadOnly = true;
+            this.StartNr_box.Size = new System.Drawing.Size(243, 98);
             this.StartNr_box.TabIndex = 18;
             // 
             // Navn_box
             // 
-            this.Navn_box.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Navn_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Navn_box.BackColor = System.Drawing.SystemColors.Control;
             this.Navn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Navn_box.ForeColor = System.Drawing.Color.Red;
-            this.Navn_box.Location = new System.Drawing.Point(464, 158);
+            this.Navn_box.Location = new System.Drawing.Point(16, 133);
             this.Navn_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Navn_box.Name = "Navn_box";
-            this.Navn_box.Size = new System.Drawing.Size(994, 91);
+            this.Navn_box.ReadOnly = true;
+            this.Navn_box.Size = new System.Drawing.Size(994, 98);
             this.Navn_box.TabIndex = 19;
             // 
             // Klubb_box
             // 
-            this.Klubb_box.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Klubb_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Klubb_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Klubb_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Klubb_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klubb_box.ForeColor = System.Drawing.Color.Red;
-            this.Klubb_box.Location = new System.Drawing.Point(464, 266);
+            this.Klubb_box.Location = new System.Drawing.Point(16, 241);
             this.Klubb_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klubb_box.Name = "Klubb_box";
-            this.Klubb_box.Size = new System.Drawing.Size(994, 39);
+            this.Klubb_box.ReadOnly = true;
+            this.Klubb_box.Size = new System.Drawing.Size(994, 49);
             this.Klubb_box.TabIndex = 20;
             // 
             // Klasse_box
             // 
-            this.Klasse_box.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Klasse_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Klasse_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Klasse_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Klasse_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klasse_box.ForeColor = System.Drawing.Color.Red;
-            this.Klasse_box.Location = new System.Drawing.Point(464, 323);
+            this.Klasse_box.Location = new System.Drawing.Point(16, 303);
             this.Klasse_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klasse_box.Name = "Klasse_box";
-            this.Klasse_box.Size = new System.Drawing.Size(994, 39);
+            this.Klasse_box.ReadOnly = true;
+            this.Klasse_box.Size = new System.Drawing.Size(994, 49);
             this.Klasse_box.TabIndex = 21;
             // 
             // Ecard_box
             // 
-            this.Ecard_box.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Ecard_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Ecard_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard_box.Location = new System.Drawing.Point(1000, 101);
+            this.Ecard_box.Location = new System.Drawing.Point(552, 72);
             this.Ecard_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard_box.Name = "Ecard_box";
-            this.Ecard_box.Size = new System.Drawing.Size(219, 39);
+            this.Ecard_box.ReadOnly = true;
+            this.Ecard_box.Size = new System.Drawing.Size(219, 49);
             this.Ecard_box.TabIndex = 22;
             // 
             // Ecard2_box
             // 
-            this.Ecard2_box.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.Ecard2_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Ecard2_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard2_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard2_box.Location = new System.Drawing.Point(1239, 101);
+            this.Ecard2_box.Location = new System.Drawing.Point(791, 72);
             this.Ecard2_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard2_box.Name = "Ecard2_box";
-            this.Ecard2_box.Size = new System.Drawing.Size(219, 39);
+            this.Ecard2_box.ReadOnly = true;
+            this.Ecard2_box.Size = new System.Drawing.Size(219, 49);
             this.Ecard2_box.TabIndex = 23;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(996, 78);
+            this.label4.Location = new System.Drawing.Point(548, 49);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 20);
             this.label4.TabIndex = 27;
@@ -271,7 +274,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1235, 78);
+            this.label5.Location = new System.Drawing.Point(787, 49);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(70, 20);
             this.label5.TabIndex = 28;
@@ -283,7 +286,7 @@
             this.UnknownEcard_btn.Location = new System.Drawing.Point(1000, 10);
             this.UnknownEcard_btn.Margin = new System.Windows.Forms.Padding(4);
             this.UnknownEcard_btn.Name = "UnknownEcard_btn";
-            this.UnknownEcard_btn.Size = new System.Drawing.Size(248, 34);
+            this.UnknownEcard_btn.Size = new System.Drawing.Size(276, 34);
             this.UnknownEcard_btn.TabIndex = 29;
             this.UnknownEcard_btn.Text = "Koble ukjent brikke til startnr";
             this.UnknownEcard_btn.UseVisualStyleBackColor = true;
@@ -294,7 +297,7 @@
             this.lopsid_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lopsid_box.Location = new System.Drawing.Point(79, 61);
             this.lopsid_box.Name = "lopsid_box";
-            this.lopsid_box.Size = new System.Drawing.Size(336, 27);
+            this.lopsid_box.Size = new System.Drawing.Size(328, 27);
             this.lopsid_box.TabIndex = 30;
             // 
             // lopsnavn_box
@@ -302,7 +305,7 @@
             this.lopsnavn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lopsnavn_box.Location = new System.Drawing.Point(79, 94);
             this.lopsnavn_box.Name = "lopsnavn_box";
-            this.lopsnavn_box.Size = new System.Drawing.Size(336, 27);
+            this.lopsnavn_box.Size = new System.Drawing.Size(328, 27);
             this.lopsnavn_box.TabIndex = 31;
             // 
             // label6
@@ -332,8 +335,8 @@
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.lopsnavn_box);
             this.groupBox1.Controls.Add(this.lopsid_box);
-            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(15, 257);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(15, 287);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(421, 137);
             this.groupBox1.TabIndex = 34;
@@ -365,7 +368,7 @@
             // readLiveResfil_btn
             // 
             this.readLiveResfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readLiveResfil_btn.Location = new System.Drawing.Point(1187, 421);
+            this.readLiveResfil_btn.Location = new System.Drawing.Point(1187, 455);
             this.readLiveResfil_btn.Name = "readLiveResfil_btn";
             this.readLiveResfil_btn.Size = new System.Drawing.Size(272, 30);
             this.readLiveResfil_btn.TabIndex = 37;
@@ -376,7 +379,7 @@
             // readBrikkesjekkfil_btn
             // 
             this.readBrikkesjekkfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(894, 421);
+            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(894, 455);
             this.readBrikkesjekkfil_btn.Name = "readBrikkesjekkfil_btn";
             this.readBrikkesjekkfil_btn.Size = new System.Drawing.Size(272, 30);
             this.readBrikkesjekkfil_btn.TabIndex = 39;
@@ -384,26 +387,48 @@
             this.readBrikkesjekkfil_btn.UseVisualStyleBackColor = true;
             this.readBrikkesjekkfil_btn.Click += new System.EventHandler(this.readBrikkesjekkfil_btn_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(16, 56);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(213, 17);
+            this.label1.TabIndex = 40;
+            this.label1.Text = "Stopp kommunikasjon før Avslutt";
+            // 
+            // Løperinfo
+            // 
+            this.Løperinfo.BackColor = System.Drawing.SystemColors.Control;
+            this.Løperinfo.Controls.Add(this.label5);
+            this.Løperinfo.Controls.Add(this.label4);
+            this.Løperinfo.Controls.Add(this.Ecard2_box);
+            this.Løperinfo.Controls.Add(this.Ecard_box);
+            this.Løperinfo.Controls.Add(this.Klasse_box);
+            this.Løperinfo.Controls.Add(this.Klubb_box);
+            this.Løperinfo.Controls.Add(this.Navn_box);
+            this.Løperinfo.Controls.Add(this.StartNr_box);
+            this.Løperinfo.Location = new System.Drawing.Point(456, 56);
+            this.Løperinfo.Name = "Løperinfo";
+            this.Løperinfo.Size = new System.Drawing.Size(1023, 368);
+            this.Løperinfo.TabIndex = 41;
+            this.Løperinfo.TabStop = false;
+            this.Løperinfo.Text = "Løperinfo";
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1489, 836);
+            this.Controls.Add(this.Løperinfo);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.readBrikkesjekkfil_btn);
             this.Controls.Add(this.readLiveResfil_btn);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.UnknownEcard_btn);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.UsbRead_listBox);
-            this.Controls.Add(this.Ecard2_box);
-            this.Controls.Add(this.Ecard_box);
-            this.Controls.Add(this.Klasse_box);
-            this.Controls.Add(this.Klubb_box);
-            this.Controls.Add(this.Navn_box);
-            this.Controls.Add(this.StartNr_box);
             this.Controls.Add(this.SearchCard_Txtbox);
             this.Controls.Add(this.SearchCard_btn);
             this.Controls.Add(this.dataGridView1);
@@ -419,6 +444,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
+            this.Løperinfo.ResumeLayout(false);
+            this.Løperinfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -455,6 +482,8 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button readLiveResfil_btn;
         private System.Windows.Forms.Button readBrikkesjekkfil_btn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox Løperinfo;
     }
 }
 
