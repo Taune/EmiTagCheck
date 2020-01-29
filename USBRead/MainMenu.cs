@@ -362,7 +362,7 @@ namespace USBRead
                 Navn_box.BeginInvoke(new MethodInvoker(delegate
                 {
                     Navn_box.Text = "Ukjent brikke";
-                    if (File.Exists(@"c:\temp\ringout.wav"))
+                    if (File.Exists(@"ringout.wav"))
                     {
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\temp\ringout.wav");
                         player.Play();
