@@ -59,6 +59,8 @@
             this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Løperinfo = new System.Windows.Forms.GroupBox();
+            this.folderLogfile_box = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -144,7 +146,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(995, 331);
+            this.dataGridView1.Size = new System.Drawing.Size(995, 294);
             this.dataGridView1.TabIndex = 11;
             // 
             // SearchCard_btn
@@ -175,7 +177,7 @@
             this.UsbRead_listBox.Location = new System.Drawing.Point(15, 497);
             this.UsbRead_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbRead_listBox.Name = "UsbRead_listBox";
-            this.UsbRead_listBox.Size = new System.Drawing.Size(421, 324);
+            this.UsbRead_listBox.Size = new System.Drawing.Size(421, 292);
             this.UsbRead_listBox.TabIndex = 25;
             // 
             // label3
@@ -415,11 +417,31 @@
             this.Løperinfo.TabStop = false;
             this.Løperinfo.Text = "Løperinfo";
             // 
+            // folderLogfile_box
+            // 
+            this.folderLogfile_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.folderLogfile_box.Location = new System.Drawing.Point(170, 794);
+            this.folderLogfile_box.Name = "folderLogfile_box";
+            this.folderLogfile_box.Size = new System.Drawing.Size(266, 27);
+            this.folderLogfile_box.TabIndex = 42;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(12, 797);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(136, 20);
+            this.label9.TabIndex = 43;
+            this.label9.Text = "Katalog for log-fil";
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1489, 836);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.folderLogfile_box);
             this.Controls.Add(this.Løperinfo);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.readBrikkesjekkfil_btn);
@@ -484,6 +506,8 @@
         private System.Windows.Forms.Button readBrikkesjekkfil_btn;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox Løperinfo;
+        private System.Windows.Forms.TextBox folderLogfile_box;
+        private System.Windows.Forms.Label label9;
     }
 }
 

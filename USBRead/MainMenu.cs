@@ -18,9 +18,9 @@ namespace USBRead
 {
     public partial class MainMenu : Form
     {
-
         static SerialPort mySerialPort;
         private bool _stop;
+        private bool _stopLiveRes;
         public string ActiveUsbPort;
         public string ecardRead;
         private bool _ecardfound;
@@ -29,7 +29,7 @@ namespace USBRead
         public static string SetValueForEmitag;
         public static string SetValueForLopsid;
         public static string SetValueForLopsNavn;
-
+        public string _LogfileName;
 
         public MainMenu()
         {
@@ -52,7 +52,19 @@ namespace USBRead
             // Read a keys from the config file            
             lopsid_box.Text = ConfigurationManager.AppSettings.Get("lopid");
             lopsnavn_box.Text = ConfigurationManager.AppSettings.Get("lopnavn");
+            folderLogfile_box.Text = ConfigurationManager.AppSettings.Get("logfolder");
             _stop = true;
+
+            _LogfileName = @folderLogfile_box.Text + "brikkesjekk " + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
+            //Create a log-file for todays race
+            if (!File.Exists(_LogfileName))
+            {
+                // Create a file to write to.
+                using (StreamWriter logfile = File.CreateText(_LogfileName))
+                {
+                    logfile.WriteLine("Log created: " + DateTime.Now.ToString("hh:MM:ss"));
+                }
+            }
 
             //Starter klokke
             t.Interval = 1000; //Tidsintervall for klokke
@@ -165,6 +177,7 @@ namespace USBRead
             AppSettingsSection app = config.AppSettings;
             config.AppSettings.Settings["lopid"].Value = lopsid_box.Text;
             config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
+            config.AppSettings.Settings["logfolder"].Value = folderLogfile_box.Text;
             config.Save(ConfigurationSaveMode.Modified);
 
             System.Windows.Forms.Application.ExitThread();
@@ -172,7 +185,7 @@ namespace USBRead
         }
 
 
-        private void ReadUsb_btn_Click(object sender, EventArgs e)
+        private void ReadUsb_btn_Click(object sender, EventArgs e) //Start reading USB-port
         {
             if (ActiveUsbPort == null)
             {
@@ -197,7 +210,7 @@ namespace USBRead
         }
 
 
-        private void ReadStartList_btn_Click(object sender, EventArgs e)  //Old version
+        private void ReadStartList_btn_Click(object sender, EventArgs e)  //Old version - not in use
         {
             try
             {
@@ -218,7 +231,7 @@ namespace USBRead
             }
         }
 
-        public DataTable ReadCsv()
+        public DataTable ReadCsv() 
         {
             DataTable ds = new DataTable("Data");
             var connString = string.Format(@"Provider=Microsoft.Jet.OleDb.4.0; Data Source={0};Extended Properties=""Text;HDR=YES;FMT=Delimited""",
@@ -390,6 +403,11 @@ namespace USBRead
                     Ecard2_box.Text = "";
                 }));
             }
+
+            using (StreamWriter sr = File.AppendText(_LogfileName))
+            {
+                sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + ecardname + "\tXX" + "\tUkjent brikke");
+            }
         }
 
         public void SerialPortProgram2()
@@ -555,14 +573,39 @@ namespace USBRead
             mySerialPort.Close();
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void button1_Click_1(object sender, EventArgs e) //Read MTR
         {
             Read250();
         }
 
-        private void readLiveResfil_btn_Click(object sender, EventArgs e) //Read start list from LiveRes
+        private void readLiveResfil_btn_Click(object sender, EventArgs e) //Button Read start list from LiveRes
         {
-    
+            if (readLiveResfil_btn.Text == "Les startliste fra LiveRes")
+            {
+                readLiveResfil_btn.Text = "Stopp startliste fra LiveRes";
+                _stopLiveRes = false;
+                CancellationTokenSource tokenSource = new CancellationTokenSource();
+                Task timerTask = RunPeriodically(TimeSpan.FromMinutes(10), tokenSource.Token);
+            }
+            else
+            {
+                readLiveResfil_btn.Text = "Les startliste fra LiveRes";
+                _stopLiveRes = true;
+            }
+
+        }
+
+        async Task RunPeriodically(TimeSpan interval, CancellationToken token) //read start list from LiveRes every 5 min
+        {
+            while (true && _stopLiveRes==false)
+            {
+                readLiveResfil();
+                await Task.Delay(interval, token);
+            }
+        }
+        
+        private void readLiveResfil() //Read start list from LiveRes
+        {          
             try
             {
                 WebClient client = new WebClient();
@@ -678,6 +721,14 @@ namespace USBRead
                         }
                         _valueFound = true;
                         //_ecardfound = true;
+
+                        using (StreamWriter sr = File.AppendText(_LogfileName))
+                        {
+                            sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + searchString + "\t"+ 
+                                dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + "\t" + 
+                                dataGridView1.Rows[row.Index].Cells[1].Value.ToString());
+                        }
+
                         break;
                     }
                 }
@@ -690,7 +741,6 @@ namespace USBRead
             {
                 UnknownEcard(SearchCard_Txtbox.Text);
             }
-
         }
 
         private void readBrikkesjekkfil_btn_Click(object sender, EventArgs e) //Read startlist from "brikkesjekkfil"
