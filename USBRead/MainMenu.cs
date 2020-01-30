@@ -377,7 +377,7 @@ namespace USBRead
                     Navn_box.Text = "Ukjent brikke";
                     if (File.Exists(@"ringout.wav"))
                     {
-                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\temp\ringout.wav");
+                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"ringout.wav");
                         player.Play();
                     }
                 }));
