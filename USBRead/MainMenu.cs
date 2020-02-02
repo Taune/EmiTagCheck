@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Net;
 using System.Windows.Forms;
+using System.Drawing;
 using System.Data.OleDb;
 using System.IO;
 using System.Threading;
 using System.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
 
 
 namespace USBRead
@@ -30,6 +30,10 @@ namespace USBRead
         public static string SetValueForLopsid;
         public static string SetValueForLopsNavn;
         public string _LogfileName;
+        public double _batterylevel;
+        public Color _batterycolor;
+        public string StartlistFilename;
+        public string messageText;
 
         public MainMenu()
         {
@@ -38,8 +42,6 @@ namespace USBRead
 
         System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
 
-        public string StartlistFilename;
-        public string messageText;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -184,7 +186,6 @@ namespace USBRead
             this.Close();
         }
 
-
         private void ReadUsb_btn_Click(object sender, EventArgs e) //Start reading USB-port
         {
             if (ActiveUsbPort == null)
@@ -209,46 +210,7 @@ namespace USBRead
             }
         }
 
-
-        private void ReadStartList_btn_Click(object sender, EventArgs e)  //Old version - not in use
-        {
-            try
-            {
-                using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "CSV|*.csv", ValidateNames = true, Multiselect = false })
-                {
-                    if (ofd.ShowDialog() == DialogResult.OK)
-                    {
-                        StartlistFilename = ofd.FileName;
-                        dataGridView1.DataSource = ReadCsv();
-                        _fileloaded = true;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                _fileloaded = false;
-            }
-        }
-
-        public DataTable ReadCsv() 
-        {
-            DataTable ds = new DataTable("Data");
-            var connString = string.Format(@"Provider=Microsoft.Jet.OleDb.4.0; Data Source={0};Extended Properties=""Text;HDR=YES;FMT=Delimited""",
-                                            Path.GetDirectoryName(StartlistFilename));
-            using (var cn = new OleDbConnection(connString))
-            {
-                cn.Open();
-                var query = "SELECT * FROM [" + Path.GetFileName(StartlistFilename) + "]";
-                using (var adapter = new OleDbDataAdapter(query, cn))
-                {
-                    adapter.Fill(ds);
-                }
-            }
-            return ds;
-        }
-
-        private void SearchCard_btn_Click(object sender, EventArgs e)
+        private void SearchCard_btn_Click(object sender, EventArgs e) //Manually search after ecard number
         {
             if (SearchCard_Txtbox.Text != "")
             {
@@ -269,92 +231,7 @@ namespace USBRead
             }
         }
 
-        private void SearchEcard(string _ecardNo) //Old search can be deleted
-        {
-            // Get the DataTable of a DataSet.
-            DataTable csvTable;
-            csvTable = ReadCsv();
-
-            Boolean EcardFoundOK = false;
-            DataRow[] foundRows;
-
-            // Use the Select method to find all rows matching the filter.
-            foundRows = csvTable.Select("ecard =" + _ecardNo);
-            if (foundRows.Length > 0)
-            {
-                EcardFoundOK = true;
-            }
-
-            if (EcardFoundOK == false)
-            {
-                foundRows = csvTable.Select("ecard2 =" + _ecardNo);
-                if (foundRows.Length > 0) EcardFoundOK = true;
-            }
-
-            if (EcardFoundOK == true)
-            {
-
-                for (int i = 0; i < foundRows.Length; i++)
-                {
-                    var StartNr = foundRows[i][7];
-                    var Fornavn = foundRows[i][1];
-                    var Etternavn = foundRows[i][2];
-                    var Klubb = foundRows[i][4];
-                    var Klasse = foundRows[i][3];
-                    var Ecard1 = foundRows[i][5];
-                    var Ecard2 = foundRows[i][6];
-
-                    if (StartNr_box != null && !StartNr_box.IsDisposed)
-                    {
-                        StartNr_box.BeginInvoke(new MethodInvoker(delegate
-                        {
-                            StartNr_box.Text = StartNr.ToString();
-                        }));
-                    }
-                    if (Navn_box != null && !Navn_box.IsDisposed)
-                    {
-                        Navn_box.BeginInvoke(new MethodInvoker(delegate
-                        {
-                            Navn_box.Text = Fornavn.ToString() + " " + Etternavn.ToString();
-                        }));
-                    }
-                    if (Klubb_box != null && !Klubb_box.IsDisposed)
-                    {
-                        Klubb_box.BeginInvoke(new MethodInvoker(delegate
-                        {
-                            Klubb_box.Text = Klubb.ToString();
-                        }));
-                    }
-                    if (Klasse_box != null && !Klasse_box.IsDisposed)
-                    {
-                        Klasse_box.BeginInvoke(new MethodInvoker(delegate
-                        {
-                            Klasse_box.Text = Klasse.ToString();
-                        }));
-                    }
-                    if (Ecard_box != null && !Ecard_box.IsDisposed)
-                    {
-                        Ecard_box.BeginInvoke(new MethodInvoker(delegate
-                        {
-                            Ecard_box.Text = Ecard1.ToString();
-                        }));
-                    }
-                    if (Ecard2_box != null && !Ecard2_box.IsDisposed)
-                    {
-                        Ecard2_box.BeginInvoke(new MethodInvoker(delegate
-                        {
-                            Ecard2_box.Text = Ecard2.ToString();
-                        }));
-                    }
-                }
-            }
-            else
-            {
-                UnknownEcard(_ecardNo);
-            }
-        }
-
-        private void UnknownEcard(string ecardname)
+        private void UnknownEcard(string ecardname) //Ecard not found - Write "Ukjent brikke"
         {
             if (StartNr_box != null && !StartNr_box.IsDisposed)
             {
@@ -403,6 +280,18 @@ namespace USBRead
                     Ecard2_box.Text = "";
                 }));
             }
+            if (Battery_box != null && !Battery_box.IsDisposed)
+            {
+                if (_batterylevel > 3) {_batterycolor = Color.Green;}
+                if (_batterylevel > 2.95 && _batterylevel <= 3) {_batterycolor = Color.Yellow;}
+                if (_batterylevel <= 2.95) { _batterycolor = Color.Red;}
+
+                Battery_box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    Battery_box.Text = _batterylevel.ToString() + "V";
+                    Battery_box.BackColor = _batterycolor;
+                }));
+            }
 
             using (StreamWriter sr = File.AppendText(_LogfileName))
             {
@@ -410,14 +299,14 @@ namespace USBRead
             }
         }
 
-        public void SerialPortProgram2()
+        public void SerialPortProgram2() //
         {
             _ecardfound = false;
             Thread readThreadUsb = new Thread(ReadUsb);
             readThreadUsb.Start();
         }
 
-        public void ReadUsb()
+        public void ReadUsb() //Read ECU from usb-port and check if ecard is found or not
         {
             mySerialPort = new SerialPort();
             mySerialPort.PortName = ActiveUsbPort;
@@ -437,7 +326,6 @@ namespace USBRead
                 try
                 {
                     string usbMessage = mySerialPort.ReadLine();
-                    //Console.WriteLine(usbMessage);
                     EmitagParser(usbMessage);
                     if (_ecardfound == true && _fileloaded == true)
                     {
@@ -487,12 +375,13 @@ namespace USBRead
             f2.Show();
         }
 
-        public void EmitagParser(string ecbMessage)
+        public void EmitagParser(string ecbMessage) //Split the message from ECU and find Ecard number
         {
             //Statusmelding fra ECU (ikke lest brikke):
             //IECU - HW1 - SW5 - V1.72  M1 - 103  Y878100473 W12:00:42.216   C253 X7
             //Brikke lest fra ECU:
             //D-02 05	N3903382	Y878100473	W12:00:36.391	V301-2082	S3903382	RemiTag II	L0112	X7
+            string _batteryVolt;
 
             string[] ecbText = ecbMessage.Split(new[] { "\t" }, StringSplitOptions.None);
 
@@ -528,11 +417,14 @@ namespace USBRead
                         }
                     case 'V':
                         {   //EmitagInternalInfo
+                            _batteryVolt = info.Substring(0, 1) + "," + info.Substring(1,2);
+                            _batterylevel = Convert.ToDouble(_batteryVolt);
                             break;
                         }
                 }
             }
         }
+       
         public void Read250()
         {
             mySerialPort = new SerialPort();
@@ -578,7 +470,7 @@ namespace USBRead
             Read250();
         }
 
-        private void readLiveResfil_btn_Click(object sender, EventArgs e) //Button Read start list from LiveRes
+        private void readLiveResfil_btn_Click(object sender, EventArgs e) //Start reading from LiveRes
         {
             if (readLiveResfil_btn.Text == "Les startliste fra LiveRes")
             {
@@ -586,6 +478,7 @@ namespace USBRead
                 _stopLiveRes = false;
                 CancellationTokenSource tokenSource = new CancellationTokenSource();
                 Task timerTask = RunPeriodically(TimeSpan.FromMinutes(10), tokenSource.Token);
+                _fileloaded = true;
             }
             else
             {
@@ -719,8 +612,19 @@ namespace USBRead
                                 Ecard2_box.Text = dataGridView1.Rows[row.Index].Cells[5].Value.ToString();
                             }));
                         }
+                        if (Battery_box != null && !Battery_box.IsDisposed)
+                        {
+                            if (_batterylevel > 3) { _batterycolor = Color.Green; }
+                            if (_batterylevel > 2.95 && _batterylevel <= 3) { _batterycolor = Color.Yellow; }
+                            if (_batterylevel <= 2.95) { _batterycolor = Color.Red; }
+
+                            Battery_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Battery_box.Text = _batterylevel.ToString() + "V";
+                                Battery_box.BackColor = _batterycolor;
+                            }));
+                        }
                         _valueFound = true;
-                        //_ecardfound = true;
 
                         using (StreamWriter sr = File.AppendText(_LogfileName))
                         {

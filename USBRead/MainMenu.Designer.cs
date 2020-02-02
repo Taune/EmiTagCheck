@@ -59,6 +59,7 @@
             this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Løperinfo = new System.Windows.Forms.GroupBox();
+            this.Battery_box = new System.Windows.Forms.TextBox();
             this.folderLogfile_box = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -243,7 +244,7 @@
             this.Ecard_box.BackColor = System.Drawing.SystemColors.Control;
             this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard_box.Location = new System.Drawing.Point(552, 72);
+            this.Ecard_box.Location = new System.Drawing.Point(419, 72);
             this.Ecard_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard_box.Name = "Ecard_box";
             this.Ecard_box.ReadOnly = true;
@@ -255,7 +256,7 @@
             this.Ecard2_box.BackColor = System.Drawing.SystemColors.Control;
             this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard2_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard2_box.Location = new System.Drawing.Point(791, 72);
+            this.Ecard2_box.Location = new System.Drawing.Point(658, 72);
             this.Ecard2_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard2_box.Name = "Ecard2_box";
             this.Ecard2_box.ReadOnly = true;
@@ -266,7 +267,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(548, 49);
+            this.label4.Location = new System.Drawing.Point(415, 49);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(70, 20);
             this.label4.TabIndex = 27;
@@ -276,7 +277,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(787, 49);
+            this.label5.Location = new System.Drawing.Point(654, 49);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(70, 20);
             this.label5.TabIndex = 28;
@@ -402,6 +403,7 @@
             // Løperinfo
             // 
             this.Løperinfo.BackColor = System.Drawing.SystemColors.Control;
+            this.Løperinfo.Controls.Add(this.Battery_box);
             this.Løperinfo.Controls.Add(this.label5);
             this.Løperinfo.Controls.Add(this.label4);
             this.Løperinfo.Controls.Add(this.Ecard2_box);
@@ -416,6 +418,18 @@
             this.Løperinfo.TabIndex = 41;
             this.Løperinfo.TabStop = false;
             this.Løperinfo.Text = "Løperinfo";
+            // 
+            // Battery_box
+            // 
+            this.Battery_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Battery_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Battery_box.ForeColor = System.Drawing.Color.Blue;
+            this.Battery_box.Location = new System.Drawing.Point(896, 80);
+            this.Battery_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Battery_box.Name = "Battery_box";
+            this.Battery_box.ReadOnly = true;
+            this.Battery_box.Size = new System.Drawing.Size(114, 41);
+            this.Battery_box.TabIndex = 29;
             // 
             // folderLogfile_box
             // 
@@ -508,6 +522,7 @@
         private System.Windows.Forms.GroupBox Løperinfo;
         private System.Windows.Forms.TextBox folderLogfile_box;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox Battery_box;
     }
 }
 
