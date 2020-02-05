@@ -552,6 +552,7 @@ namespace USBRead
             catch
             {
                 MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+****            _fileloaded = false;
             }
         }
 
