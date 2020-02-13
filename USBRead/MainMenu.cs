@@ -2,6 +2,7 @@
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.IO.Ports;
 using System.Net;
 using System.Windows.Forms;
@@ -12,6 +13,7 @@ using System.Threading;
 using System.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using MTRSerial.ValueObjects;
 
 
 namespace USBRead
@@ -32,8 +34,12 @@ namespace USBRead
         public string _LogfileName;
         public double _batterylevel;
         public Color _batterycolor;
+        public string _EcuCode;
         public string StartlistFilename;
         public string messageText;
+        private const int xorDF = 223; // Hexadecimal = "DF";
+        private List<int> buffer = new List<int>();
+
 
         public MainMenu()
         {
@@ -45,7 +51,7 @@ namespace USBRead
 
         private void button1_Click(object sender, EventArgs e)
         {
-            SerialPortProgram usb = new SerialPortProgram(messageText);
+            //SerialPortProgram usb = new SerialPortProgram(messageText);
             //UsbOutText.Text = messageText;
         }
 
@@ -285,6 +291,7 @@ namespace USBRead
                 if (_batterylevel > 3) {_batterycolor = Color.Green;}
                 if (_batterylevel > 2.95 && _batterylevel <= 3) {_batterycolor = Color.Yellow;}
                 if (_batterylevel <= 2.95) { _batterycolor = Color.Red;}
+                if (_batterylevel == 0) { _batterycolor = Color.LightGray; }
 
                 Battery_box.BeginInvoke(new MethodInvoker(delegate
                 {
@@ -306,26 +313,72 @@ namespace USBRead
             readThreadUsb.Start();
         }
 
+        public void ChangeEcuCode()
+        {
+            if (ActiveUsbPort == null)
+            {
+                MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            string cmd = "/CD" + ecuCode_box.Text + "\r\n";
+            byte[] bytes = Encoding.ASCII.GetBytes(cmd);
+
+            if (_stop)
+            {
+                MessageBox.Show("Start kommunikasjon med brikkeleser", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);                //mySerialPort.PortName = ActiveUsbPort;
+            }
+
+            if (!_stop)
+            {
+                int chunksize = 1;
+                for (int i = 0; i < bytes.Length; i += chunksize)
+                {
+                    mySerialPort.Write(bytes, i, chunksize);
+                    Thread.Sleep(5);
+                }
+            }
+        //    if (!mySerialPort.IsOpen)
+        //    {
+        //        mySerialPort = new SerialPort();
+        //        mySerialPort.PortName = ActiveUsbPort;
+        //        mySerialPort.BaudRate = ComSettingsECU.BaudRate;
+        //        mySerialPort.Parity = ComSettingsECU.Parity;
+        //        mySerialPort.StopBits = ComSettingsECU.StopBits;
+        //        mySerialPort.DataBits = ComSettingsECU.DataBits;
+        //        mySerialPort.Handshake = ComSettingsECU.hShake;
+        //        mySerialPort.Open();
+        //    }
+        }
+
         public void ReadUsb() //Read ECU from usb-port and check if ecard is found or not
         {
+            if (mySerialPort != null && mySerialPort.IsOpen)
+                mySerialPort.Close();
+
             mySerialPort = new SerialPort();
             mySerialPort.PortName = ActiveUsbPort;
-            mySerialPort.BaudRate = 115200;
-            mySerialPort.Parity = Parity.None;
-            mySerialPort.StopBits = StopBits.One;
-            mySerialPort.DataBits = 8;
-            mySerialPort.Handshake = Handshake.None;
-            mySerialPort.RtsEnable = false;
-            mySerialPort.DtrEnable = true;
-            mySerialPort.ReadTimeout = 5000;
-            mySerialPort.WriteTimeout = 200;
+            mySerialPort.BaudRate = ComSettingsECU.BaudRate;
+            mySerialPort.Parity = ComSettingsECU.Parity;
+            mySerialPort.StopBits = ComSettingsECU.StopBits;
+            mySerialPort.DataBits = ComSettingsECU.DataBits;
+            mySerialPort.Handshake = ComSettingsECU.hShake;
             mySerialPort.Open();
+
+            string usbMessage = mySerialPort.ReadLine();
+            EmitagParser(usbMessage);
+            //ecuCode_box.Text = _EcuCode;
+            if (ecuCode_box != null && !ecuCode_box.IsDisposed)
+            {
+                ecuCode_box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    ecuCode_box.Text = _EcuCode;
+                }));
+            }
 
             while (!_stop)
             {
                 try
                 {
-                    string usbMessage = mySerialPort.ReadLine();
+                    usbMessage = mySerialPort.ReadLine();
                     EmitagParser(usbMessage);
                     if (_ecardfound == true && _fileloaded == true)
                     {
@@ -393,18 +446,23 @@ namespace USBRead
                 {
                     case 'M':
                         {           // number of messages today
-                            ecardRead = ecbMessage;
+                            //ecardRead = ecbMessage;
                             break;
                         }
                     case 'I':
                         {           // unit info (HW/SW)
-                            ecardRead = info;
+                            //ecardRead = info;
                             break;
                         }
                     case 'N':
                         {          // EmiTag-No
                             ecardRead = info;
                             _ecardfound = true;
+                            break;
+                        }
+                    case 'C':
+                        {           // ECU internal code
+                            _EcuCode = info;
                             break;
                         }
                     case 'W':
@@ -416,7 +474,7 @@ namespace USBRead
                             break;
                         }
                     case 'V':
-                        {   //EmitagInternalInfo
+                        {   //Battery status
                             _batteryVolt = info.Substring(0, 1) + "," + info.Substring(1,2);
                             _batterylevel = Convert.ToDouble(_batteryVolt);
                             break;
@@ -425,44 +483,10 @@ namespace USBRead
             }
         }
        
-        public void Read250()
+        public static void Read250()
         {
-            mySerialPort = new SerialPort();
-            mySerialPort.PortName = ActiveUsbPort;
-            mySerialPort.BaudRate = 9600;
-            mySerialPort.Parity = Parity.None;
-            mySerialPort.StopBits = StopBits.Two;
-            mySerialPort.DataBits = 8;
-            mySerialPort.Handshake = Handshake.None;
-            mySerialPort.RtsEnable = false;
-            mySerialPort.DtrEnable = true;
-            mySerialPort.ReadTimeout = 7000;
-            mySerialPort.WriteTimeout = 200;
-            mySerialPort.Open();
-
-            while (!_stop)
-            {
-                try
-                {
-                    int length = mySerialPort.BytesToRead;
-                    byte[] buf = new byte[length];
-
-                    mySerialPort.Read(buf, 0, length);
-                    System.Diagnostics.Debug.WriteLine("Received Data:" + buf);
-                    //byte[] data = new byte[mySerialPort.BytesToRead];
-                    //mySerialPort.Read(data, 0, data.Length);
-                    //string usbMessage = Encoding.UTF32.GetString(data, 0, data.Length);
-
-                    //string usbMessage = data.ToString();
-                    //Console.WriteLine(usbMessage);
-                }
-                catch (TimeoutException)
-                {
-                    Console.WriteLine("USB read timed out. Check the flux capacitor");
-                    mySerialPort.Close();
-                }
-            }
-            mySerialPort.Close();
+            var instance = new MTRSerial.MTRSerialPort();
+            instance.OpenSerialPort();
         }
 
         private void button1_Click_1(object sender, EventArgs e) //Read MTR
@@ -552,7 +576,6 @@ namespace USBRead
             catch
             {
                 MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
-****            _fileloaded = false;
             }
         }
 
@@ -638,13 +661,13 @@ namespace USBRead
                     }
                 }
                 if (_valueFound == false)
-                {
-                    UnknownEcard(SearchCard_Txtbox.Text);
+                {                 
+                    UnknownEcard(searchString);
                 }
             }
             catch (Exception) //Ecard not found in datagrid
             {
-                UnknownEcard(SearchCard_Txtbox.Text);
+                UnknownEcard(searchString);
             }
         }
 
@@ -697,5 +720,24 @@ namespace USBRead
 
         }
 
-   }
+         private void ChangeEcuCode_btn_Click(object sender, EventArgs e)
+        {
+            int InputValue = 0;
+            try
+            {
+                InputValue = Int16.Parse(ecuCode_box.Text);
+            }
+            catch (Exception)
+            { }
+
+            if (InputValue >= 65 && InputValue <=253)
+            {
+                ChangeEcuCode();
+            }
+            else
+            {
+                MessageBox.Show("Kode må være mellom 65 og 253!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+    }
 }

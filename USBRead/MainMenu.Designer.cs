@@ -62,16 +62,22 @@
             this.Battery_box = new System.Windows.Forms.TextBox();
             this.folderLogfile_box = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.ecuCode_box = new System.Windows.Forms.TextBox();
+            this.ChangeEcuCode_btn = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.Løperinfo.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // ReadUsb_btn
             // 
             this.ReadUsb_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ReadUsb_btn.Location = new System.Drawing.Point(275, 455);
+            this.ReadUsb_btn.Location = new System.Drawing.Point(275, 469);
             this.ReadUsb_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ReadUsb_btn.Name = "ReadUsb_btn";
             this.ReadUsb_btn.Size = new System.Drawing.Size(163, 30);
@@ -85,7 +91,7 @@
             this.UsbPort_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UsbPort_listBox.FormattingEnabled = true;
             this.UsbPort_listBox.ItemHeight = 20;
-            this.UsbPort_listBox.Location = new System.Drawing.Point(16, 34);
+            this.UsbPort_listBox.Location = new System.Drawing.Point(16, 24);
             this.UsbPort_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbPort_listBox.Name = "UsbPort_listBox";
             this.UsbPort_listBox.Size = new System.Drawing.Size(142, 104);
@@ -96,7 +102,7 @@
             // RefreshUsbPort_btn
             // 
             this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 147);
+            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 137);
             this.RefreshUsbPort_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RefreshUsbPort_btn.Name = "RefreshUsbPort_btn";
             this.RefreshUsbPort_btn.Size = new System.Drawing.Size(142, 34);
@@ -121,7 +127,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(460, 460);
+            this.label2.Location = new System.Drawing.Point(460, 474);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(81, 20);
             this.label2.TabIndex = 8;
@@ -142,12 +148,12 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(464, 495);
+            this.dataGridView1.Location = new System.Drawing.Point(464, 514);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(995, 294);
+            this.dataGridView1.Size = new System.Drawing.Size(995, 293);
             this.dataGridView1.TabIndex = 11;
             // 
             // SearchCard_btn
@@ -173,19 +179,20 @@
             // 
             // UsbRead_listBox
             // 
+            this.UsbRead_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UsbRead_listBox.FormattingEnabled = true;
-            this.UsbRead_listBox.ItemHeight = 16;
-            this.UsbRead_listBox.Location = new System.Drawing.Point(15, 497);
+            this.UsbRead_listBox.ItemHeight = 15;
+            this.UsbRead_listBox.Location = new System.Drawing.Point(15, 514);
             this.UsbRead_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbRead_listBox.Name = "UsbRead_listBox";
-            this.UsbRead_listBox.Size = new System.Drawing.Size(421, 292);
+            this.UsbRead_listBox.Size = new System.Drawing.Size(423, 289);
             this.UsbRead_listBox.TabIndex = 25;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(15, 460);
+            this.label3.Location = new System.Drawing.Point(15, 474);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(99, 20);
             this.label3.TabIndex = 26;
@@ -208,7 +215,7 @@
             this.Navn_box.BackColor = System.Drawing.SystemColors.Control;
             this.Navn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Navn_box.ForeColor = System.Drawing.Color.Red;
-            this.Navn_box.Location = new System.Drawing.Point(16, 133);
+            this.Navn_box.Location = new System.Drawing.Point(16, 135);
             this.Navn_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Navn_box.Name = "Navn_box";
             this.Navn_box.ReadOnly = true;
@@ -220,7 +227,7 @@
             this.Klubb_box.BackColor = System.Drawing.SystemColors.Control;
             this.Klubb_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klubb_box.ForeColor = System.Drawing.Color.Red;
-            this.Klubb_box.Location = new System.Drawing.Point(16, 241);
+            this.Klubb_box.Location = new System.Drawing.Point(16, 253);
             this.Klubb_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klubb_box.Name = "Klubb_box";
             this.Klubb_box.ReadOnly = true;
@@ -232,7 +239,7 @@
             this.Klasse_box.BackColor = System.Drawing.SystemColors.Control;
             this.Klasse_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klasse_box.ForeColor = System.Drawing.Color.Red;
-            this.Klasse_box.Location = new System.Drawing.Point(16, 303);
+            this.Klasse_box.Location = new System.Drawing.Point(16, 315);
             this.Klasse_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klasse_box.Name = "Klasse_box";
             this.Klasse_box.ReadOnly = true;
@@ -339,7 +346,7 @@
             this.groupBox1.Controls.Add(this.lopsnavn_box);
             this.groupBox1.Controls.Add(this.lopsid_box);
             this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(15, 287);
+            this.groupBox1.Location = new System.Drawing.Point(15, 303);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(421, 137);
             this.groupBox1.TabIndex = 34;
@@ -360,10 +367,10 @@
             // 
             this.groupBox2.Controls.Add(this.UsbPort_listBox);
             this.groupBox2.Controls.Add(this.RefreshUsbPort_btn);
-            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(264, 10);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(172, 199);
+            this.groupBox2.Size = new System.Drawing.Size(172, 184);
             this.groupBox2.TabIndex = 35;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Velg Port";
@@ -371,7 +378,7 @@
             // readLiveResfil_btn
             // 
             this.readLiveResfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readLiveResfil_btn.Location = new System.Drawing.Point(1187, 455);
+            this.readLiveResfil_btn.Location = new System.Drawing.Point(1187, 469);
             this.readLiveResfil_btn.Name = "readLiveResfil_btn";
             this.readLiveResfil_btn.Size = new System.Drawing.Size(272, 30);
             this.readLiveResfil_btn.TabIndex = 37;
@@ -382,7 +389,7 @@
             // readBrikkesjekkfil_btn
             // 
             this.readBrikkesjekkfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(894, 455);
+            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(894, 469);
             this.readBrikkesjekkfil_btn.Name = "readBrikkesjekkfil_btn";
             this.readBrikkesjekkfil_btn.Size = new System.Drawing.Size(272, 30);
             this.readBrikkesjekkfil_btn.TabIndex = 39;
@@ -414,7 +421,7 @@
             this.Løperinfo.Controls.Add(this.StartNr_box);
             this.Løperinfo.Location = new System.Drawing.Point(456, 56);
             this.Løperinfo.Name = "Løperinfo";
-            this.Løperinfo.Size = new System.Drawing.Size(1023, 368);
+            this.Løperinfo.Size = new System.Drawing.Size(1023, 384);
             this.Løperinfo.TabIndex = 41;
             this.Løperinfo.TabStop = false;
             this.Løperinfo.Text = "Løperinfo";
@@ -434,7 +441,7 @@
             // folderLogfile_box
             // 
             this.folderLogfile_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.folderLogfile_box.Location = new System.Drawing.Point(170, 794);
+            this.folderLogfile_box.Location = new System.Drawing.Point(170, 812);
             this.folderLogfile_box.Name = "folderLogfile_box";
             this.folderLogfile_box.Size = new System.Drawing.Size(266, 27);
             this.folderLogfile_box.TabIndex = 42;
@@ -443,17 +450,70 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(12, 797);
+            this.label9.Location = new System.Drawing.Point(12, 815);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(136, 20);
             this.label9.TabIndex = 43;
             this.label9.Text = "Katalog for log-fil";
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(643, 471);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(102, 23);
+            this.button1.TabIndex = 44;
+            this.button1.Text = "Not in use";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // ecuCode_box
+            // 
+            this.ecuCode_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ecuCode_box.Location = new System.Drawing.Point(14, 24);
+            this.ecuCode_box.Name = "ecuCode_box";
+            this.ecuCode_box.Size = new System.Drawing.Size(100, 27);
+            this.ecuCode_box.TabIndex = 45;
+            // 
+            // ChangeEcuCode_btn
+            // 
+            this.ChangeEcuCode_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeEcuCode_btn.Location = new System.Drawing.Point(126, 24);
+            this.ChangeEcuCode_btn.Name = "ChangeEcuCode_btn";
+            this.ChangeEcuCode_btn.Size = new System.Drawing.Size(106, 32);
+            this.ChangeEcuCode_btn.TabIndex = 47;
+            this.ChangeEcuCode_btn.Text = "Ny kode";
+            this.ChangeEcuCode_btn.UseVisualStyleBackColor = true;
+            this.ChangeEcuCode_btn.Click += new System.EventHandler(this.ChangeEcuCode_btn_Click);
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.ChangeEcuCode_btn);
+            this.groupBox3.Controls.Add(this.ecuCode_box);
+            this.groupBox3.Location = new System.Drawing.Point(15, 206);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(421, 81);
+            this.groupBox3.TabIndex = 48;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Kode brikkeleser";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.ForeColor = System.Drawing.Color.Red;
+            this.label10.Location = new System.Drawing.Point(15, 59);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(372, 17);
+            this.label10.TabIndex = 48;
+            this.label10.Text = "Kode 70-76 for brikkesjekk Kode 251-253 for batterisjekk ";
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1489, 836);
+            this.ClientSize = new System.Drawing.Size(1489, 853);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.folderLogfile_box);
             this.Controls.Add(this.Løperinfo);
@@ -482,6 +542,8 @@
             this.groupBox2.ResumeLayout(false);
             this.Løperinfo.ResumeLayout(false);
             this.Løperinfo.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -523,6 +585,11 @@
         private System.Windows.Forms.TextBox folderLogfile_box;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox Battery_box;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox ecuCode_box;
+        private System.Windows.Forms.Button ChangeEcuCode_btn;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.Label label10;
     }
 }
 
