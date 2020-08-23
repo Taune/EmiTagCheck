@@ -54,8 +54,6 @@ namespace MTRSerial
             if (EmitDataReceived != null) EmitDataReceived(this, EventArgs.Empty);
         }
 
-
-
         public MTRSerialPort()
         {
             _serialPort = new SerialPort();
@@ -173,7 +171,8 @@ namespace MTRSerial
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public void DataReceived(object sender, SerialDataReceivedEventArgs e)
+
+        public void DataReceivedMTR(object sender, SerialDataReceivedEventArgs e)
         {
             if (string.IsNullOrEmpty(Thread.CurrentThread.Name))
             {
@@ -615,7 +614,7 @@ namespace MTRSerial
                     _serialPort.Open();
                     if (_serialPort.IsOpen)
                     {
-                        _serialPort.DataReceived += DataReceived;
+                        _serialPort.DataReceived += DataReceivedMTR;
                         //_serialPort.ErrorReceived += SerialPortErrorReceived; // TODO Need some error handling
 
                         success = true;

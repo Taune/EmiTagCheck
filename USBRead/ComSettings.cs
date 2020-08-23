@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Text;
+using System.ComponentModel;
 
 namespace MTRSerial.ValueObjects
 {
-    public static class ComSettingsMTR
+    public class ComSettingsMTR
     {
         public static int BaudRate { get; set; } = 9600;
         public static Parity Parity { get; set; } = Parity.None;
@@ -21,8 +22,8 @@ namespace MTRSerial.ValueObjects
         public static int DataBits { get; set; } = 8;
         public static StopBits StopBits { get; set; } = StopBits.One;
         public static Handshake hShake { get; set; } = Handshake.None;
-            //mySerialPort.ReadTimeout = 5000;
-            //mySerialPort.WriteTimeout = 200;
+        //mySerialPort.ReadTimeout = 5000;
+        //mySerialPort.WriteTimeout = 200;
     }
 
 

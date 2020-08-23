@@ -13,20 +13,18 @@ using System.Threading;
 using System.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using MTRSerial.ValueObjects;
 
 
 namespace USBRead
 {
     public partial class MainMenu : Form
     {
-        static SerialPort mySerialPort;
         private bool _stop;
         private bool _stopLiveRes;
-        public string ActiveUsbPort;
+        public static string ActiveUsbPort;
         public string ecardRead;
         private bool _ecardfound;
-        private bool _serialportfound;
+        public bool _serialportfound;
         private bool _fileloaded = false;
         public static string SetValueForEmitag;
         public static string SetValueForLopsid;
@@ -37,17 +35,116 @@ namespace USBRead
         public string _EcuCode;
         public string StartlistFilename;
         public string messageText;
-        private const int xorDF = 223; // Hexadecimal = "DF";
-        private List<int> buffer = new List<int>();
-
+        //private List<int> buffer = new List<int>();
+        SerialPortManager _spManager;
 
         public MainMenu()
         {
             InitializeComponent();
+            UserInitialization();
         }
+
+        private void UserInitialization()
+        {
+                _spManager = new SerialPortManager();
+                _spManager.NewSerialDataRecievedECU += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedECU);
+                _spManager.NewSerialDataRecievedMTR += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedMTR);
+            this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_serialportfound == true)
+            {
+                _spManager.Dispose();
+            }
+            else
+            {
+            }
+        }
+
+        void _spManager_NewSerialDataRecievedECU(object sender, SerialDataEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                // Using this.Invoke causes deadlock when closing serial port, and BeginInvoke is good practice anyway.
+                this.BeginInvoke(new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedECU), new object[] { sender, e });
+                return;
+            }
+            string strMessage = Encoding.ASCII.GetString(e.Data);
+            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " " + strMessage);
+
+            EmitagParser(strMessage);
+            if (_ecardfound == true && _fileloaded == true)
+            {
+                strMessage = ecardRead;
+                SearchEcardNew(ecardRead);
+                _ecardfound = false;
+            }
+            if (_ecardfound == true && _fileloaded == false)
+            {
+                strMessage = ecardRead;
+                UnknownEcard(ecardRead);
+                _ecardfound = false;
+            }
+        }
+
+        void _spManager_NewSerialDataRecievedMTR(object sender, SerialDataEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                // Using this.Invoke causes deadlock when closing serial port, and BeginInvoke is good practice anyway.
+                this.BeginInvoke(new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedMTR), new object[] { sender, e });
+                return;
+            }
+            string strMessage = Encoding.ASCII.GetString(e.Data);
+            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " " + strMessage);
+
+            EmitagParser(strMessage);
+            if (_ecardfound == true && _fileloaded == true)
+            {
+                strMessage = ecardRead;
+                SearchEcardNew(ecardRead);
+                _ecardfound = false;
+            }
+            if (_ecardfound == true && _fileloaded == false)
+            {
+                strMessage = ecardRead;
+                UnknownEcard(ecardRead);
+                _ecardfound = false;
+            }
+        }
+
 
         System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
 
+        // Start listening to the ECU-unit
+        private void btnStartECU_Click(object sender, EventArgs e)
+        {
+            if (ActiveUsbPort == null)
+            {
+                MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            { 
+                if (ReadEcu_btn.Text == "Start ECU")
+                {
+                    ReadEcu_btn.Text = "Stop ECU";
+                    ReadEcu_btn.BackColor = Color.LightGreen;
+                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
+                    _spManager.StartListeningECU();
+                    _stop = false;
+                }
+                else
+                {
+                    ReadEcu_btn.Text = "Start ECU";
+                    ReadEcu_btn.BackColor = Color.LightSalmon;
+                    _spManager.StopListeningECU();
+                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
+                    _stop = true;
+                }
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -57,10 +154,27 @@ namespace USBRead
 
         private void MainMenu_Load(object sender, EventArgs e)
         {
+            bool _LiveRes = true;
             // Read a keys from the config file            
             lopsid_box.Text = ConfigurationManager.AppSettings.Get("lopid");
             lopsnavn_box.Text = ConfigurationManager.AppSettings.Get("lopnavn");
             folderLogfile_box.Text = ConfigurationManager.AppSettings.Get("logfolder");
+            if (ConfigurationManager.AppSettings.Get("liveresCheckBox") == "False")
+            {
+                _LiveRes = false;
+            }
+            LiveRes_checkBox.Checked = _LiveRes;
+            if (LiveRes_checkBox.Checked == true)
+            {
+                readLiveResfil_btn.Enabled = true;
+                LiveRes_groupBox.Enabled = true;
+            }
+            if (LiveRes_checkBox.Checked == false)
+            {
+                readLiveResfil_btn.Enabled = false;
+                LiveRes_groupBox.Enabled = false;
+            }
+
             _stop = true;
 
             _LogfileName = @folderLogfile_box.Text + "brikkesjekk " + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
@@ -169,10 +283,10 @@ namespace USBRead
                 _stop = true;
                 if (_serialportfound == true)
                 {
-                    Thread.Sleep(3000); //Stops thread to ensure USB-reading is ended
+                    Thread.Sleep(10); //Stops thread to ensure USB-reading is ended
                     try
                     {
-                        mySerialPort.Close();
+                        _spManager.Dispose();
                     }
                     catch
                     {
@@ -186,34 +300,11 @@ namespace USBRead
             config.AppSettings.Settings["lopid"].Value = lopsid_box.Text;
             config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
             config.AppSettings.Settings["logfolder"].Value = folderLogfile_box.Text;
+            config.AppSettings.Settings["liveresCheckBox"].Value = LiveRes_checkBox.Checked.ToString();
             config.Save(ConfigurationSaveMode.Modified);
 
             System.Windows.Forms.Application.ExitThread();
             this.Close();
-        }
-
-        private void ReadUsb_btn_Click(object sender, EventArgs e) //Start reading USB-port
-        {
-            if (ActiveUsbPort == null)
-            {
-                MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                if (ReadUsb_btn.Text == "Start")
-                {
-                    ReadUsb_btn.Text = "Stop";
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
-                    _stop = false;
-                    SerialPortProgram2();
-                }
-                else
-                {
-                    ReadUsb_btn.Text = "Start";
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
-                    _stop = true;
-                }
-            }
         }
 
         private void SearchCard_btn_Click(object sender, EventArgs e) //Manually search after ecard number
@@ -306,14 +397,7 @@ namespace USBRead
             }
         }
 
-        public void SerialPortProgram2() //
-        {
-            _ecardfound = false;
-            Thread readThreadUsb = new Thread(ReadUsb);
-            readThreadUsb.Start();
-        }
-
-        public void ChangeEcuCode()
+        public void ChangeEcuCode() //Change code on ECU reader
         {
             if (ActiveUsbPort == null)
             {
@@ -332,91 +416,10 @@ namespace USBRead
                 int chunksize = 1;
                 for (int i = 0; i < bytes.Length; i += chunksize)
                 {
-                    mySerialPort.Write(bytes, i, chunksize);
+                    _spManager._serialPortA.Write(bytes, i, chunksize);
                     Thread.Sleep(5);
                 }
             }
-        //    if (!mySerialPort.IsOpen)
-        //    {
-        //        mySerialPort = new SerialPort();
-        //        mySerialPort.PortName = ActiveUsbPort;
-        //        mySerialPort.BaudRate = ComSettingsECU.BaudRate;
-        //        mySerialPort.Parity = ComSettingsECU.Parity;
-        //        mySerialPort.StopBits = ComSettingsECU.StopBits;
-        //        mySerialPort.DataBits = ComSettingsECU.DataBits;
-        //        mySerialPort.Handshake = ComSettingsECU.hShake;
-        //        mySerialPort.Open();
-        //    }
-        }
-
-        public void ReadUsb() //Read ECU from usb-port and check if ecard is found or not
-        {
-            if (mySerialPort != null && mySerialPort.IsOpen)
-                mySerialPort.Close();
-
-            mySerialPort = new SerialPort();
-            mySerialPort.PortName = ActiveUsbPort;
-            mySerialPort.BaudRate = ComSettingsECU.BaudRate;
-            mySerialPort.Parity = ComSettingsECU.Parity;
-            mySerialPort.StopBits = ComSettingsECU.StopBits;
-            mySerialPort.DataBits = ComSettingsECU.DataBits;
-            mySerialPort.Handshake = ComSettingsECU.hShake;
-            mySerialPort.Open();
-
-            string usbMessage = mySerialPort.ReadLine();
-            EmitagParser(usbMessage);
-            //ecuCode_box.Text = _EcuCode;
-            if (ecuCode_box != null && !ecuCode_box.IsDisposed)
-            {
-                ecuCode_box.BeginInvoke(new MethodInvoker(delegate
-                {
-                    ecuCode_box.Text = _EcuCode;
-                }));
-            }
-
-            while (!_stop)
-            {
-                try
-                {
-                    usbMessage = mySerialPort.ReadLine();
-                    EmitagParser(usbMessage);
-                    if (_ecardfound == true && _fileloaded == true)
-                    {
-                        usbMessage = ecardRead;
-                        SearchEcardNew(ecardRead);
-                        _ecardfound = false;
-                    }
-                    if (_ecardfound == true && _fileloaded == false)
-                    {
-                        usbMessage = ecardRead;
-                        UnknownEcard(ecardRead);
-                        _ecardfound = false;
-                    }
-
-                    if (!this.IsHandleCreated)
-                    {
-                        this.CreateHandle();
-                    }
-
-                    if (UsbRead_listBox != null && !UsbRead_listBox.IsDisposed)
-                    {
-                        UsbRead_listBox.BeginInvoke(new MethodInvoker(delegate
-                        {
-                            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " " + usbMessage);
-                        }));
-                    }
-                    else
-                    {
-
-                    }
-                }
-                catch (TimeoutException)
-                {
-                    Console.WriteLine("USB read timed out. Check the flux capacitor");
-                }
-                Thread.Sleep(100);
-            }
-            mySerialPort.Close();
         }
 
         private void UnknownEcard_btn_Click_1(object sender, EventArgs e)
@@ -483,18 +486,34 @@ namespace USBRead
             }
         }
        
-        public static void Read250()
+        private void btnReadMTR_Click(object sender, EventArgs e) //Read MTR
         {
-            var instance = new MTRSerial.MTRSerialPort();
-            instance.OpenSerialPort();
+            if (ActiveUsbPort == null)
+            {
+                MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                if (btnStartMTR.Text == "Start MTR")
+                {
+                    btnStartMTR.Text = "Stop MTR";
+                    btnStartMTR.BackColor = Color.LightGreen;
+                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Open Communication MTR");
+                    _spManager.StartListeningMTR();
+                    _stop = false;
+                }
+                else
+                {
+                    btnStartMTR.Text = "Start MTR";
+                    btnStartMTR.BackColor = Color.LightSalmon;
+                    _spManager.StopListeningMTR();
+                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Communication MTR Closed");
+                    _stop = true;
+                }
+            }
         }
 
-        private void button1_Click_1(object sender, EventArgs e) //Read MTR
-        {
-            Read250();
-        }
-
-        private void readLiveResfil_btn_Click(object sender, EventArgs e) //Start reading from LiveRes
+        private void readLiveResfil_btn_Click(object sender, EventArgs e) //Start reading startlist from LiveRes
         {
             if (readLiveResfil_btn.Text == "Les startliste fra LiveRes")
             {
@@ -720,7 +739,7 @@ namespace USBRead
 
         }
 
-         private void ChangeEcuCode_btn_Click(object sender, EventArgs e)
+        private void ChangeEcuCode_btn_Click(object sender, EventArgs e)
         {
             int InputValue = 0;
             try
@@ -738,6 +757,21 @@ namespace USBRead
             {
                 MessageBox.Show("Kode må være mellom 65 og 253!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void LiveRes_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (LiveRes_checkBox.Checked == true)
+            {
+                readLiveResfil_btn.Enabled = true;
+                LiveRes_groupBox.Enabled = true;
+            }
+            if (LiveRes_checkBox.Checked == false)
+            {
+                readLiveResfil_btn.Enabled = false;
+                LiveRes_groupBox.Enabled = false;
+            }
+
         }
     }
 }
