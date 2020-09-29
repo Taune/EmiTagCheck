@@ -21,53 +21,96 @@ namespace USBRead
         public event EventHandler<SerialDataEventArgs> NewSerialDataRecievedECU;
         public event EventHandler<SerialDataEventArgs> NewSerialDataRecievedMTR;
         private const int xorDF = 223; // Hexadecimal = "DF";
+        private List<int> message = new List<int>();
+        private List<int> message_start = new List<int>();
         private List<int> buffer = new List<int>();
+        private readonly object _commLock = new object();
+        private string msgObj;
         //public event EventHandler<MTRCommandEventArgs> MTRCommunication;
         #endregion
 
-
         void _serialPort_DataReceivedMTR(object sender, SerialDataReceivedEventArgs e)
         {
-            int lastReadByte = 0;
-            var startFound = false;
-            var stopReading = false;
-            //string data = _serialPortB.ReadLine();
+            //int lastReadByte = 0;
+            //var startFound = false;
+            //var stopReading = false;
 
-            while (stopReading == false)
+            int dataLength = _serialPortB.BytesToRead;
+            byte[] data = new byte[dataLength];
+            int nbrDataRead = _serialPortB.Read(data, 0, dataLength);
+
+            for (int i = 0; i < dataLength; i++)
             {
-                try
+                if (message_start.Count < 4)
                 {
-                    var readByteXor = _serialPortB.ReadByte() ^ xorDF;
-
-                    if (lastReadByte.Equals(255) && readByteXor.Equals(255))
+                    if (data[i] == 0xFF)
                     {
-                        buffer.Add(lastReadByte);
-                        startFound = true;
-                    }
-                    if (startFound)
-                    {
-                        buffer.Add(readByteXor);
-                        if (buffer.Count > 217) stopReading = true;
+                        message_start.Add(data[i]);
                     }
                     else
                     {
-                        lastReadByte = readByteXor;
+                        message_start.Clear();
                     }
                 }
-                catch
+                else
                 {
-                    stopReading = true;
+                    message.Add(data[i]);
+                    if (message[0] == message.Count)
+                    {
+                        mtrParseMsg(message);
+                        message_start.Clear();
+                        message.Clear();
+                    }
                 }
             }
-            Console.WriteLine(buffer.Count);
-            byte[] _InputBytes = Encoding.ASCII.GetBytes("hei");
 
-            ParseRxString(buffer);
+            byte[] _InputBytes1 = Encoding.ASCII.GetBytes(msgObj);
+
             // Send data to whom ever interested
             if (NewSerialDataRecievedMTR != null)
-                NewSerialDataRecievedMTR(this, new SerialDataEventArgs(_InputBytes));
+                NewSerialDataRecievedMTR(this, new SerialDataEventArgs(_InputBytes1));
 
-            buffer.Clear();
+            //lock (_commLock)
+            //{
+            //    int lastReadByte = 0;
+            //    int teller = 0;
+            //    var startFound = false;
+            //    var stopReading = false;
+
+            //    while (stopReading == false)
+            //    {
+            //        try
+            //        {
+            //            var readByteXor = _serialPortB.ReadByte() ^ xorDF;
+            //            teller++;
+
+            //            if (lastReadByte.Equals(255) && readByteXor.Equals(255))
+            //            {
+            //                buffer.Add(lastReadByte);
+            //                startFound = true;
+            //            }
+            //            if (startFound)
+            //            {
+            //                buffer.Add(readByteXor);
+            //                if (teller > 217) stopReading = true;
+            //            }
+            //            else
+            //            {
+            //                lastReadByte = readByteXor;
+            //            }
+            //        }
+            //        catch
+            //        {
+            //            stopReading = true;
+            //        }
+            //        Console.WriteLine(buffer.Count);
+
+            //    }
+            //    Console.WriteLine(buffer.Count);
+
+            //    ParseRxString(buffer);
+            //    buffer.Clear();
+            //}
         }
 
         void _serialPort_DataReceivedECU(object sender, SerialDataReceivedEventArgs e)
@@ -122,8 +165,8 @@ namespace USBRead
             _serialPortB.Handshake = ComSettingsMTR.hShake;
 
             // Subscribe to event and open serial port for data
-            _serialPortB.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceivedMTR);
             _serialPortB.Open();
+            _serialPortB.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceivedMTR);
         }
 
         // Closes the serial port
@@ -163,6 +206,28 @@ namespace USBRead
             }
         }
 
+        void mtrParseMsg(List<int> msg)
+        {
+            int MtrEcardNo=0;
+            int checksum = 0xFF + 0xFF + 0xFF + 0xFF;
+         
+            for (int j = 0; j < (msg.Count - 2); j++)
+            {
+                checksum += msg[j];
+            }
+            checksum %= 256;
+
+            if (checksum == msg[msg.Count - 2])
+            {
+                MtrEcardNo = msg[16] + (msg[17] * 256) + (msg[18] * 256 * 256);
+            }
+            //return msgObj; 
+            msgObj = MtrEcardNo.ToString();
+
+        }
+
+
+
         private void ParseRxString(List<int> rxByteList)
         {
             if (rxByteList.Count <= 1)
@@ -175,8 +240,8 @@ namespace USBRead
                 if (rxByteList[2].Equals(255) && rxByteList[3].Equals(255))
                 {
                     // Response
-                    var size = rxByteList[5];
-                    var cmd = rxByteList[6];
+                    var size = rxByteList[4];
+                    var cmd = rxByteList[5];
 
                     var data = string.Join(",", rxByteList);
                     //if (MTRCommunication != null)
