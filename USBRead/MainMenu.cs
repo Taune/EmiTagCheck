@@ -29,6 +29,7 @@ namespace USBRead
         public static string SetValueForEmitag;
         public static string SetValueForLopsid;
         public static string SetValueForLopsNavn;
+        public static string SetValueForStartNo;
         public string _LogfileName;
         public double _batterylevel;
         public Color _batterycolor;
@@ -427,6 +428,7 @@ namespace USBRead
             SetValueForEmitag = Ecard_box.Text;
             SetValueForLopsid = lopsid_box.Text;
             SetValueForLopsNavn = lopsnavn_box.Text;
+            SetValueForStartNo = StartNr_box.Text;
             SendMessage_form f2 = new SendMessage_form();
             f2.Show();
         }
