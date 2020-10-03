@@ -22,21 +22,24 @@ namespace USBRead
         private bool _stop;
         private bool _stopLiveRes;
         public static string ActiveUsbPort;
+        public static string MTRComPortOpen = "";
+        public static string ECUComPortOpen = "";
+        public string ScrollInfo = "";
         public string ecardRead;
-        private bool _ecardfound;
+        public bool _ecardfound;
         public bool _serialportfound;
         private bool _fileloaded = false;
         public static string SetValueForEmitag;
         public static string SetValueForLopsid;
         public static string SetValueForLopsNavn;
         public static string SetValueForStartNo;
+        public static string SetValueForID;
         public string _LogfileName;
         public double _batterylevel;
         public Color _batterycolor;
         public string _EcuCode;
         public string StartlistFilename;
         public string messageText;
-        //private List<int> buffer = new List<int>();
         SerialPortManager _spManager;
 
         public MainMenu()
@@ -47,9 +50,9 @@ namespace USBRead
 
         private void UserInitialization()
         {
-                _spManager = new SerialPortManager();
-                _spManager.NewSerialDataRecievedECU += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedECU);
-                _spManager.NewSerialDataRecievedMTR += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedMTR);
+            _spManager = new SerialPortManager();
+            _spManager.NewSerialDataRecievedECU += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedECU);
+            _spManager.NewSerialDataRecievedMTR += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedMTR);
             this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
         }
 
@@ -73,25 +76,28 @@ namespace USBRead
                 return;
             }
             string strMessage = Encoding.ASCII.GetString(e.Data);
-            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " " + strMessage);
 
             EmitagParser(strMessage);
             if (_ecardfound == true && _fileloaded == true)
             {
                 strMessage = ecardRead;
                 SearchEcardNew(ecardRead);
+                UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - " + ScrollInfo);
                 _ecardfound = false;
             }
             if (_ecardfound == true && _fileloaded == false)
             {
                 strMessage = ecardRead;
                 UnknownEcard(ecardRead);
+                UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - Ukjent brikke");
                 _ecardfound = false;
             }
         }
 
         void _spManager_NewSerialDataRecievedMTR(object sender, SerialDataEventArgs e)
         {
+            //            var _spManager = new SerialPortManager();
+
             if (this.InvokeRequired)
             {
                 // Using this.Invoke causes deadlock when closing serial port, and BeginInvoke is good practice anyway.
@@ -99,20 +105,20 @@ namespace USBRead
                 return;
             }
             string strMessage = Encoding.ASCII.GetString(e.Data);
-            UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + " " + strMessage);
 
-            EmitagParser(strMessage);
-            if (_ecardfound == true && _fileloaded == true)
+            if (_spManager._MtrEcardfound == true && _fileloaded == true)
             {
-                strMessage = ecardRead;
-                SearchEcardNew(ecardRead);
-                _ecardfound = false;
+                //strMessage = ecardRead;
+                SearchEcardNew(strMessage);
+                UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - " + ScrollInfo);
+                _spManager._MtrEcardfound = false;
             }
-            if (_ecardfound == true && _fileloaded == false)
+            if (_spManager._MtrEcardfound == true && _fileloaded == false)
             {
-                strMessage = ecardRead;
-                UnknownEcard(ecardRead);
-                _ecardfound = false;
+                //strMessage = ecardRead;
+                UnknownEcard(strMessage);
+                UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - Ukjent brikke");
+                _spManager._MtrEcardfound = false;
             }
         }
 
@@ -127,30 +133,70 @@ namespace USBRead
                 MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
-            { 
+            {
                 if (ReadEcu_btn.Text == "Start ECU")
                 {
-                    ReadEcu_btn.Text = "Stop ECU";
-                    ReadEcu_btn.BackColor = Color.LightGreen;
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
-                    _spManager.StartListeningECU();
-                    _stop = false;
+                    //Check if COM-port already opened
+                    if (MTRComPortOpen == ActiveUsbPort)
+                    {
+                        MessageBox.Show("COM-port " + ActiveUsbPort + " i bruk. Velg annen COM-port!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+
+                        ReadEcu_btn.Text = "Stop ECU";
+                        ReadEcu_btn.BackColor = Color.LightGreen;
+                        UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
+                        _spManager.StartListeningECU();
+                        _stop = false;
+                    }
                 }
                 else
                 {
                     ReadEcu_btn.Text = "Start ECU";
-                    ReadEcu_btn.BackColor = Color.LightSalmon;
+                    ReadEcu_btn.BackColor = Color.LightCoral;
                     _spManager.StopListeningECU();
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
+                    UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
                     _stop = true;
+                    ECUComPortOpen = "";
                 }
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnReadMTR_Click(object sender, EventArgs e) //Read MTR
         {
-            //SerialPortProgram usb = new SerialPortProgram(messageText);
-            //UsbOutText.Text = messageText;
+            if (ActiveUsbPort == null)
+            {
+                MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                if (btnStartMTR.Text == "Start MTR")
+                {
+                    //Check if COM-port already opened 
+                    if (ECUComPortOpen == ActiveUsbPort)
+                    {
+                        MessageBox.Show("COM-port " + ActiveUsbPort + " i bruk. Velg annen COM-port!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        btnStartMTR.Text = "Stop MTR";
+                        btnStartMTR.BackColor = Color.LightGreen;
+                        UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
+                        _spManager.StartListeningMTR();
+                        _stop = false;
+                    }
+                }
+                else
+                {
+                    btnStartMTR.Text = "Start MTR";
+                    btnStartMTR.BackColor = Color.LightCoral;
+                    _spManager.StopListeningMTR();
+                    UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
+                    MTRComPortOpen = "";
+                    _stop = true;
+                }
+            }
         }
 
         private void MainMenu_Load(object sender, EventArgs e)
@@ -168,11 +214,13 @@ namespace USBRead
             if (LiveRes_checkBox.Checked == true)
             {
                 readLiveResfil_btn.Enabled = true;
+                UnknownEcard_btn.Enabled = true;
                 LiveRes_groupBox.Enabled = true;
             }
             if (LiveRes_checkBox.Checked == false)
             {
                 readLiveResfil_btn.Enabled = false;
+                UnknownEcard_btn.Enabled = false;
                 LiveRes_groupBox.Enabled = false;
             }
 
@@ -217,39 +265,21 @@ namespace USBRead
 
             string time = "";
 
-            if (hh < 10)
-            {
-                time += "0" + hh;
-            }
-            else
-            {
-                time += hh;
-            }
+            if (hh < 10) { time += "0" + hh; }
+            else { time += hh; }
             time += ":";
 
-            if (mm < 10)
-            {
-                time += "0" + mm;
-            }
-            else
-            {
-                time += mm;
-            }
+            if (mm < 10) { time += "0" + mm; }
+            else { time += mm; }
             time += ":";
 
-            if (ss < 10)
-            {
-                time += "0" + ss;
-            }
-            else
-            {
-                time += ss;
-            }
+            if (ss < 10) { time += "0" + ss; }
+            else { time += ss; }
 
             Clock_lbl.Text = time;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e) //Velger ønsket Usb Port
+        private void UsbPort_listBox_SelectedIndexChanged(object sender, EventArgs e) //Velger ønsket Usb Port
         {
             ActiveUsbPort = UsbPort_listBox.GetItemText(UsbPort_listBox.SelectedItem);
         }
@@ -380,9 +410,9 @@ namespace USBRead
             }
             if (Battery_box != null && !Battery_box.IsDisposed)
             {
-                if (_batterylevel > 3) {_batterycolor = Color.Green;}
-                if (_batterylevel > 2.95 && _batterylevel <= 3) {_batterycolor = Color.Yellow;}
-                if (_batterylevel <= 2.95) { _batterycolor = Color.Red;}
+                if (_batterylevel > 3) { _batterycolor = Color.Green; }
+                if (_batterylevel > 2.95 && _batterylevel <= 3) { _batterycolor = Color.Yellow; }
+                if (_batterylevel <= 2.95) { _batterycolor = Color.Red; }
                 if (_batterylevel == 0) { _batterycolor = Color.LightGray; }
 
                 Battery_box.BeginInvoke(new MethodInvoker(delegate
@@ -429,6 +459,7 @@ namespace USBRead
             SetValueForLopsid = lopsid_box.Text;
             SetValueForLopsNavn = lopsnavn_box.Text;
             SetValueForStartNo = StartNr_box.Text;
+            SetValueForID = ID_box.Text;
             SendMessage_form f2 = new SendMessage_form();
             f2.Show();
         }
@@ -480,37 +511,10 @@ namespace USBRead
                         }
                     case 'V':
                         {   //Battery status
-                            _batteryVolt = info.Substring(0, 1) + "," + info.Substring(1,2);
+                            _batteryVolt = info.Substring(0, 1) + "," + info.Substring(1, 2);
                             _batterylevel = Convert.ToDouble(_batteryVolt);
                             break;
                         }
-                }
-            }
-        }
-       
-        private void btnReadMTR_Click(object sender, EventArgs e) //Read MTR
-        {
-            if (ActiveUsbPort == null)
-            {
-                MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                if (btnStartMTR.Text == "Start MTR")
-                {
-                    btnStartMTR.Text = "Stop MTR";
-                    btnStartMTR.BackColor = Color.LightGreen;
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Open Communication MTR");
-                    _spManager.StartListeningMTR();
-                    _stop = false;
-                }
-                else
-                {
-                    btnStartMTR.Text = "Start MTR";
-                    btnStartMTR.BackColor = Color.LightSalmon;
-                    _spManager.StopListeningMTR();
-                    UsbRead_listBox.Items.Insert(0, DateTime.Now.ToString("HH:mm:ss") + "  Communication MTR Closed");
-                    _stop = true;
                 }
             }
         }
@@ -535,15 +539,15 @@ namespace USBRead
 
         async Task RunPeriodically(TimeSpan interval, CancellationToken token) //read start list from LiveRes every 5 min
         {
-            while (true && _stopLiveRes==false)
+            while (true && _stopLiveRes == false)
             {
                 readLiveResfil();
                 await Task.Delay(interval, token);
             }
         }
-        
+
         private void readLiveResfil() //Read start list from LiveRes
-        {          
+        {
             try
             {
                 WebClient client = new WebClient();
@@ -554,19 +558,16 @@ namespace USBRead
                 {
                     JArray items = (JArray)objects["runners"];
 
-                    //int length = items.Count;
-                    //var verdi = items[18]["name"];
-                    //Console.WriteLine(length);
-
                     dataGridView1.Rows.Clear();
                     dataGridView1.Refresh();
-                    dataGridView1.ColumnCount = 6;
+                    dataGridView1.ColumnCount = 7;
                     dataGridView1.Columns[0].Name = "bib";
                     dataGridView1.Columns[1].Name = "name";
                     dataGridView1.Columns[2].Name = "club";
                     dataGridView1.Columns[3].Name = "class";
                     dataGridView1.Columns[4].Name = "ecard";
                     dataGridView1.Columns[5].Name = "ecard2";
+                    dataGridView1.Columns[6].Name = "id";
 
                     foreach (JObject element in items)
                     {
@@ -589,7 +590,7 @@ namespace USBRead
                         byte[] bytes2 = Encoding.Default.GetBytes(ClassConv);
                         ClassConv = Encoding.UTF8.GetString(bytes2);
 
-                        dataGridView1.Rows.Add(element["bib"], NameConv, ClubConv, ClassConv, element["ecard1"], element["ecard2"]);
+                        dataGridView1.Rows.Add(element["bib"], NameConv, ClubConv, ClassConv, element["ecard1"], element["ecard2"], element["dbid"]);
                         //Console.WriteLine(element["name"]);
                     }
                 }
@@ -602,8 +603,6 @@ namespace USBRead
 
         private void SearchEcardNew(string searchString) //Search for Ecard in "Ecard" and "Ecard2"
         {
-            //string searchString = SearchCard_Txtbox.Text;
-
             var MaxRows = dataGridView1.Rows.Count;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
@@ -657,6 +656,13 @@ namespace USBRead
                                 Ecard2_box.Text = dataGridView1.Rows[row.Index].Cells[5].Value.ToString();
                             }));
                         }
+                        if (ID_box != null && !ID_box.IsDisposed)
+                        {
+                            ID_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                ID_box.Text = dataGridView1.Rows[row.Index].Cells[6].Value.ToString();
+                            }));
+                        }
                         if (Battery_box != null && !Battery_box.IsDisposed)
                         {
                             if (_batterylevel > 3) { _batterycolor = Color.Green; }
@@ -671,10 +677,13 @@ namespace USBRead
                         }
                         _valueFound = true;
 
+                        ScrollInfo = dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + " - " +
+                                       dataGridView1.Rows[row.Index].Cells[1].Value.ToString();
+
                         using (StreamWriter sr = File.AppendText(_LogfileName))
                         {
-                            sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + searchString + "\t"+ 
-                                dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + "\t" + 
+                            sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + searchString + "\t" +
+                                dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + "\t" +
                                 dataGridView1.Rows[row.Index].Cells[1].Value.ToString());
                         }
 
@@ -682,7 +691,7 @@ namespace USBRead
                     }
                 }
                 if (_valueFound == false)
-                {                 
+                {
                     UnknownEcard(searchString);
                 }
             }
@@ -696,13 +705,14 @@ namespace USBRead
         {
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
-            dataGridView1.ColumnCount = 6;
+            dataGridView1.ColumnCount = 7;
             dataGridView1.Columns[0].Name = "bib";
             dataGridView1.Columns[1].Name = "name";
             dataGridView1.Columns[2].Name = "club";
             dataGridView1.Columns[3].Name = "class";
             dataGridView1.Columns[4].Name = "ecard";
             dataGridView1.Columns[5].Name = "ecard2";
+            dataGridView1.Columns[6].Name = "id";
 
             try
             {
@@ -730,7 +740,7 @@ namespace USBRead
                 foreach (DataRow row in ds.Rows)
                 {
                     var nyttnavn = row["id"];
-                    dataGridView1.Rows.Add(row["startno"], row["name"] + " " + row["ename"], row["name_1"], row["class"], row["ecard"], row["ecard2"]);
+                    dataGridView1.Rows.Add(row["startno"], row["name"] + " " + row["ename"], row["name_1"], row["class"], row["ecard"], row["ecard2"], row["id"]);
                 }
             }
             catch (Exception ex)
@@ -751,7 +761,7 @@ namespace USBRead
             catch (Exception)
             { }
 
-            if (InputValue >= 65 && InputValue <=253)
+            if (InputValue >= 65 && InputValue <= 253)
             {
                 ChangeEcuCode();
             }
@@ -766,14 +776,38 @@ namespace USBRead
             if (LiveRes_checkBox.Checked == true)
             {
                 readLiveResfil_btn.Enabled = true;
+                UnknownEcard_btn.Enabled = true;
                 LiveRes_groupBox.Enabled = true;
             }
             if (LiveRes_checkBox.Checked == false)
             {
                 readLiveResfil_btn.Enabled = false;
+                UnknownEcard_btn.Enabled = false;
                 LiveRes_groupBox.Enabled = false;
             }
 
+        }
+
+        public void FindID_no(string StartNoSearch)
+        {
+            var MaxRows = dataGridView1.Rows.Count;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+            try
+            {
+                foreach (DataGridViewRow row1 in dataGridView1.Rows)
+                {
+                    if (row1.Cells["id"].Value.ToString().Equals(StartNoSearch))
+                    {
+                        //                       dataGridView1.Rows[row.Index].Selected = true;
+                        SetValueForID = dataGridView1.Rows[row1.Index].Cells[6].Value.ToString();
+                        break;
+                    }
+                }
+            }
+            catch
+            {
+            }
         }
     }
 }

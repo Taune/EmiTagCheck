@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.UsbPort_listBox = new System.Windows.Forms.ListBox();
             this.RefreshUsbPort_btn = new System.Windows.Forms.Button();
             this.Close_btn = new System.Windows.Forms.Button();
@@ -68,6 +69,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.ReadEcu_btn = new System.Windows.Forms.Button();
             this.LiveRes_checkBox = new System.Windows.Forms.CheckBox();
+            this.ID_box = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.LiveRes_groupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -86,7 +88,7 @@
             this.UsbPort_listBox.Size = new System.Drawing.Size(142, 104);
             this.UsbPort_listBox.Sorted = true;
             this.UsbPort_listBox.TabIndex = 2;
-            this.UsbPort_listBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.UsbPort_listBox.SelectedIndexChanged += new System.EventHandler(this.UsbPort_listBox_SelectedIndexChanged);
             // 
             // RefreshUsbPort_btn
             // 
@@ -399,6 +401,7 @@
             // Løperinfo
             // 
             this.Løperinfo.BackColor = System.Drawing.SystemColors.Control;
+            this.Løperinfo.Controls.Add(this.ID_box);
             this.Løperinfo.Controls.Add(this.Battery_box);
             this.Løperinfo.Controls.Add(this.label5);
             this.Løperinfo.Controls.Add(this.label4);
@@ -447,7 +450,8 @@
             // 
             // btnStartMTR
             // 
-            this.btnStartMTR.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.btnStartMTR.BackColor = System.Drawing.Color.LightCoral;
+            this.btnStartMTR.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStartMTR.Location = new System.Drawing.Point(320, 467);
             this.btnStartMTR.Name = "btnStartMTR";
             this.btnStartMTR.Size = new System.Drawing.Size(116, 42);
@@ -499,7 +503,7 @@
             // 
             // ReadEcu_btn
             // 
-            this.ReadEcu_btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.ReadEcu_btn.BackColor = System.Drawing.Color.LightCoral;
             this.ReadEcu_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReadEcu_btn.Location = new System.Drawing.Point(136, 467);
             this.ReadEcu_btn.Name = "ReadEcu_btn";
@@ -519,6 +523,14 @@
             this.LiveRes_checkBox.Text = "Kommunikasjon LiveRes ";
             this.LiveRes_checkBox.UseVisualStyleBackColor = true;
             this.LiveRes_checkBox.CheckedChanged += new System.EventHandler(this.LiveRes_checkBox_CheckedChanged);
+            // 
+            // ID_box
+            // 
+            this.ID_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ID_box.Location = new System.Drawing.Point(274, 72);
+            this.ID_box.Name = "ID_box";
+            this.ID_box.Size = new System.Drawing.Size(100, 49);
+            this.ID_box.TabIndex = 30;
             // 
             // MainMenu
             // 
@@ -604,6 +616,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button ReadEcu_btn;
         private System.Windows.Forms.CheckBox LiveRes_checkBox;
+        private System.Windows.Forms.TextBox ID_box;
     }
 }
 

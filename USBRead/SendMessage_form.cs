@@ -13,6 +13,9 @@ namespace USBRead
 {
     public partial class SendMessage_form : Form
     {
+
+        MainMenu _MainMenuManager;
+
         public SendMessage_form()
         {
             InitializeComponent();
@@ -22,17 +25,43 @@ namespace USBRead
 
         private void SendMessage_btn_Click(object sender, EventArgs e)
         {
+            _MainMenuManager = new MainMenu();
             using (var client = new WebClient())
             {
-                var lopid = "("+ MainMenu.SetValueForLopsid +") "+ MainMenu.SetValueForLopsNavn;
-                var tidsp = "12:00:00";
-                var melding = NewEcard_Box.Text + " kobles til " + NewStartNo_box.Text;
-                var navn = Comment_box.Text;
+                _MainMenuManager.FindID_no(NewStartNo_box.Text);
+                var lopid = MainMenu.SetValueForLopsid;
+                //var tidsp = "12:00:00";
+                var dbidNo = MainMenu.SetValueForID;
+                var brikkenr = NewEcard_Box.Text;
+                var startnr = int.Parse(NewStartNo_box.Text);
+                var melding = Comment_box.Text;
+
                 try 
                 {
-                    var result = client.DownloadString(string.Format("http://liveres.freidig.idrett.no/liveres_helpers/log.php?lopid={0}&Melding={1}&tidsp={2}&Navn={3}",
-                    lopid, melding, tidsp, navn));
-                    Console.WriteLine(result);
+                    if (Comment_box.Text == "Ikke startet")
+                    {
+                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnr:{2}",
+lopid, brikkenr, startnr));
+                        Console.WriteLine(result1);
+                    }
+                    if (Comment_box.Text == "Ukjent brikke")
+                    {
+                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&dns=1&message={2}",
+lopid, dbidNo, melding));
+                        Console.WriteLine(result1);
+                    }
+                    if (Comment_box.Text == "Bytte av brikke")
+                    {
+                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid=0&message={1}",
+lopid, dbidNo, melding));
+                        Console.WriteLine(result1);
+                    }
+                    else
+                    {
+                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid={1}&message={2}",
+lopid, startnr, melding));
+                        Console.WriteLine(result1);
+                    }
                 }
                 catch
                 {
@@ -52,9 +81,10 @@ namespace USBRead
             NewEcard_Box.Text = MainMenu.SetValueForEmitag;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void Meldinger_listBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            Comment_box.Text = Meldinger_listBox.GetItemText(Meldinger_listBox.SelectedItem);
         }
+
     }
 }

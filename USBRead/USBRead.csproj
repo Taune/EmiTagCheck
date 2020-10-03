@@ -50,18 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandsToMTR.cs" />
     <Compile Include="ComSettings.cs" />
     <Compile Include="DefaultValues.cs" />
-    <Compile Include="MTRData.cs" />
-    <Compile Include="MTRDataCheckPoint.cs" />
     <Compile Include="SendMessage_form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SendMessage_form.Designer.cs">
       <DependentUpon>SendMessage_form.cs</DependentUpon>
     </Compile>
-    <Compile Include="MTRserial.cs" />
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
