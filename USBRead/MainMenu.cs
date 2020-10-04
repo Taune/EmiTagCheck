@@ -24,7 +24,7 @@ namespace USBRead
         public static string ActiveUsbPort;
         public static string MTRComPortOpen = "";
         public static string ECUComPortOpen = "";
-        public string ScrollInfo = "";
+        public string NavnScrollInfo = "";
         public string ecardRead;
         public bool _ecardfound;
         public bool _serialportfound;
@@ -81,22 +81,21 @@ namespace USBRead
             if (_ecardfound == true && _fileloaded == true)
             {
                 strMessage = ecardRead;
-                SearchEcardNew(ecardRead);
-                UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - " + ScrollInfo);
+                SearchEcard(ecardRead);
+                UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + NavnScrollInfo);
                 _ecardfound = false;
             }
             if (_ecardfound == true && _fileloaded == false)
             {
                 strMessage = ecardRead;
                 UnknownEcard(ecardRead);
-                UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - Ukjent brikke");
+                UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - brikkesjekkfil ikke lest");
                 _ecardfound = false;
             }
         }
 
         void _spManager_NewSerialDataRecievedMTR(object sender, SerialDataEventArgs e)
         {
-            //            var _spManager = new SerialPortManager();
 
             if (this.InvokeRequired)
             {
@@ -109,19 +108,18 @@ namespace USBRead
             if (_spManager._MtrEcardfound == true && _fileloaded == true)
             {
                 //strMessage = ecardRead;
-                SearchEcardNew(strMessage);
-                UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - " + ScrollInfo);
+                SearchEcard(strMessage);
+                UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + NavnScrollInfo);
                 _spManager._MtrEcardfound = false;
             }
             if (_spManager._MtrEcardfound == true && _fileloaded == false)
             {
                 //strMessage = ecardRead;
                 UnknownEcard(strMessage);
-                UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - Ukjent brikke");
+                UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + " " + strMessage + " - brikkesjekkfil ikke lest");
                 _spManager._MtrEcardfound = false;
             }
         }
-
 
         System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
 
@@ -340,13 +338,15 @@ namespace USBRead
 
         private void SearchCard_btn_Click(object sender, EventArgs e) //Manually search after ecard number
         {
+            
             if (SearchCard_Txtbox.Text != "")
             {
                 if (dataGridView1.Rows.Count > 1 && dataGridView1.Rows != null)
                 {
                     string expression;
                     expression = SearchCard_Txtbox.Text;
-                    SearchEcardNew(expression);
+                    _batterylevel = 0;
+                    SearchEcard(expression);
                 }
                 else
                 {
@@ -499,6 +499,7 @@ namespace USBRead
                     case 'C':
                         {           // ECU internal code
                             _EcuCode = info;
+                            readECUcode_box.Text = _EcuCode;
                             break;
                         }
                     case 'W':
@@ -601,7 +602,7 @@ namespace USBRead
             }
         }
 
-        private void SearchEcardNew(string searchString) //Search for Ecard in "Ecard" and "Ecard2"
+        private void SearchEcard(string searchString) //Search for Ecard in "Ecard" and "Ecard2"
         {
             var MaxRows = dataGridView1.Rows.Count;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -668,6 +669,7 @@ namespace USBRead
                             if (_batterylevel > 3) { _batterycolor = Color.Green; }
                             if (_batterylevel > 2.95 && _batterylevel <= 3) { _batterycolor = Color.Yellow; }
                             if (_batterylevel <= 2.95) { _batterycolor = Color.Red; }
+                            if (_batterylevel == 0) { _batterycolor = Color.LightGray; }
 
                             Battery_box.BeginInvoke(new MethodInvoker(delegate
                             {
@@ -677,8 +679,25 @@ namespace USBRead
                         }
                         _valueFound = true;
 
-                        ScrollInfo = dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + " - " +
+                        NavnScrollInfo = " - (" + dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + ") " +
                                        dataGridView1.Rows[row.Index].Cells[1].Value.ToString();
+
+                        //Sender melding til LiveRes om at brikke er sjekket
+                        if (LiveRes_checkBox.Enabled == true)
+                        {
+                            using (var client = new WebClient())
+                            {
+                                var lopid = int.Parse(lopsid_box.Text);
+                                var id_no = int.Parse(dataGridView1.Rows[row.Index].Cells[6].Value.ToString());
+                                try
+                                {
+                                    var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=setecardchecked&comp={0}&dbid={1}", 
+                                lopid, id_no));
+                                    Console.WriteLine(result1);
+                                }
+                                catch { }
+                            }
+                        }
 
                         using (StreamWriter sr = File.AppendText(_LogfileName))
                         {
@@ -693,11 +712,13 @@ namespace USBRead
                 if (_valueFound == false)
                 {
                     UnknownEcard(searchString);
+                    NavnScrollInfo = " - Ukjent brikke";
                 }
             }
             catch (Exception) //Ecard not found in datagrid
             {
                 UnknownEcard(searchString);
+                NavnScrollInfo = " - Ukjent brikke";
             }
         }
 
@@ -808,6 +829,39 @@ namespace USBRead
             catch
             {
             }
+        }
+
+        private void FindLiveResName() //Find the competition name from LiveRes database
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                string downloadString = client.DownloadString("http://api.freidig.idrett.no/api.php?method=getcompetitioninfo&comp=" + lopsid_box.Text);
+
+                var objects = JsonConvert.DeserializeObject<dynamic>(downloadString);
+                
+                if (objects.name != null && objects.id == lopsid_box.Text)
+                {
+                    var ArrConv = objects.name.ToString();
+                    byte[] bytes = Encoding.Default.GetBytes(ArrConv);
+                    ArrConv = Encoding.UTF8.GetString(bytes);
+
+                    lopsnavn_box.Text = ArrConv;
+                }
+                else 
+                {
+                    lopsnavn_box.Text = "Ukjent løp";
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void FindLiveRes_btn_Click(object sender, EventArgs e)
+        {
+            FindLiveResName();
         }
     }
 }

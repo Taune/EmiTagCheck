@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.UsbPort_listBox = new System.Windows.Forms.ListBox();
             this.RefreshUsbPort_btn = new System.Windows.Forms.Button();
             this.Close_btn = new System.Windows.Forms.Button();
@@ -53,12 +52,14 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.LiveRes_groupBox = new System.Windows.Forms.GroupBox();
+            this.FindLiveRes_btn = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.readLiveResfil_btn = new System.Windows.Forms.Button();
             this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Løperinfo = new System.Windows.Forms.GroupBox();
+            this.ID_box = new System.Windows.Forms.TextBox();
             this.Battery_box = new System.Windows.Forms.TextBox();
             this.folderLogfile_box = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -69,7 +70,7 @@
             this.label10 = new System.Windows.Forms.Label();
             this.ReadEcu_btn = new System.Windows.Forms.Button();
             this.LiveRes_checkBox = new System.Windows.Forms.CheckBox();
-            this.ID_box = new System.Windows.Forms.TextBox();
+            this.readECUcode_box = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.LiveRes_groupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -289,7 +290,7 @@
             this.UnknownEcard_btn.Name = "UnknownEcard_btn";
             this.UnknownEcard_btn.Size = new System.Drawing.Size(276, 34);
             this.UnknownEcard_btn.TabIndex = 29;
-            this.UnknownEcard_btn.Text = "Koble ukjent brikke til startnr";
+            this.UnknownEcard_btn.Text = "Melding til LiveRes";
             this.UnknownEcard_btn.UseVisualStyleBackColor = true;
             this.UnknownEcard_btn.Click += new System.EventHandler(this.UnknownEcard_btn_Click_1);
             // 
@@ -298,7 +299,7 @@
             this.lopsid_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lopsid_box.Location = new System.Drawing.Point(79, 61);
             this.lopsid_box.Name = "lopsid_box";
-            this.lopsid_box.Size = new System.Drawing.Size(328, 27);
+            this.lopsid_box.Size = new System.Drawing.Size(153, 27);
             this.lopsid_box.TabIndex = 30;
             // 
             // lopsnavn_box
@@ -331,6 +332,7 @@
             // 
             // LiveRes_groupBox
             // 
+            this.LiveRes_groupBox.Controls.Add(this.FindLiveRes_btn);
             this.LiveRes_groupBox.Controls.Add(this.label8);
             this.LiveRes_groupBox.Controls.Add(this.label7);
             this.LiveRes_groupBox.Controls.Add(this.label6);
@@ -343,6 +345,16 @@
             this.LiveRes_groupBox.TabIndex = 34;
             this.LiveRes_groupBox.TabStop = false;
             this.LiveRes_groupBox.Text = "Arrangementsinfo";
+            // 
+            // FindLiveRes_btn
+            // 
+            this.FindLiveRes_btn.Location = new System.Drawing.Point(238, 61);
+            this.FindLiveRes_btn.Name = "FindLiveRes_btn";
+            this.FindLiveRes_btn.Size = new System.Drawing.Size(169, 27);
+            this.FindLiveRes_btn.TabIndex = 36;
+            this.FindLiveRes_btn.Text = "Finn Arrangement";
+            this.FindLiveRes_btn.UseVisualStyleBackColor = true;
+            this.FindLiveRes_btn.Click += new System.EventHandler(this.FindLiveRes_btn_Click);
             // 
             // label8
             // 
@@ -418,6 +430,14 @@
             this.Løperinfo.TabStop = false;
             this.Løperinfo.Text = "Løperinfo";
             // 
+            // ID_box
+            // 
+            this.ID_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ID_box.Location = new System.Drawing.Point(274, 72);
+            this.ID_box.Name = "ID_box";
+            this.ID_box.Size = new System.Drawing.Size(100, 49);
+            this.ID_box.TabIndex = 30;
+            // 
             // Battery_box
             // 
             this.Battery_box.BackColor = System.Drawing.SystemColors.Control;
@@ -481,6 +501,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.readECUcode_box);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.ChangeEcuCode_btn);
             this.groupBox3.Controls.Add(this.ecuCode_box);
@@ -524,13 +545,16 @@
             this.LiveRes_checkBox.UseVisualStyleBackColor = true;
             this.LiveRes_checkBox.CheckedChanged += new System.EventHandler(this.LiveRes_checkBox_CheckedChanged);
             // 
-            // ID_box
+            // readECUcode_box
             // 
-            this.ID_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ID_box.Location = new System.Drawing.Point(274, 72);
-            this.ID_box.Name = "ID_box";
-            this.ID_box.Size = new System.Drawing.Size(100, 49);
-            this.ID_box.TabIndex = 30;
+            this.readECUcode_box.BackColor = System.Drawing.SystemColors.Menu;
+            this.readECUcode_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.readECUcode_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.readECUcode_box.ForeColor = System.Drawing.Color.Red;
+            this.readECUcode_box.Location = new System.Drawing.Point(249, 29);
+            this.readECUcode_box.Name = "readECUcode_box";
+            this.readECUcode_box.Size = new System.Drawing.Size(73, 20);
+            this.readECUcode_box.TabIndex = 49;
             // 
             // MainMenu
             // 
@@ -617,6 +641,8 @@
         private System.Windows.Forms.Button ReadEcu_btn;
         private System.Windows.Forms.CheckBox LiveRes_checkBox;
         private System.Windows.Forms.TextBox ID_box;
+        private System.Windows.Forms.Button FindLiveRes_btn;
+        private System.Windows.Forms.TextBox readECUcode_box;
     }
 }
 
