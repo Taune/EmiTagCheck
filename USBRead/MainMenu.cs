@@ -214,12 +214,16 @@ namespace USBRead
                 readLiveResfil_btn.Enabled = true;
                 UnknownEcard_btn.Enabled = true;
                 LiveRes_groupBox.Enabled = true;
+                NotStared_btn.Enabled = true;
+                ChangeEcardNo_btn.Enabled = true;
             }
             if (LiveRes_checkBox.Checked == false)
             {
                 readLiveResfil_btn.Enabled = false;
                 UnknownEcard_btn.Enabled = false;
                 LiveRes_groupBox.Enabled = false;
+                NotStared_btn.Enabled = false;
+                ChangeEcardNo_btn.Enabled = false;
             }
 
             _stop = true;
@@ -799,12 +803,16 @@ namespace USBRead
                 readLiveResfil_btn.Enabled = true;
                 UnknownEcard_btn.Enabled = true;
                 LiveRes_groupBox.Enabled = true;
+                NotStared_btn.Enabled = true;
+                ChangeEcardNo_btn.Enabled = true;
             }
             if (LiveRes_checkBox.Checked == false)
             {
                 readLiveResfil_btn.Enabled = false;
                 UnknownEcard_btn.Enabled = false;
                 LiveRes_groupBox.Enabled = false;
+                NotStared_btn.Enabled = false;
+                ChangeEcardNo_btn.Enabled = false;
             }
 
         }
@@ -818,9 +826,8 @@ namespace USBRead
             {
                 foreach (DataGridViewRow row1 in dataGridView1.Rows)
                 {
-                    if (row1.Cells["id"].Value.ToString().Equals(StartNoSearch))
+                    if (row1.Cells["bib"].Value.ToString().Equals(StartNoSearch))
                     {
-                        //                       dataGridView1.Rows[row.Index].Selected = true;
                         SetValueForID = dataGridView1.Rows[row1.Index].Cells[6].Value.ToString();
                         break;
                     }
@@ -862,6 +869,57 @@ namespace USBRead
         private void FindLiveRes_btn_Click(object sender, EventArgs e)
         {
             FindLiveResName();
+        }
+
+        private void NotStared_btn_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** ikke starter?", "Sett ikke startet", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                FindID_no(StartNr_box.Text);
+                var lopid = lopsid_box.Text;
+                var dbidNo = int.Parse(SetValueForID);
+
+                using (var client = new WebClient())
+                {
+                    try
+                    {
+                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
+lopid, dbidNo));
+                        Console.WriteLine(result1);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void ChangeEcardNo_btn_Click(object sender, EventArgs e)
+        {
+            var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** bytter brikke til **" + Ecard_box.Text + "** ?", "Endre brikkenummer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (result == DialogResult.Yes)
+            {
+                var lopid = lopsid_box.Text;
+                var brikkenr = int.Parse(Ecard_box.Text);
+                var startnr = int.Parse(StartNr_box.Text);
+
+                using (var client = new WebClient())
+                {
+                    try
+                    {
+                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}",
+lopid, brikkenr, startnr));
+                        Console.WriteLine(result1);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
         }
     }
 }
