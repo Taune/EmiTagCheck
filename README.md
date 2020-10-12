@@ -1,6 +1,12 @@
 # EmiTagCheck
 Software for checking EmiTag before start
 
+12.10.2020
+- Ved søk på brikkenr starter søk ved trykk på enter
+- Lagt inn funksjon for søk etter startnr. Bruk startnr-felt og trykk enter
+- Alle meldinger som sendes til LiveRes meldingstjeneste blir lagt inn i log-fil
+- Dersom man legger inn ugyldig nummer ved startnr- og brikkesøk (feks tekst), så får man en advasel
+
 04.10.2020
 - Lagt inn funksjon for søk i arrangementer i LiveRes database. Skriv inn løps-id og søk opp arrangement.
 - Fikset feil med feil medling i log-bilde. Navn på forrige løper ble listet selv om det var ukjent brikke
