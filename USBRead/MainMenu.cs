@@ -143,7 +143,7 @@ namespace USBRead
                     {
 
                         ReadEcu_btn.Text = "Stop ECU";
-                        ReadEcu_btn.BackColor = Color.LightGreen;
+                        //ReadEcu_btn.BackColor = Color.LightGreen;
                         UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
                         _spManager.StartListeningECU();
                         _stop = false;
@@ -152,7 +152,7 @@ namespace USBRead
                 else
                 {
                     ReadEcu_btn.Text = "Start ECU";
-                    ReadEcu_btn.BackColor = Color.LightCoral;
+                    //ReadEcu_btn.BackColor = Color.LightCoral;
                     _spManager.StopListeningECU();
                     UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
                     _stop = true;
@@ -179,7 +179,7 @@ namespace USBRead
                     else
                     {
                         btnStartMTR.Text = "Stop MTR";
-                        btnStartMTR.BackColor = Color.LightGreen;
+                        //btnStartMTR.BackColor = Color.LightGreen;
                         UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
                         _spManager.StartListeningMTR();
                         _stop = false;
@@ -188,7 +188,7 @@ namespace USBRead
                 else
                 {
                     btnStartMTR.Text = "Start MTR";
-                    btnStartMTR.BackColor = Color.LightCoral;
+                    //btnStartMTR.BackColor = Color.LightCoral;
                     _spManager.StopListeningMTR();
                     UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
                     MTRComPortOpen = "";
@@ -200,10 +200,16 @@ namespace USBRead
         private void MainMenu_Load(object sender, EventArgs e)
         {
             bool _LiveRes = true;
+            bool _SoundOn = true;
             // Read a keys from the config file            
             lopsid_box.Text = ConfigurationManager.AppSettings.Get("lopid");
             lopsnavn_box.Text = ConfigurationManager.AppSettings.Get("lopnavn");
             folderLogfile_box.Text = ConfigurationManager.AppSettings.Get("logfolder");
+            if (ConfigurationManager.AppSettings.Get("SoundCheckBox") == "False")
+            {
+                _SoundOn= false;
+            }
+            WarningSound_checkBox.Checked = _SoundOn;
             if (ConfigurationManager.AppSettings.Get("liveresCheckBox") == "False")
             {
                 _LiveRes = false;
@@ -279,8 +285,26 @@ namespace USBRead
             else { time += ss; }
 
             Clock_lbl.Text = time;
-        }
 
+            //Lager blinkende knapp ved lesing av ECU og MTR
+            if ((ReadEcu_btn.BackColor == Color.LightGray) && (ReadEcu_btn.Text == "Stop ECU"))
+            {
+                ReadEcu_btn.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                ReadEcu_btn.BackColor = Color.LightGray;
+            }
+            if ((btnStartMTR.BackColor == Color.LightGray) && (btnStartMTR.Text == "Stop MTR"))
+            {
+                btnStartMTR.BackColor = Color.LightGreen;
+            }
+            else
+            {
+                btnStartMTR.BackColor = Color.LightGray;
+            }
+        }
+         
         private void UsbPort_listBox_SelectedIndexChanged(object sender, EventArgs e) //Velger ønsket Usb Port
         {
             ActiveUsbPort = UsbPort_listBox.GetItemText(UsbPort_listBox.SelectedItem);
@@ -334,6 +358,7 @@ namespace USBRead
             config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
             config.AppSettings.Settings["logfolder"].Value = folderLogfile_box.Text;
             config.AppSettings.Settings["liveresCheckBox"].Value = LiveRes_checkBox.Checked.ToString();
+            config.AppSettings.Settings["SoundCheckBox"].Value = WarningSound_checkBox.Checked.ToString();
             config.Save(ConfigurationSaveMode.Modified);
 
             System.Windows.Forms.Application.ExitThread();
@@ -342,7 +367,7 @@ namespace USBRead
 
         private void SearchCard_btn_Click(object sender, EventArgs e) //Manually search after ecard number
         {
-            
+
             if (SearchCard_Txtbox.Text != "")
             {
                 if (dataGridView1.Rows.Count > 1 && dataGridView1.Rows != null)
@@ -384,7 +409,7 @@ namespace USBRead
                 Navn_box.BeginInvoke(new MethodInvoker(delegate
                 {
                     Navn_box.Text = "Ukjent brikke";
-                    if (File.Exists(@"ringout.wav"))
+                    if ((File.Exists(@"ringout.wav")) && (WarningSound_checkBox.Checked))
                     {
                         System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"ringout.wav");
                         player.Play();
@@ -529,6 +554,7 @@ namespace USBRead
             if (readLiveResfil_btn.Text == "Les startliste fra LiveRes")
             {
                 readLiveResfil_btn.Text = "Stopp startliste fra LiveRes";
+                readLiveResfil_btn.BackColor = Color.LightGreen;
                 _stopLiveRes = false;
                 CancellationTokenSource tokenSource = new CancellationTokenSource();
                 Task timerTask = RunPeriodically(TimeSpan.FromMinutes(10), tokenSource.Token);
@@ -537,6 +563,7 @@ namespace USBRead
             else
             {
                 readLiveResfil_btn.Text = "Les startliste fra LiveRes";
+                readLiveResfil_btn.BackColor = Color.LightGray;
                 _stopLiveRes = true;
             }
 
@@ -695,7 +722,7 @@ namespace USBRead
                                 var id_no = int.Parse(dataGridView1.Rows[row.Index].Cells[6].Value.ToString());
                                 try
                                 {
-                                    var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=setecardchecked&comp={0}&dbid={1}", 
+                                    var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=setecardchecked&comp={0}&dbid={1}",
                                 lopid, id_no));
                                     Console.WriteLine(result1);
                                 }
@@ -817,24 +844,127 @@ namespace USBRead
 
         }
 
-        public void FindID_no(string StartNoSearch)
+        public void FindID_no(int StartNoSearch)
         {
             var MaxRows = dataGridView1.Rows.Count;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            string searchStringStr = StartNoSearch.ToString();
 
             try
             {
                 foreach (DataGridViewRow row1 in dataGridView1.Rows)
                 {
-                    if (row1.Cells["bib"].Value.ToString().Equals(StartNoSearch))
+                    if (row1.Cells["bib"].Value.ToString().Equals(searchStringStr))
                     {
                         SetValueForID = dataGridView1.Rows[row1.Index].Cells[6].Value.ToString();
+                        break;
+                    }
+                    else
+                    {
+                        SetValueForID = "99999";
+                    }
+                }
+            }
+            catch
+            {
+            }
+        }
+
+        private void SearchStartno(int searchString) //Search for startno in datagrid
+        {
+            var MaxRows = dataGridView1.Rows.Count;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            string searchStringStr = searchString.ToString();
+            bool _startnofound = false;
+
+            try
+            {
+                foreach (DataGridViewRow row2 in dataGridView1.Rows)
+                {                    
+                    if (row2.Cells["bib"].Value.ToString().Equals(searchStringStr))
+                    {
+                        _startnofound = true;
+                        dataGridView1.Rows[row2.Index].Selected = true;
+                        if (Navn_box != null && !Navn_box.IsDisposed)
+                        {
+                            Navn_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Navn_box.Text = dataGridView1.Rows[row2.Index].Cells[1].Value.ToString();
+                            }));
+                        }
+                        if (Klubb_box != null && !Klubb_box.IsDisposed)
+                        {
+                            Klubb_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Klubb_box.Text = dataGridView1.Rows[row2.Index].Cells[2].Value.ToString();
+                            }));
+                        }
+                        if (Klasse_box != null && !Klasse_box.IsDisposed)
+                        {
+                            Klasse_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Klasse_box.Text = dataGridView1.Rows[row2.Index].Cells[3].Value.ToString();
+                            }));
+                        }
+                        if (Ecard_box != null && !Ecard_box.IsDisposed)
+                        {
+                            Ecard_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Ecard_box.Text = dataGridView1.Rows[row2.Index].Cells[4].Value.ToString();
+                            }));
+                        }
+                        if (Ecard2_box != null && !Ecard2_box.IsDisposed)
+                        {
+                            Ecard2_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Ecard2_box.Text = dataGridView1.Rows[row2.Index].Cells[5].Value.ToString();
+                            }));
+                        }
                         break;
                     }
                 }
             }
             catch
             {
+                if (_startnofound == false)
+                {
+                    if (Navn_box != null && !Navn_box.IsDisposed)
+                    {
+                        Navn_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Navn_box.Text = "Ukjent nr";
+                        }));
+                    }
+                    if (Klubb_box != null && !Klubb_box.IsDisposed)
+                    {
+                        Klubb_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Klubb_box.Text = null;
+                        }));
+                    }
+                    if (Klasse_box != null && !Klasse_box.IsDisposed)
+                    {
+                        Klasse_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Klasse_box.Text = null;
+                        }));
+                    }
+                    if (Ecard_box != null && !Ecard_box.IsDisposed)
+                    {
+                        Ecard_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Ecard_box.Text = null;
+                        }));
+                    }
+                    if (Ecard2_box != null && !Ecard2_box.IsDisposed)
+                    {
+                        Ecard2_box.BeginInvoke(new MethodInvoker(delegate
+                        {
+                            Ecard2_box.Text = null;
+                        }));
+                    }
+                }
+
             }
         }
 
@@ -846,7 +976,7 @@ namespace USBRead
                 string downloadString = client.DownloadString("http://api.freidig.idrett.no/api.php?method=getcompetitioninfo&comp=" + lopsid_box.Text);
 
                 var objects = JsonConvert.DeserializeObject<dynamic>(downloadString);
-                
+
                 if (objects.name != null && objects.id == lopsid_box.Text)
                 {
                     var ArrConv = objects.name.ToString();
@@ -855,7 +985,7 @@ namespace USBRead
 
                     lopsnavn_box.Text = ArrConv;
                 }
-                else 
+                else
                 {
                     lopsnavn_box.Text = "Ukjent løp";
                 }
@@ -873,53 +1003,120 @@ namespace USBRead
 
         private void NotStared_btn_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** ikke starter?", "Sett ikke startet", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.Yes)
+            int IntStartNo;
+            if (int.TryParse(StartNr_box.Text, out IntStartNo))
             {
-                FindID_no(StartNr_box.Text);
-                var lopid = lopsid_box.Text;
-                var dbidNo = int.Parse(SetValueForID);
-
-                using (var client = new WebClient())
+                var result = MessageBox.Show("Vil du sende melding om at startnr **" + IntStartNo + "** ikke starter?", "Sett ikke startet", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
                 {
-                    try
+                    FindID_no(IntStartNo);
+                    var lopid = lopsid_box.Text;
+
+                    if ((SetValueForID != "99999") && (SetValueForID != null))
                     {
-                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
-lopid, dbidNo));
-                        Console.WriteLine(result1);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        var dbidNo = int.Parse(SetValueForID);
+                        using (var client = new WebClient())
+                        {
+                            try
+                            {
+                                var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
+        lopid, dbidNo));
+                                Console.WriteLine(result1);
+                                using (StreamWriter sr = File.AppendText(_LogfileName))
+                                {
+                                    sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + IntStartNo + " ikke startet");
+                                }
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show(StartNr_box.Text + " ikke gyldig startnummer", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void ChangeEcardNo_btn_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** bytter brikke til **" + Ecard_box.Text + "** ?", "Endre brikkenummer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.Yes)
+            int IntStartNo;
+            int IntBrikkeNo;
+            if ((int.TryParse(StartNr_box.Text, out IntStartNo)) && (int.TryParse(Ecard_box.Text, out IntBrikkeNo)))
             {
-                var lopid = lopsid_box.Text;
-                var brikkenr = int.Parse(Ecard_box.Text);
-                var startnr = int.Parse(StartNr_box.Text);
-
-                using (var client = new WebClient())
+                var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** bytter brikke til **" + Ecard_box.Text + "** ?", "Endre brikkenummer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
                 {
-                    try
+                    var lopid = lopsid_box.Text;
+                    var brikkenr = int.Parse(Ecard_box.Text);
+                    var startnr = int.Parse(StartNr_box.Text);
+
+                    using (var client = new WebClient())
                     {
-                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}",
-lopid, brikkenr, startnr));
-                        Console.WriteLine(result1);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        try
+                        {
+                            var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}",
+    lopid, brikkenr, startnr));
+                            Console.WriteLine(result1);
+                            using (StreamWriter sr = File.AppendText(_LogfileName))
+                            {
+                                sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + startnr + " byttet brikke til " + brikkenr);
+                            }
+
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
+            else
+            {
+                MessageBox.Show("Ikke gyldig startnummer eller brikkenummer" , "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
+        }
+
+        private void SearchCard_Txtbox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                SearchCard_btn.PerformClick();
+            }
+        }
+
+        private void StartNr_box_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                e.Handled = true;
+                int IntStartNo;
+                if (int.TryParse(StartNr_box.Text, out IntStartNo))
+                {
+                    SearchStartno(IntStartNo);
+                }
+                else
+                {
+                    MessageBox.Show(StartNr_box.Text + " ikke gyldig startnummer", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (ReadEcu_btn.BackColor == Color.Gray)
+            {
+                ReadEcu_btn.BackColor = Color.Red;
+            }
+            else
+            {
+                ReadEcu_btn.BackColor = Color.Gray;
+            }
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             this.UsbPort_listBox = new System.Windows.Forms.ListBox();
             this.RefreshUsbPort_btn = new System.Windows.Forms.Button();
@@ -76,6 +77,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.ReadEcu_btn = new System.Windows.Forms.Button();
             this.LiveRes_checkBox = new System.Windows.Forms.CheckBox();
+            this.WarningSound_checkBox = new System.Windows.Forms.CheckBox();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.LiveRes_groupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -173,6 +176,7 @@
             this.SearchCard_Txtbox.Name = "SearchCard_Txtbox";
             this.SearchCard_Txtbox.Size = new System.Drawing.Size(153, 30);
             this.SearchCard_Txtbox.TabIndex = 13;
+            this.SearchCard_Txtbox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchCard_Txtbox_KeyPress);
             // 
             // UsbRead_listBox
             // 
@@ -205,6 +209,7 @@
             this.StartNr_box.Name = "StartNr_box";
             this.StartNr_box.Size = new System.Drawing.Size(243, 98);
             this.StartNr_box.TabIndex = 18;
+            this.StartNr_box.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.StartNr_box_KeyPress);
             // 
             // Navn_box
             // 
@@ -289,7 +294,7 @@
             // 
             this.UnknownEcard_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UnknownEcard_btn.Location = new System.Drawing.Point(764, 108);
-            this.UnknownEcard_btn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.UnknownEcard_btn.Margin = new System.Windows.Forms.Padding(4);
             this.UnknownEcard_btn.Name = "UnknownEcard_btn";
             this.UnknownEcard_btn.Size = new System.Drawing.Size(244, 39);
             this.UnknownEcard_btn.TabIndex = 29;
@@ -539,12 +544,12 @@
             // 
             // btnStartMTR
             // 
-            this.btnStartMTR.BackColor = System.Drawing.Color.LightCoral;
+            this.btnStartMTR.BackColor = System.Drawing.Color.LightGray;
             this.btnStartMTR.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartMTR.Location = new System.Drawing.Point(320, 466);
+            this.btnStartMTR.Location = new System.Drawing.Point(314, 466);
             this.btnStartMTR.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnStartMTR.Name = "btnStartMTR";
-            this.btnStartMTR.Size = new System.Drawing.Size(116, 42);
+            this.btnStartMTR.Size = new System.Drawing.Size(122, 42);
             this.btnStartMTR.TabIndex = 44;
             this.btnStartMTR.Text = "Start MTR";
             this.btnStartMTR.UseVisualStyleBackColor = false;
@@ -610,7 +615,7 @@
             // 
             // ReadEcu_btn
             // 
-            this.ReadEcu_btn.BackColor = System.Drawing.Color.LightCoral;
+            this.ReadEcu_btn.BackColor = System.Drawing.Color.LightGray;
             this.ReadEcu_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ReadEcu_btn.Location = new System.Drawing.Point(136, 466);
             this.ReadEcu_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -633,11 +638,27 @@
             this.LiveRes_checkBox.UseVisualStyleBackColor = true;
             this.LiveRes_checkBox.CheckedChanged += new System.EventHandler(this.LiveRes_checkBox_CheckedChanged);
             // 
+            // WarningSound_checkBox
+            // 
+            this.WarningSound_checkBox.AutoSize = true;
+            this.WarningSound_checkBox.Location = new System.Drawing.Point(839, 20);
+            this.WarningSound_checkBox.Name = "WarningSound_checkBox";
+            this.WarningSound_checkBox.Size = new System.Drawing.Size(222, 21);
+            this.WarningSound_checkBox.TabIndex = 51;
+            this.WarningSound_checkBox.Text = "Lydvarsel på ved ukjent brikke";
+            this.WarningSound_checkBox.UseVisualStyleBackColor = true;
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1489, 853);
+            this.Controls.Add(this.WarningSound_checkBox);
             this.Controls.Add(this.LiveRes_checkBox);
             this.Controls.Add(this.ReadEcu_btn);
             this.Controls.Add(this.groupBox3);
@@ -724,6 +745,8 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button ChangeEcardNo_btn;
         private System.Windows.Forms.TextBox ID_box;
+        private System.Windows.Forms.CheckBox WarningSound_checkBox;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
