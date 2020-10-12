@@ -7,6 +7,7 @@ Software for checking EmiTag before start
 - Alle meldinger som sendes til LiveRes meldingstjeneste blir lagt inn i log-fil
 - Dersom man legger inn ugyldig nummer ved startnr- og brikkesøk (feks tekst), så får man en advarsel og søk blir ikke utført
 - Lagt inn et valg hvor man kan slå av og på varsellyd ved "Ukjent brikkenr"
+- Knapp for lesing av ECU og MTR blinker når lesing er aktiv.
 
 04.10.2020
 - Lagt inn funksjon for søk i arrangementer i LiveRes database. Skriv inn løps-id og søk opp arrangement.
