@@ -7,7 +7,7 @@ using MTRSerial.ValueObjects;
 using System.Threading.Tasks;
 using System.Threading;
 
-namespace USBRead
+namespace Brikkesjekk
 {
     class SerialPortManager : IDisposable
     {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Windows.Forms;
 
-namespace USBRead
+namespace Brikkesjekk
 {
     static class Program
     {

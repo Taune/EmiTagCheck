@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
+using System.Configuration;
 using System.Windows.Forms;
 
-namespace USBRead
+namespace Brikkesjekk
 {
     public partial class SendMessage_form : Form
     {
@@ -34,7 +28,7 @@ namespace USBRead
 
                 try 
                 {
-                        var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid={1}&message={2}",
+                        var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&message={2}",
 lopid, startnr, melding));
                         Console.WriteLine(result1);
                 }

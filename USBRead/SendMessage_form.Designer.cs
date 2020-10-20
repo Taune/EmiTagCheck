@@ -1,4 +1,4 @@
-﻿namespace USBRead
+﻿namespace Brikkesjekk
 {
     partial class SendMessage_form
     {

@@ -2,7 +2,6 @@
 using System.Data;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
 using System.IO.Ports;
 using System.Net;
 using System.Windows.Forms;
@@ -15,7 +14,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 
-namespace USBRead
+namespace Brikkesjekk
 {
     public partial class MainMenu : Form
     {
@@ -35,6 +34,7 @@ namespace USBRead
         public static string SetValueForStartNo;
         public static string SetValueForID;
         public string _LogfileName;
+        public string _LiveResfileName;
         public double _batterylevel;
         public Color _batterycolor;
         public string _EcuCode;
@@ -246,7 +246,7 @@ namespace USBRead
             }
 
             //Starter klokke
-            t.Interval = 1000; //Tidsintervall for klokke
+            t.Interval = 700; //Tidsintervall for klokke
             t.Tick += new EventHandler(this.t_Tick);
             t.Start();
 
@@ -402,6 +402,13 @@ namespace USBRead
                 Ecard_box.BeginInvoke(new MethodInvoker(delegate
                 {
                     Ecard_box.Text = ecardname;
+                }));
+            }
+            if (SearchCard_Txtbox != null && !SearchCard_Txtbox.IsDisposed)
+            {
+                SearchCard_Txtbox.BeginInvoke(new MethodInvoker(delegate
+                {
+                    SearchCard_Txtbox.Text = ecardname;
                 }));
             }
             if (Navn_box != null && !Navn_box.IsDisposed)
@@ -580,10 +587,17 @@ namespace USBRead
 
         private void readLiveResfil() //Read start list from LiveRes
         {
+            _LiveResfileName = @folderLogfile_box.Text + "LiveResStartlist" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv";
+
+            using (StreamWriter logfile = new StreamWriter(File.Open(_LiveResfileName, FileMode.Create), Encoding.Default))
+                {
+                    logfile.WriteLine("id,name,class,name_1,ecard,ecard2,startno,ename");
+                }
+
             try
             {
                 WebClient client = new WebClient();
-                string downloadString = client.DownloadString("http://api.freidig.idrett.no/api.php?method=getrunners&comp=" + lopsid_box.Text);
+                string downloadString = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + "api.php?method=getrunners&comp=" + lopsid_box.Text);
 
                 var objects = JsonConvert.DeserializeObject<dynamic>(downloadString);
                 if (objects.status == "OK")
@@ -606,6 +620,7 @@ namespace USBRead
                         var NameConv = element["name"].ToString();
                         var ClubConv = element["club"].ToString();
                         var ClassConv = element["class"].ToString();
+                        var StartNoConv = "";
                         byte[] bytes = Encoding.Default.GetBytes(NameConv);
 
                         NameConv = Encoding.UTF8.GetString(bytes);
@@ -622,8 +637,40 @@ namespace USBRead
                         byte[] bytes2 = Encoding.Default.GetBytes(ClassConv);
                         ClassConv = Encoding.UTF8.GetString(bytes2);
 
-                        dataGridView1.Rows.Add(element["bib"], NameConv, ClubConv, ClassConv, element["ecard1"], element["ecard2"], element["dbid"]);
-                        //Console.WriteLine(element["name"]);
+                        if (element["bib"].ToString().Substring(0, 1) == "-")  //Startnr ved stafett -16003
+                        {
+                            switch (element["bib"].ToString().Length)
+                            {
+                                case 6: //3-sifret startnr
+                                    {
+                                        StartNoConv = element["bib"].ToString().Substring(1, 5);
+                                        break;
+                                    }
+                                case 5: //2-sifret startnr
+                                    {
+                                        StartNoConv = element["bib"].ToString().Substring(1, 4);
+                                        break;
+                                    }
+                                case 4: //1-sifret startnr 
+                                    {
+                                        StartNoConv = element["bib"].ToString().Substring(1, 3);
+                                        break;
+                                    }
+                            }
+                        }
+                        else
+                        {
+                            StartNoConv = element["bib"].ToString();
+                        }
+                        dataGridView1.Rows.Add(StartNoConv, NameConv, ClubConv, ClassConv, element["ecard1"], element["ecard2"], element["dbid"]);
+                        //_RacerInfo = (StartNoConv +"," + NameConv + "," + ClubConv);
+
+                        using (StreamWriter logfile = new StreamWriter(File.Open(_LiveResfileName, FileMode.Append), Encoding.Default))
+                        {
+                            logfile.WriteLine(element["dbid"] + "," + NameConv + "," + ClassConv + "," + ClubConv + "," + 
+                                element["ecard1"] +","+ element["ecard2"] + "," + element["bib"]);
+                            //logfile.Close;
+                        }
                     }
                 }
             }
@@ -722,7 +769,7 @@ namespace USBRead
                                 var id_no = int.Parse(dataGridView1.Rows[row.Index].Cells[6].Value.ToString());
                                 try
                                 {
-                                    var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=setecardchecked&comp={0}&dbid={1}",
+                                    var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&dbid={1}",
                                 lopid, id_no));
                                     Console.WriteLine(result1);
                                 }
@@ -755,6 +802,13 @@ namespace USBRead
 
         private void readBrikkesjekkfil_btn_Click(object sender, EventArgs e) //Read startlist from "brikkesjekkfil"
         {
+            if (readLiveResfil_btn.Text == "Stopp startliste fra LiveRes")
+            {
+                readLiveResfil_btn.Text = "Les startliste fra LiveRes";
+                readLiveResfil_btn.BackColor = Color.LightGray;
+                _stopLiveRes = true;
+            }
+
             dataGridView1.Rows.Clear();
             dataGridView1.Refresh();
             dataGridView1.ColumnCount = 7;
@@ -835,6 +889,12 @@ namespace USBRead
             }
             if (LiveRes_checkBox.Checked == false)
             {
+                if (readLiveResfil_btn.Text == "Stopp startliste fra LiveRes")
+                {
+                    readLiveResfil_btn.Text = "Les startliste fra LiveRes";
+                    readLiveResfil_btn.BackColor = Color.LightGray;
+                    _stopLiveRes = true;
+                }
                 readLiveResfil_btn.Enabled = false;
                 UnknownEcard_btn.Enabled = false;
                 LiveRes_groupBox.Enabled = false;
@@ -973,7 +1033,7 @@ namespace USBRead
             try
             {
                 WebClient client = new WebClient();
-                string downloadString = client.DownloadString("http://api.freidig.idrett.no/api.php?method=getcompetitioninfo&comp=" + lopsid_box.Text);
+                string downloadString = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + "api.php?method=getcompetitioninfo&comp=" + lopsid_box.Text);
 
                 var objects = JsonConvert.DeserializeObject<dynamic>(downloadString);
 
@@ -1019,7 +1079,7 @@ namespace USBRead
                         {
                             try
                             {
-                                var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
+                                var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
         lopid, dbidNo));
                                 Console.WriteLine(result1);
                                 using (StreamWriter sr = File.AppendText(_LogfileName))
@@ -1047,19 +1107,21 @@ namespace USBRead
             int IntBrikkeNo;
             if ((int.TryParse(StartNr_box.Text, out IntStartNo)) && (int.TryParse(Ecard_box.Text, out IntBrikkeNo)))
             {
-                var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** bytter brikke til **" + Ecard_box.Text + "** ?", "Endre brikkenummer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** bytter brikke til **" + SearchCard_Txtbox.Text + "** ?", "Endre brikkenummer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
                     var lopid = lopsid_box.Text;
-                    var brikkenr = int.Parse(Ecard_box.Text);
+                    var brikkenr = int.Parse(SearchCard_Txtbox.Text);
                     var startnr = int.Parse(StartNr_box.Text);
 
                     using (var client = new WebClient())
                     {
                         try
                         {
-                            var result1 = client.DownloadString(string.Format("https://api.freidig.idrett.no/messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}",
+                            var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}",
     lopid, brikkenr, startnr));
+                            var result2 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&bib={1}",
+                        lopid, startnr));
                             Console.WriteLine(result1);
                             using (StreamWriter sr = File.AppendText(_LogfileName))
                             {
@@ -1107,16 +1169,5 @@ namespace USBRead
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (ReadEcu_btn.BackColor == Color.Gray)
-            {
-                ReadEcu_btn.BackColor = Color.Red;
-            }
-            else
-            {
-                ReadEcu_btn.BackColor = Color.Gray;
-            }
-        }
     }
 }
