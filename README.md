@@ -1,6 +1,11 @@
 # EmiTagCheck
 Software for checking EmiTag before start
 
+20.10.2020
+- Brikkesjekkfil blir opprettet ved lesing av startliste fra LiveRes. Denne blir lagret lokalt på samme katalog som log-fil (vanligvis c:\temp\). Filnavn vil være "LiveResStartlist{dato}.csv".
+- Ved stafett så blir startnr fra LiveRes konvertert (nr 160 etappe 3 -> 16003)
+- Noen mindre feilrettinger.
+
 13.10.2020
 - Har endret rutine med tildeling av ukjent brikkenr. Dersom ukjent brikke blir lest, så blir brikkenr lagt til i feltet for "Manuell brikkesøk". Når man trykker på "Endre brikkenr" så hentes brikkenr fra fletet "Manuell brikkesøk". 
 
