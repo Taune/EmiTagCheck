@@ -1,6 +1,12 @@
 # EmiTagCheck
 Software for checking EmiTag before start
 
+03.11.2020
+- Har lagt inn mulighet for bruk av dialogvindu for valg av katalog til log-fil.
+- Har lagt inn sjekk på at katalog for log-fil eksisterer slik at man unngår programkrasj.
+- Lagt inn combobox for valg av kode på ECU slik at kun gyldige koder kan velges.
+- Har lagt inn progressbar ved lasting av brikkesjekkfil.
+
 22.10.2020
 - Korrigert lagring til brikkesjekkfil med korrekt startnr ved stafett
 - Noen mindre kosmetiske endringer
