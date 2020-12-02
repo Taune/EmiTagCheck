@@ -1,5 +1,10 @@
 # EmiTagCheck
-Software for checking EmiTag before start
+Software for checking EmiTag and ECard before start
+
+02.12.2020
+- Har lagt inn mulighet for å velge arrangement fra LiveRes-database
+- Endret melding ved ukjent brikke
+- Noen mindre design endringer
 
 03.11.2020
 - Har lagt inn mulighet for bruk av dialogvindu for valg av katalog til log-fil.
