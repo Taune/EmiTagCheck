@@ -1,5 +1,9 @@
 # EmiTagCheck
-Software for checking EmiTag and ECard before start
+Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
+
+08.12.2020
+- Lagt in "radiobuttons" for valg av kode på ECU. Kan kun velge mellom kode 70 og 251. Kode i ECU endres automatisk ved valg av kode
+- Lagt inn mulighet til å få lydvarsel også ved brikke OK ("Brikke OK"). Mulig å slå av og på dette lydvarselet.
 
 02.12.2020
 - Har lagt inn mulighet for å velge arrangement direkte fra LiveRes-database. Alle arrangement listes i nedtrekksmeny.
