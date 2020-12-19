@@ -1,6 +1,10 @@
 # EmiTagCheck
 Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
 
+18.12.2020
+- Nedtrekksmeny for LiveRes-arrangement er fikset slik at norske tegn vises.
+- Lagt til en funksjon for automatisk opplesning av startnummer og navn. Legg inn norsk tale i Windows (Microsoft Jon) og Windows register må oppdateres for å gjøre denne tilgjengelig i programmet. Kjør fila "Update Microsoft Jon.reg",
+
 08.12.2020
 - Lagt in "radiobuttons" for valg av kode på ECU. Kan kun velge mellom kode 70 og 251. Kode i ECU endres automatisk ved valg av kode
 - Lagt inn mulighet til å få lydvarsel også ved brikke OK ("Brikke OK"). Mulig å slå av og på dette lydvarselet.
