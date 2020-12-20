@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             this.UsbPort_listBox = new System.Windows.Forms.ListBox();
-            this.RefreshUsbPort_btn = new System.Windows.Forms.Button();
             this.Close_btn = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.Clock_lbl = new System.Windows.Forms.Label();
@@ -53,9 +52,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.LiveRes_groupBox = new System.Windows.Forms.GroupBox();
-            this.FindLiveRes_btn = new System.Windows.Forms.Button();
-            this.label8 = new System.Windows.Forms.Label();
+            this.comboBoxLiveRes = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.RefreshUsbPort_btn = new System.Windows.Forms.Button();
             this.readLiveResfil_btn = new System.Windows.Forms.Button();
             this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -69,15 +68,18 @@
             this.folderLogfile_box = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.btnStartMTR = new System.Windows.Forms.Button();
-            this.ecuCode_box = new System.Windows.Forms.TextBox();
-            this.ChangeEcuCode_btn = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.Code251_radioButton = new System.Windows.Forms.RadioButton();
+            this.Code70_radioButton = new System.Windows.Forms.RadioButton();
             this.readECUcode_box = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.ReadEcu_btn = new System.Windows.Forms.Button();
             this.LiveRes_checkBox = new System.Windows.Forms.CheckBox();
-            this.WarningSound_checkBox = new System.Windows.Forms.CheckBox();
+            this.WarningSoundNotFound_checkBox = new System.Windows.Forms.CheckBox();
             this.version = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.GetFolderButton = new System.Windows.Forms.Button();
+            this.WarningSoundFound_checkBox = new System.Windows.Forms.CheckBox();
+            this.TextToSpeechFound_checkBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.LiveRes_groupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -90,25 +92,13 @@
             this.UsbPort_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UsbPort_listBox.FormattingEnabled = true;
             this.UsbPort_listBox.ItemHeight = 20;
-            this.UsbPort_listBox.Location = new System.Drawing.Point(16, 25);
+            this.UsbPort_listBox.Location = new System.Drawing.Point(16, 28);
             this.UsbPort_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbPort_listBox.Name = "UsbPort_listBox";
-            this.UsbPort_listBox.Size = new System.Drawing.Size(143, 84);
+            this.UsbPort_listBox.Size = new System.Drawing.Size(143, 104);
             this.UsbPort_listBox.Sorted = true;
             this.UsbPort_listBox.TabIndex = 2;
             this.UsbPort_listBox.SelectedIndexChanged += new System.EventHandler(this.UsbPort_listBox_SelectedIndexChanged);
-            // 
-            // RefreshUsbPort_btn
-            // 
-            this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 137);
-            this.RefreshUsbPort_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.RefreshUsbPort_btn.Name = "RefreshUsbPort_btn";
-            this.RefreshUsbPort_btn.Size = new System.Drawing.Size(141, 34);
-            this.RefreshUsbPort_btn.TabIndex = 3;
-            this.RefreshUsbPort_btn.Text = "Oppfrisk";
-            this.RefreshUsbPort_btn.UseVisualStyleBackColor = true;
-            this.RefreshUsbPort_btn.Click += new System.EventHandler(this.RefreshUsbPort_btn_Click);
             // 
             // Close_btn
             // 
@@ -135,9 +125,10 @@
             // Clock_lbl
             // 
             this.Clock_lbl.AutoSize = true;
-            this.Clock_lbl.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.Clock_lbl.BackColor = System.Drawing.Color.Black;
             this.Clock_lbl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Clock_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Clock_lbl.ForeColor = System.Drawing.Color.Yellow;
             this.Clock_lbl.Location = new System.Drawing.Point(1331, 11);
             this.Clock_lbl.Name = "Clock_lbl";
             this.Clock_lbl.Size = new System.Drawing.Size(129, 34);
@@ -150,13 +141,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(617, 514);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(842, 289);
+            this.dataGridView1.Size = new System.Drawing.Size(843, 263);
             this.dataGridView1.TabIndex = 11;
             // 
             // SearchCard_btn
@@ -190,7 +182,7 @@
             this.UsbRead_listBox.Location = new System.Drawing.Point(15, 514);
             this.UsbRead_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbRead_listBox.Name = "UsbRead_listBox";
-            this.UsbRead_listBox.Size = new System.Drawing.Size(581, 292);
+            this.UsbRead_listBox.Size = new System.Drawing.Size(581, 274);
             this.UsbRead_listBox.TabIndex = 25;
             // 
             // label3
@@ -309,29 +301,30 @@
             // 
             // lopsid_box
             // 
-            this.lopsid_box.BackColor = System.Drawing.SystemColors.Info;
+            this.lopsid_box.BackColor = System.Drawing.SystemColors.Control;
             this.lopsid_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lopsid_box.Location = new System.Drawing.Point(79, 62);
+            this.lopsid_box.Location = new System.Drawing.Point(79, 35);
             this.lopsid_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lopsid_box.Name = "lopsid_box";
-            this.lopsid_box.Size = new System.Drawing.Size(153, 27);
+            this.lopsid_box.ReadOnly = true;
+            this.lopsid_box.Size = new System.Drawing.Size(111, 27);
             this.lopsid_box.TabIndex = 30;
             // 
             // lopsnavn_box
             // 
             this.lopsnavn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lopsnavn_box.Location = new System.Drawing.Point(79, 94);
+            this.lopsnavn_box.Location = new System.Drawing.Point(79, 70);
             this.lopsnavn_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lopsnavn_box.Name = "lopsnavn_box";
             this.lopsnavn_box.ReadOnly = true;
-            this.lopsnavn_box.Size = new System.Drawing.Size(328, 27);
+            this.lopsnavn_box.Size = new System.Drawing.Size(327, 27);
             this.lopsnavn_box.TabIndex = 31;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(13, 64);
+            this.label6.Location = new System.Drawing.Point(13, 37);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 20);
             this.label6.TabIndex = 32;
@@ -341,7 +334,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(13, 97);
+            this.label7.Location = new System.Drawing.Point(13, 73);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 20);
             this.label7.TabIndex = 33;
@@ -349,42 +342,33 @@
             // 
             // LiveRes_groupBox
             // 
-            this.LiveRes_groupBox.Controls.Add(this.FindLiveRes_btn);
-            this.LiveRes_groupBox.Controls.Add(this.label8);
+            this.LiveRes_groupBox.Controls.Add(this.comboBoxLiveRes);
             this.LiveRes_groupBox.Controls.Add(this.label7);
             this.LiveRes_groupBox.Controls.Add(this.label6);
             this.LiveRes_groupBox.Controls.Add(this.lopsnavn_box);
             this.LiveRes_groupBox.Controls.Add(this.lopsid_box);
             this.LiveRes_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LiveRes_groupBox.Location = new System.Drawing.Point(15, 303);
+            this.LiveRes_groupBox.Location = new System.Drawing.Point(15, 317);
             this.LiveRes_groupBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LiveRes_groupBox.Name = "LiveRes_groupBox";
             this.LiveRes_groupBox.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.LiveRes_groupBox.Size = new System.Drawing.Size(421, 137);
+            this.LiveRes_groupBox.Size = new System.Drawing.Size(421, 123);
             this.LiveRes_groupBox.TabIndex = 34;
             this.LiveRes_groupBox.TabStop = false;
-            this.LiveRes_groupBox.Text = "Arrangementsinfo";
+            this.LiveRes_groupBox.Text = "Arrangementsinfo LiveRes";
             // 
-            // FindLiveRes_btn
+            // comboBoxLiveRes
             // 
-            this.FindLiveRes_btn.Location = new System.Drawing.Point(237, 62);
-            this.FindLiveRes_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.FindLiveRes_btn.Name = "FindLiveRes_btn";
-            this.FindLiveRes_btn.Size = new System.Drawing.Size(169, 27);
-            this.FindLiveRes_btn.TabIndex = 36;
-            this.FindLiveRes_btn.Text = "Finn Arrangement";
-            this.FindLiveRes_btn.UseVisualStyleBackColor = true;
-            this.FindLiveRes_btn.Click += new System.EventHandler(this.FindLiveRes_btn_Click);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(13, 27);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(291, 20);
-            this.label8.TabIndex = 35;
-            this.label8.Text = "Benyttes for Liveres meldingstjeneste";
+            this.comboBoxLiveRes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLiveRes.DropDownWidth = 400;
+            this.comboBoxLiveRes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxLiveRes.FormattingEnabled = true;
+            this.comboBoxLiveRes.Location = new System.Drawing.Point(196, 34);
+            this.comboBoxLiveRes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBoxLiveRes.Name = "comboBoxLiveRes";
+            this.comboBoxLiveRes.Size = new System.Drawing.Size(210, 28);
+            this.comboBoxLiveRes.TabIndex = 38;
+            this.comboBoxLiveRes.SelectionChangeCommitted += new System.EventHandler(this.comboBoxLiveRes_SelectedValueChanged);
             // 
             // groupBox2
             // 
@@ -400,27 +384,42 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Velg Port";
             // 
+            // RefreshUsbPort_btn
+            // 
+            this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RefreshUsbPort_btn.Image = global::USBRead.Properties.Resources.reload_button;
+            this.RefreshUsbPort_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 132);
+            this.RefreshUsbPort_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.RefreshUsbPort_btn.Name = "RefreshUsbPort_btn";
+            this.RefreshUsbPort_btn.Size = new System.Drawing.Size(141, 43);
+            this.RefreshUsbPort_btn.TabIndex = 3;
+            this.RefreshUsbPort_btn.Text = "Oppfrisk";
+            this.RefreshUsbPort_btn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.RefreshUsbPort_btn.UseVisualStyleBackColor = true;
+            this.RefreshUsbPort_btn.Click += new System.EventHandler(this.RefreshUsbPort_btn_Click);
+            // 
             // readLiveResfil_btn
             // 
             this.readLiveResfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readLiveResfil_btn.Location = new System.Drawing.Point(1187, 469);
+            this.readLiveResfil_btn.Location = new System.Drawing.Point(971, 469);
             this.readLiveResfil_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readLiveResfil_btn.Name = "readLiveResfil_btn";
-            this.readLiveResfil_btn.Size = new System.Drawing.Size(272, 39);
+            this.readLiveResfil_btn.Size = new System.Drawing.Size(240, 39);
             this.readLiveResfil_btn.TabIndex = 37;
-            this.readLiveResfil_btn.Text = "Les startliste fra LiveRes";
+            this.readLiveResfil_btn.Text = "Les startliste LiveRes";
             this.readLiveResfil_btn.UseVisualStyleBackColor = true;
             this.readLiveResfil_btn.Click += new System.EventHandler(this.readLiveResfil_btn_Click);
             // 
             // readBrikkesjekkfil_btn
             // 
             this.readBrikkesjekkfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(893, 469);
+            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(703, 469);
             this.readBrikkesjekkfil_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readBrikkesjekkfil_btn.Name = "readBrikkesjekkfil_btn";
-            this.readBrikkesjekkfil_btn.Size = new System.Drawing.Size(272, 39);
+            this.readBrikkesjekkfil_btn.Size = new System.Drawing.Size(252, 39);
             this.readBrikkesjekkfil_btn.TabIndex = 39;
-            this.readBrikkesjekkfil_btn.Text = "Les startliste fra Brikkesjekkfil";
+            this.readBrikkesjekkfil_btn.Text = "Les startliste Brikkesjekkfil";
             this.readBrikkesjekkfil_btn.UseVisualStyleBackColor = true;
             this.readBrikkesjekkfil_btn.Click += new System.EventHandler(this.readBrikkesjekkfil_btn_Click);
             // 
@@ -464,7 +463,7 @@
             // ChangeEcardNo_btn
             // 
             this.ChangeEcardNo_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeEcardNo_btn.Location = new System.Drawing.Point(764, 19);
+            this.ChangeEcardNo_btn.Location = new System.Drawing.Point(764, 18);
             this.ChangeEcardNo_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ChangeEcardNo_btn.Name = "ChangeEcardNo_btn";
             this.ChangeEcardNo_btn.Size = new System.Drawing.Size(244, 34);
@@ -533,17 +532,18 @@
             // folderLogfile_box
             // 
             this.folderLogfile_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.folderLogfile_box.Location = new System.Drawing.Point(171, 812);
+            this.folderLogfile_box.Location = new System.Drawing.Point(171, 798);
             this.folderLogfile_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.folderLogfile_box.Name = "folderLogfile_box";
             this.folderLogfile_box.Size = new System.Drawing.Size(265, 27);
             this.folderLogfile_box.TabIndex = 42;
+            this.folderLogfile_box.Leave += new System.EventHandler(this.folderLogfile_box_TextChanged);
             // 
             // label9
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(12, 814);
+            this.label9.Location = new System.Drawing.Point(11, 799);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(136, 20);
             this.label9.TabIndex = 43;
@@ -553,44 +553,21 @@
             // 
             this.btnStartMTR.BackColor = System.Drawing.Color.LightGray;
             this.btnStartMTR.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartMTR.Location = new System.Drawing.Point(314, 466);
+            this.btnStartMTR.Location = new System.Drawing.Point(315, 466);
             this.btnStartMTR.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnStartMTR.Name = "btnStartMTR";
-            this.btnStartMTR.Size = new System.Drawing.Size(122, 42);
+            this.btnStartMTR.Size = new System.Drawing.Size(123, 42);
             this.btnStartMTR.TabIndex = 44;
             this.btnStartMTR.Text = "Start MTR";
             this.btnStartMTR.UseVisualStyleBackColor = false;
             this.btnStartMTR.Click += new System.EventHandler(this.btnReadMTR_Click);
             // 
-            // ecuCode_box
-            // 
-            this.ecuCode_box.BackColor = System.Drawing.SystemColors.Info;
-            this.ecuCode_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ecuCode_box.Location = new System.Drawing.Point(13, 25);
-            this.ecuCode_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ecuCode_box.Name = "ecuCode_box";
-            this.ecuCode_box.Size = new System.Drawing.Size(100, 27);
-            this.ecuCode_box.TabIndex = 45;
-            // 
-            // ChangeEcuCode_btn
-            // 
-            this.ChangeEcuCode_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeEcuCode_btn.Location = new System.Drawing.Point(125, 25);
-            this.ChangeEcuCode_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ChangeEcuCode_btn.Name = "ChangeEcuCode_btn";
-            this.ChangeEcuCode_btn.Size = new System.Drawing.Size(107, 32);
-            this.ChangeEcuCode_btn.TabIndex = 47;
-            this.ChangeEcuCode_btn.Text = "Ny kode";
-            this.ChangeEcuCode_btn.UseVisualStyleBackColor = true;
-            this.ChangeEcuCode_btn.Click += new System.EventHandler(this.ChangeEcuCode_btn_Click);
-            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.Code251_radioButton);
+            this.groupBox3.Controls.Add(this.Code70_radioButton);
             this.groupBox3.Controls.Add(this.readECUcode_box);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.ChangeEcuCode_btn);
-            this.groupBox3.Controls.Add(this.ecuCode_box);
-            this.groupBox3.Location = new System.Drawing.Point(15, 206);
+            this.groupBox3.Location = new System.Drawing.Point(15, 216);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -599,32 +576,48 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Kode ECU brikkeleser";
             // 
+            // Code251_radioButton
+            // 
+            this.Code251_radioButton.AutoSize = true;
+            this.Code251_radioButton.Location = new System.Drawing.Point(22, 50);
+            this.Code251_radioButton.Name = "Code251_radioButton";
+            this.Code251_radioButton.Size = new System.Drawing.Size(272, 21);
+            this.Code251_radioButton.TabIndex = 52;
+            this.Code251_radioButton.TabStop = true;
+            this.Code251_radioButton.Text = "Kode 251 - Med batteristatus (tregere)";
+            this.Code251_radioButton.UseVisualStyleBackColor = true;
+            this.Code251_radioButton.CheckedChanged += new System.EventHandler(this.Code70_radioButton_CheckedChanged);
+            // 
+            // Code70_radioButton
+            // 
+            this.Code70_radioButton.AutoSize = true;
+            this.Code70_radioButton.Location = new System.Drawing.Point(22, 23);
+            this.Code70_radioButton.Name = "Code70_radioButton";
+            this.Code70_radioButton.Size = new System.Drawing.Size(133, 21);
+            this.Code70_radioButton.TabIndex = 51;
+            this.Code70_radioButton.TabStop = true;
+            this.Code70_radioButton.Text = "Kode 70 - Hurtig";
+            this.Code70_radioButton.UseVisualStyleBackColor = true;
+            this.Code70_radioButton.CheckedChanged += new System.EventHandler(this.Code70_radioButton_CheckedChanged);
+            // 
             // readECUcode_box
             // 
             this.readECUcode_box.BackColor = System.Drawing.SystemColors.Menu;
             this.readECUcode_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.readECUcode_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.readECUcode_box.ForeColor = System.Drawing.Color.Red;
-            this.readECUcode_box.Location = new System.Drawing.Point(249, 30);
+            this.readECUcode_box.Location = new System.Drawing.Point(333, 35);
             this.readECUcode_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readECUcode_box.Name = "readECUcode_box";
             this.readECUcode_box.Size = new System.Drawing.Size(73, 20);
             this.readECUcode_box.TabIndex = 49;
             // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.ForeColor = System.Drawing.Color.Red;
-            this.label10.Location = new System.Drawing.Point(15, 59);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(372, 17);
-            this.label10.TabIndex = 48;
-            this.label10.Text = "Kode 70-76 for brikkesjekk Kode 251-253 for batterisjekk ";
-            // 
             // ReadEcu_btn
             // 
             this.ReadEcu_btn.BackColor = System.Drawing.Color.LightGray;
+            this.ReadEcu_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ReadEcu_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReadEcu_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.ReadEcu_btn.Location = new System.Drawing.Point(136, 466);
             this.ReadEcu_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ReadEcu_btn.Name = "ReadEcu_btn";
@@ -637,7 +630,7 @@
             // LiveRes_checkBox
             // 
             this.LiveRes_checkBox.AutoSize = true;
-            this.LiveRes_checkBox.Location = new System.Drawing.Point(19, 95);
+            this.LiveRes_checkBox.Location = new System.Drawing.Point(19, 88);
             this.LiveRes_checkBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LiveRes_checkBox.Name = "LiveRes_checkBox";
             this.LiveRes_checkBox.Size = new System.Drawing.Size(219, 21);
@@ -646,33 +639,80 @@
             this.LiveRes_checkBox.UseVisualStyleBackColor = true;
             this.LiveRes_checkBox.CheckedChanged += new System.EventHandler(this.LiveRes_checkBox_CheckedChanged);
             // 
-            // WarningSound_checkBox
+            // WarningSoundNotFound_checkBox
             // 
-            this.WarningSound_checkBox.AutoSize = true;
-            this.WarningSound_checkBox.Location = new System.Drawing.Point(19, 122);
-            this.WarningSound_checkBox.Name = "WarningSound_checkBox";
-            this.WarningSound_checkBox.Size = new System.Drawing.Size(222, 21);
-            this.WarningSound_checkBox.TabIndex = 51;
-            this.WarningSound_checkBox.Text = "Lydvarsel på ved ukjent brikke";
-            this.WarningSound_checkBox.UseVisualStyleBackColor = true;
+            this.WarningSoundNotFound_checkBox.AutoSize = true;
+            this.WarningSoundNotFound_checkBox.Location = new System.Drawing.Point(19, 115);
+            this.WarningSoundNotFound_checkBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.WarningSoundNotFound_checkBox.Name = "WarningSoundNotFound_checkBox";
+            this.WarningSoundNotFound_checkBox.Size = new System.Drawing.Size(204, 21);
+            this.WarningSoundNotFound_checkBox.TabIndex = 51;
+            this.WarningSoundNotFound_checkBox.Text = "Lydvarsel på - ukjent brikke";
+            this.WarningSoundNotFound_checkBox.UseVisualStyleBackColor = true;
             // 
             // version
             // 
             this.version.AutoSize = true;
             this.version.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.version.Location = new System.Drawing.Point(490, 822);
+            this.version.Location = new System.Drawing.Point(489, 807);
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 20.10.2020";
+            this.version.Text = "Ver 18.12.2020";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(1220, 469);
+            this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(239, 39);
+            this.progressBar1.TabIndex = 53;
+            // 
+            // GetFolderButton
+            // 
+            this.GetFolderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GetFolderButton.Location = new System.Drawing.Point(441, 798);
+            this.GetFolderButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.GetFolderButton.Name = "GetFolderButton";
+            this.GetFolderButton.Size = new System.Drawing.Size(43, 28);
+            this.GetFolderButton.TabIndex = 54;
+            this.GetFolderButton.Text = "...";
+            this.GetFolderButton.UseVisualStyleBackColor = true;
+            this.GetFolderButton.Click += new System.EventHandler(this.GetFolderButton_Click);
+            // 
+            // WarningSoundFound_checkBox
+            // 
+            this.WarningSoundFound_checkBox.AutoSize = true;
+            this.WarningSoundFound_checkBox.Location = new System.Drawing.Point(19, 142);
+            this.WarningSoundFound_checkBox.Name = "WarningSoundFound_checkBox";
+            this.WarningSoundFound_checkBox.Size = new System.Drawing.Size(186, 21);
+            this.WarningSoundFound_checkBox.TabIndex = 55;
+            this.WarningSoundFound_checkBox.Text = "Lydvarsel på - brikke OK";
+            this.WarningSoundFound_checkBox.UseVisualStyleBackColor = true;
+            this.WarningSoundFound_checkBox.CheckedChanged += new System.EventHandler(this.WarningSoundFound_checkBox_CheckedChanged);
+            // 
+            // TextToSpeechFound_checkBox
+            // 
+            this.TextToSpeechFound_checkBox.AutoSize = true;
+            this.TextToSpeechFound_checkBox.Location = new System.Drawing.Point(19, 169);
+            this.TextToSpeechFound_checkBox.Name = "TextToSpeechFound_checkBox";
+            this.TextToSpeechFound_checkBox.Size = new System.Drawing.Size(193, 21);
+            this.TextToSpeechFound_checkBox.TabIndex = 56;
+            this.TextToSpeechFound_checkBox.Text = "Opplesing av startnr/navn";
+            this.TextToSpeechFound_checkBox.UseVisualStyleBackColor = true;
+            this.TextToSpeechFound_checkBox.CheckedChanged += new System.EventHandler(this.TextToSpeechFound_checkBox_CheckedChanged);
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1489, 861);
+            this.ClientSize = new System.Drawing.Size(1489, 846);
+            this.Controls.Add(this.TextToSpeechFound_checkBox);
+            this.Controls.Add(this.WarningSoundFound_checkBox);
+            this.Controls.Add(this.GetFolderButton);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.version);
-            this.Controls.Add(this.WarningSound_checkBox);
+            this.Controls.Add(this.WarningSoundNotFound_checkBox);
             this.Controls.Add(this.LiveRes_checkBox);
             this.Controls.Add(this.ReadEcu_btn);
             this.Controls.Add(this.groupBox3);
@@ -736,7 +776,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.GroupBox LiveRes_groupBox;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button readLiveResfil_btn;
         private System.Windows.Forms.Button readBrikkesjekkfil_btn;
@@ -746,21 +785,24 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox Battery_box;
         private System.Windows.Forms.Button btnStartMTR;
-        private System.Windows.Forms.TextBox ecuCode_box;
-        private System.Windows.Forms.Button ChangeEcuCode_btn;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button ReadEcu_btn;
         private System.Windows.Forms.CheckBox LiveRes_checkBox;
-        private System.Windows.Forms.Button FindLiveRes_btn;
         private System.Windows.Forms.TextBox readECUcode_box;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button NotStared_btn;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button ChangeEcardNo_btn;
         private System.Windows.Forms.TextBox ID_box;
-        private System.Windows.Forms.CheckBox WarningSound_checkBox;
+        private System.Windows.Forms.CheckBox WarningSoundNotFound_checkBox;
         private System.Windows.Forms.Label version;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button GetFolderButton;
+        private System.Windows.Forms.ComboBox comboBoxLiveRes;
+        private System.Windows.Forms.CheckBox WarningSoundFound_checkBox;
+        private System.Windows.Forms.RadioButton Code251_radioButton;
+        private System.Windows.Forms.RadioButton Code70_radioButton;
+        private System.Windows.Forms.CheckBox TextToSpeechFound_checkBox;
     }
 }
 

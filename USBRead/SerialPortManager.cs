@@ -26,9 +26,7 @@ namespace Brikkesjekk
         private List<int> message_start = new List<int>();
         private string msgObj = "0";
         public bool _MtrEcardfound;
-    
         #endregion
-
 
         void _serialPort_DataReceivedMTR(object sender, SerialDataReceivedEventArgs e)
         {
@@ -181,7 +179,6 @@ namespace Brikkesjekk
         void mtrParseMsg(List<int> msg)
         {
             _MtrEcardfound = false;
-
             int MtrEcardNo = 0;
             int checksum = 0xFF + 0xFF + 0xFF + 0xFF;
 
