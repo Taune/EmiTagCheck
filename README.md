@@ -1,6 +1,9 @@
 # EmiTagCheck
 Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
 
+19.01.2021
+- Korrigert feil ved lagring til config-fil
+
 18.12.2020
 - Nedtrekksmeny for LiveRes-arrangement er fikset slik at norske tegn vises.
 - Lagt til en funksjon for automatisk opplesning av startnummer og navn. Legg inn norsk tale i Windows (Microsoft Jon) og Windows register må oppdateres for å gjøre denne tilgjengelig i programmet. Kjør fila "Update Microsoft Jon.reg",
