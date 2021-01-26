@@ -1,6 +1,11 @@
 # EmiTagCheck
 Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
 
+26.01.2021
+- Ved endring av brikkenummer så sendes det melding til LiveRes om at startnr/brikke er sjekket.
+- Endret litt på design for knapp for å bytte brikkenummer.
+- Endret melding for bekreftelse for brikkebytte
+
 19.01.2021
 - Korrigert feil ved lagring til config-fil
 
