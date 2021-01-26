@@ -338,21 +338,21 @@ namespace Brikkesjekk
             Clock_lbl.Text = time;
 
             //Lager blinkende knapp ved lesing av ECU og MTR
-            if ((ReadEcu_btn.BackColor == Color.LightGray) && (ReadEcu_btn.Text == "Stop ECU"))
+            if ((ReadEcu_btn.BackColor == SystemColors.ButtonHighlight) && (ReadEcu_btn.Text == "Stop ECU"))
             {
                 ReadEcu_btn.BackColor = Color.LightGreen;
             }
             else
             {
-                ReadEcu_btn.BackColor = Color.LightGray;
+                ReadEcu_btn.BackColor = SystemColors.ButtonHighlight;
             }
-            if ((btnStartMTR.BackColor == Color.LightGray) && (btnStartMTR.Text == "Stop MTR"))
+            if ((btnStartMTR.BackColor == SystemColors.ButtonHighlight) && (btnStartMTR.Text == "Stop MTR"))
             {
                 btnStartMTR.BackColor = Color.LightGreen;
             }
             else
             {
-                btnStartMTR.BackColor = Color.LightGray;
+                btnStartMTR.BackColor = SystemColors.ButtonHighlight; ;
             }
         }
          
@@ -560,7 +560,7 @@ namespace Brikkesjekk
             SetValueForLopsNavn = lopsnavn_box.Text;
             SetValueForStartNo = StartNr_box.Text;
             SetValueForID = ID_box.Text;
-            SendMessage_form f2 = new SendMessage_form();
+            SendMessage_form f2 = new SendMessage_form(this);
             f2.Show();
         }
 
@@ -642,7 +642,7 @@ namespace Brikkesjekk
             else
             {
                 readLiveResfil_btn.Text = "Les startliste LiveRes";
-                readLiveResfil_btn.BackColor = Color.LightGray;
+                readLiveResfil_btn.BackColor = SystemColors.ButtonHighlight;
                 _stopLiveRes = true;
             }
 
@@ -659,6 +659,7 @@ namespace Brikkesjekk
 
         private void readLiveResfil() //Read start list from LiveRes
         {
+            Cursor.Current = Cursors.WaitCursor;
             int i = 1;
             progressBar1.Minimum = 0;
             //File for saving startlist from LiveRes local on computer
@@ -754,6 +755,7 @@ namespace Brikkesjekk
             {
                 MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            Cursor.Current = Cursors.Default;
         }
 
         private void SearchEcard(string searchString) //Search for Ecard in "Ecard" and "Ecard2"
@@ -895,7 +897,7 @@ namespace Brikkesjekk
             if (readLiveResfil_btn.Text == "Stopp startliste LiveRes")
             {
                 readLiveResfil_btn.Text = "Les startliste LiveRes";
-                readLiveResfil_btn.BackColor = Color.LightGray;
+                readLiveResfil_btn.BackColor = SystemColors.ButtonHighlight; ;
                 _stopLiveRes = true;
             }
 
@@ -1200,11 +1202,25 @@ namespace Brikkesjekk
         {
             int IntStartNo;
             int IntBrikkeNo;
+            bool DialogSendMelding = false;
+
             if ((int.TryParse(StartNr_box.Text, out IntStartNo)) && (int.TryParse(Ecard_box.Text, out IntBrikkeNo)))
             {
-                var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** bytter brikke til **" + SearchCard_Txtbox.Text + "** ?", "Endre brikkenummer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (result == DialogResult.Yes)
+                if (StartNr_box.Text == "" || SearchCard_Txtbox.Text == "")
                 {
+                    MessageBox.Show("please don't leave any textbox is empty");
+                }
+                else
+                {
+                    SendMessage_form frm2 = new SendMessage_form(this);
+                    frm2.ShowDialog();
+                    DialogSendMelding = frm2.SendMessage;
+                }
+
+                //var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** bytter brikke til **" + SearchCard_Txtbox.Text + "** ?", "Endre brikkenummer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                //if (result == DialogResult.Yes)
+                if (DialogSendMelding == true)
+                    {
                     var lopid = lopsid_box.Text;
                     var brikkenr = int.Parse(SearchCard_Txtbox.Text);
                     var startnr = int.Parse(StartNr_box.Text);
@@ -1217,7 +1233,9 @@ namespace Brikkesjekk
     lopid, brikkenr, startnr));
                             var result2 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&bib={1}",
                         lopid, startnr));
+
                             Console.WriteLine(result1);
+                            Console.WriteLine(result2);
                             using (StreamWriter sr = File.AppendText(_LogfileName))
                             {
                                 sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + startnr + " byttet brikke til " + brikkenr);
@@ -1373,5 +1391,6 @@ namespace Brikkesjekk
                 TextToSpeechFound_checkBox.Checked = false;
             }
         }
-    }
+
+     }
 }

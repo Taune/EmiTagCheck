@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{68B37CB8-DAA2-4463-9650-C0FCC1BA3521}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>USBRead</RootNamespace>
-    <AssemblyName>USBRead</AssemblyName>
+    <RootNamespace>Brikkesjekk</RootNamespace>
+    <AssemblyName>Brikkesjekk</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,6 +42,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -85,6 +86,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -101,7 +103,12 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="emit_e.ico" />
+    <None Include="Resources\reload_button5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\reload_button1.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="hnet.com-image.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

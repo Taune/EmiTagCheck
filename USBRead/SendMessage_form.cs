@@ -7,36 +7,20 @@ namespace Brikkesjekk
 {
     public partial class SendMessage_form : Form
     {
-
+        public bool SendMessage = false;
+        
         MainMenu _MainMenuManager;
 
-        public SendMessage_form()
+        public SendMessage_form(MainMenu frm1)
         {
             InitializeComponent();
-            //System.Windows.Forms.Form f = System.Windows.Forms.Application.OpenForms["MainMenu"];
+            this._MainMenuManager = frm1;
         }
 
 
         private void SendMessage_btn_Click(object sender, EventArgs e)
         {
-            _MainMenuManager = new MainMenu();
-            using (var client = new WebClient())
-            {
-                var lopid = MainMenu.SetValueForLopsid;
-                var startnr = 0;
-                var melding = Comment_box.Text;
-
-                try 
-                {
-                        var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&message={2}",
-lopid, startnr, melding));
-                        Console.WriteLine(result1);
-                }
-                catch
-                {
-                    MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            SendMessage = true;
             this.Close();
         }
 
@@ -45,11 +29,13 @@ lopid, startnr, melding));
             this.Close();
         }
 
-
-        private void Meldinger_listBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void SendMessage_form_Load(object sender, EventArgs e)
         {
-            Comment_box.Text = Meldinger_listBox.GetItemText(Meldinger_listBox.SelectedItem);
+            SendMessage = false;
+            MainMenu form = new MainMenu();
+            ByttStartnrBox.Text = _MainMenuManager.StartNr_box.Text;
+            ByttBrikkeBox.Text = _MainMenuManager.SearchCard_Txtbox.Text;
         }
 
-    }
+     }
 }
