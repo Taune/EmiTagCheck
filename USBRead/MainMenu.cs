@@ -73,11 +73,24 @@ namespace Brikkesjekk
             _spManager = new SerialPortManager();
             _spManager.NewSerialDataRecievedECU += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedECU);
             _spManager.NewSerialDataRecievedMTR += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedMTR);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyEvent);
             this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            //Update config file when exit
+            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            AppSettingsSection app = config.AppSettings;
+            config.AppSettings.Settings["lopid"].Value = lopsid_box.Text;
+            config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
+            config.AppSettings.Settings["logfolder"].Value = folderLogfile_box.Text;
+            config.AppSettings.Settings["liveresCheckBox"].Value = LiveRes_checkBox.Checked.ToString();
+            config.AppSettings.Settings["SoundCheckBox_NotFound"].Value = WarningSoundNotFound_checkBox.Checked.ToString();
+            config.AppSettings.Settings["SoundCheckBox_Found"].Value = WarningSoundFound_checkBox.Checked.ToString();
+            config.AppSettings.Settings["TextToSpeechBox"].Value = TextToSpeechFound_checkBox.Checked.ToString();
+            config.Save(ConfigurationSaveMode.Modified);
+
             if (_serialportfound == true)
             {
                 _spManager.Dispose();
@@ -85,8 +98,22 @@ namespace Brikkesjekk
             else
             {
             }
+
+            //this.Close();
         }
 
+        private void KeyEvent(object sender, KeyEventArgs e) //Keyup Event 
+        {
+
+            if (e.KeyCode == Keys.F2)
+            {
+                StartNr_box.Select();
+            }
+            if (e.KeyCode == Keys.F3)
+            {
+                ChangeEcardNo_btn.PerformClick();
+            }
+        }
         void _spManager_NewSerialDataRecievedECU(object sender, SerialDataEventArgs e)
         {
             if (this.InvokeRequired)
@@ -255,7 +282,7 @@ namespace Brikkesjekk
             {
                 ReadLiveResRaces();
                 readLiveResfil_btn.Enabled = true;
-                UnknownEcard_btn.Enabled = true;
+                SendMessage_btn.Enabled = true;
                 LiveRes_groupBox.Enabled = true;
                 NotStared_btn.Enabled = true;
                 ChangeEcardNo_btn.Enabled = true;
@@ -263,7 +290,7 @@ namespace Brikkesjekk
             if (LiveRes_checkBox.Checked == false)
             {
                 readLiveResfil_btn.Enabled = false;
-                UnknownEcard_btn.Enabled = false;
+                SendMessage_btn.Enabled = false;
                 LiveRes_groupBox.Enabled = false;
                 NotStared_btn.Enabled = false;
                 ChangeEcardNo_btn.Enabled = false;
@@ -560,7 +587,7 @@ namespace Brikkesjekk
             SetValueForLopsNavn = lopsnavn_box.Text;
             SetValueForStartNo = StartNr_box.Text;
             SetValueForID = ID_box.Text;
-            SendMessage_form f2 = new SendMessage_form(this);
+            ChangeEcard_form f2 = new ChangeEcard_form(this);
             f2.Show();
         }
 
@@ -979,7 +1006,7 @@ namespace Brikkesjekk
             {
                 ReadLiveResRaces();
                 readLiveResfil_btn.Enabled = true;
-                UnknownEcard_btn.Enabled = true;
+                SendMessage_btn.Enabled = true;
                 LiveRes_groupBox.Enabled = true;
                 NotStared_btn.Enabled = true;
                 ChangeEcardNo_btn.Enabled = true;
@@ -993,7 +1020,7 @@ namespace Brikkesjekk
                     _stopLiveRes = true;
                 }
                 readLiveResfil_btn.Enabled = false;
-                UnknownEcard_btn.Enabled = false;
+                SendMessage_btn.Enabled = false;
                 LiveRes_groupBox.Enabled = false;
                 NotStared_btn.Enabled = false;
                 ChangeEcardNo_btn.Enabled = false;
@@ -1212,7 +1239,7 @@ namespace Brikkesjekk
                 }
                 else
                 {
-                    SendMessage_form frm2 = new SendMessage_form(this);
+                    ChangeEcard_form frm2 = new ChangeEcard_form(this);
                     frm2.ShowDialog();
                     DialogSendMelding = frm2.SendMessage;
                 }
@@ -1303,6 +1330,7 @@ namespace Brikkesjekk
             }
         }
 
+
         private void ReadLiveResRaces()
         {
             try
@@ -1312,16 +1340,18 @@ namespace Brikkesjekk
 
                 string downloadString = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + "api.php?method=getcompetitions");
                 var objects = JsonConvert.DeserializeObject<RootObject>(downloadString);
-                //comboBoxLiveRes.DataSource = objects.competitions.Select(a=> a.date + " - " + a.name).ToList();
-                comboBoxLiveRes.DataSource = objects.competitions;
+
+                comboBoxLiveRes.DataSource = objects.competitions;                
                 comboBoxLiveRes.DisplayMember = "Name";
                 comboBoxLiveRes.ValueMember = "id";
+                comboBoxLiveRes.SelectedValue = int.Parse(lopsid_box.Text);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
+
 
         private void comboBoxLiveRes_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -1392,5 +1422,11 @@ namespace Brikkesjekk
             }
         }
 
-     }
+        private void SendMessage_btn_Click(object sender, EventArgs e)
+        {
+            SetValueForLopsid = lopsid_box.Text;
+            SendMessage_form f1 = new SendMessage_form();
+            f1.Show();
+        }
+    }
 }

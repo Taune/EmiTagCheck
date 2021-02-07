@@ -46,7 +46,7 @@
             this.Ecard2_box = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.UnknownEcard_btn = new System.Windows.Forms.Button();
+            this.SendMessage_btn = new System.Windows.Forms.Button();
             this.lopsid_box = new System.Windows.Forms.TextBox();
             this.lopsnavn_box = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -290,18 +290,18 @@
             this.label5.TabIndex = 28;
             this.label5.Text = "Brikke 2";
             // 
-            // UnknownEcard_btn
+            // SendMessage_btn
             // 
-            this.UnknownEcard_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.UnknownEcard_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.UnknownEcard_btn.Location = new System.Drawing.Point(764, 133);
-            this.UnknownEcard_btn.Margin = new System.Windows.Forms.Padding(4);
-            this.UnknownEcard_btn.Name = "UnknownEcard_btn";
-            this.UnknownEcard_btn.Size = new System.Drawing.Size(244, 39);
-            this.UnknownEcard_btn.TabIndex = 29;
-            this.UnknownEcard_btn.Text = "Melding til LiveRes";
-            this.UnknownEcard_btn.UseVisualStyleBackColor = false;
-            this.UnknownEcard_btn.Click += new System.EventHandler(this.UnknownEcard_btn_Click_1);
+            this.SendMessage_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.SendMessage_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SendMessage_btn.Location = new System.Drawing.Point(764, 133);
+            this.SendMessage_btn.Margin = new System.Windows.Forms.Padding(4);
+            this.SendMessage_btn.Name = "SendMessage_btn";
+            this.SendMessage_btn.Size = new System.Drawing.Size(244, 39);
+            this.SendMessage_btn.TabIndex = 29;
+            this.SendMessage_btn.Text = "Melding til LiveRes";
+            this.SendMessage_btn.UseVisualStyleBackColor = false;
+            this.SendMessage_btn.Click += new System.EventHandler(this.SendMessage_btn_Click);
             // 
             // lopsid_box
             // 
@@ -368,6 +368,7 @@
             this.comboBoxLiveRes.DropDownWidth = 400;
             this.comboBoxLiveRes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxLiveRes.FormattingEnabled = true;
+            this.comboBoxLiveRes.ItemHeight = 20;
             this.comboBoxLiveRes.Location = new System.Drawing.Point(196, 34);
             this.comboBoxLiveRes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBoxLiveRes.Name = "comboBoxLiveRes";
@@ -456,7 +457,7 @@
             this.Løperinfo.Controls.Add(this.Ecard_box);
             this.Løperinfo.Controls.Add(this.Klasse_box);
             this.Løperinfo.Controls.Add(this.Klubb_box);
-            this.Løperinfo.Controls.Add(this.UnknownEcard_btn);
+            this.Løperinfo.Controls.Add(this.SendMessage_btn);
             this.Løperinfo.Controls.Add(this.Navn_box);
             this.Løperinfo.Controls.Add(this.StartNr_box);
             this.Løperinfo.Location = new System.Drawing.Point(456, 49);
@@ -668,7 +669,7 @@
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 26.01.2021";
+            this.version.Text = "Ver 07.02.2021";
             // 
             // progressBar1
             // 
@@ -745,6 +746,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Close_btn);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainMenu";
             this.Text = "Brikkesjekk";
@@ -779,7 +781,7 @@
         private System.Windows.Forms.TextBox Ecard2_box;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button UnknownEcard_btn;
+        private System.Windows.Forms.Button SendMessage_btn;
         private System.Windows.Forms.TextBox lopsid_box;
         private System.Windows.Forms.TextBox lopsnavn_box;
         private System.Windows.Forms.Label label6;
