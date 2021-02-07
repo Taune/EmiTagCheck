@@ -1,6 +1,13 @@
 # EmiTagCheck
 Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
 
+07.02.2021
+- Korrigert feil ved bruk av knapp for "Send melding" slik at riktig dialogboks kommer opp.
+- Ved bruke av "Lukk-x" ved avslutning av program så blir valgte data lagret til config-fil
+- Nedtrekssmeny for LiveRes-arrengement er korrigert slik at sist brukte arrangement blir default-verid
+- Lagt inn hurtigvalg for å gå direkte til startnummer-felt med funksjonstast "F2".
+- Lagt inn hurtigvalg for endre brikke på funksjonstast "F3".
+
 26.01.2021
 - Ved endring av brikkenummer så sendes det melding til LiveRes om at startnr/brikke er sjekket.
 - Endret litt på design for knapp for å bytte brikkenummer.
