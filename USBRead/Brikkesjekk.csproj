@@ -62,6 +62,9 @@
     <Compile Include="ChangeEcard_form.Designer.cs">
       <DependentUpon>ChangeEcard_form.cs</DependentUpon>
     </Compile>
+    <Compile Include="LedBulb.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,10 +118,8 @@
     <None Include="Resources\reload_button5.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\reload_button1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="hnet.com-image.ico" />
+    <None Include="Resources\reload_button1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

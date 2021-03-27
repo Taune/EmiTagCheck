@@ -59,6 +59,7 @@
             this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Løperinfo = new System.Windows.Forms.GroupBox();
+            this.ledBulb_funnet = new Brikkesjekk.LedBulb();
             this.ChangeEcardNo_btn = new System.Windows.Forms.Button();
             this.NotStared_btn = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
@@ -80,6 +81,8 @@
             this.GetFolderButton = new System.Windows.Forms.Button();
             this.WarningSoundFound_checkBox = new System.Windows.Forms.CheckBox();
             this.TextToSpeechFound_checkBox = new System.Windows.Forms.CheckBox();
+            this.MTR_read_led = new Brikkesjekk.LedBulb();
+            this.ECU_read_led = new Brikkesjekk.LedBulb();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.LiveRes_groupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -214,7 +217,7 @@
             // 
             this.Navn_box.BackColor = System.Drawing.SystemColors.Control;
             this.Navn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Navn_box.ForeColor = System.Drawing.Color.Red;
+            this.Navn_box.ForeColor = System.Drawing.Color.Green;
             this.Navn_box.Location = new System.Drawing.Point(16, 179);
             this.Navn_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Navn_box.Name = "Navn_box";
@@ -394,7 +397,7 @@
             // 
             this.RefreshUsbPort_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUsbPort_btn.Image = global::Brikkesjekk.Properties.Resources.reload_button1;
+            this.RefreshUsbPort_btn.Image = global::Brikkesjekk.Properties.Resources.reload_button11;
             this.RefreshUsbPort_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 132);
             this.RefreshUsbPort_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -445,6 +448,7 @@
             // Løperinfo
             // 
             this.Løperinfo.BackColor = System.Drawing.SystemColors.Control;
+            this.Løperinfo.Controls.Add(this.ledBulb_funnet);
             this.Løperinfo.Controls.Add(this.ChangeEcardNo_btn);
             this.Løperinfo.Controls.Add(this.NotStared_btn);
             this.Løperinfo.Controls.Add(this.label12);
@@ -468,6 +472,15 @@
             this.Løperinfo.TabIndex = 41;
             this.Løperinfo.TabStop = false;
             this.Løperinfo.Text = "Løperinfo";
+            // 
+            // ledBulb_funnet
+            // 
+            this.ledBulb_funnet.Location = new System.Drawing.Point(671, 66);
+            this.ledBulb_funnet.Name = "ledBulb_funnet";
+            this.ledBulb_funnet.On = false;
+            this.ledBulb_funnet.Size = new System.Drawing.Size(60, 60);
+            this.ledBulb_funnet.TabIndex = 35;
+            this.ledBulb_funnet.Text = "ledBulb1";
             // 
             // ChangeEcardNo_btn
             // 
@@ -564,7 +577,7 @@
             // 
             this.btnStartMTR.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnStartMTR.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartMTR.Location = new System.Drawing.Point(315, 466);
+            this.btnStartMTR.Location = new System.Drawing.Point(348, 466);
             this.btnStartMTR.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnStartMTR.Name = "btnStartMTR";
             this.btnStartMTR.Size = new System.Drawing.Size(123, 42);
@@ -669,7 +682,7 @@
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 07.02.2021";
+            this.version.Text = "Ver 27.03.2021";
             // 
             // progressBar1
             // 
@@ -714,11 +727,33 @@
             this.TextToSpeechFound_checkBox.UseVisualStyleBackColor = true;
             this.TextToSpeechFound_checkBox.CheckedChanged += new System.EventHandler(this.TextToSpeechFound_checkBox_CheckedChanged);
             // 
+            // MTR_read_led
+            // 
+            this.MTR_read_led.Color = System.Drawing.Color.Red;
+            this.MTR_read_led.Location = new System.Drawing.Point(486, 469);
+            this.MTR_read_led.Name = "MTR_read_led";
+            this.MTR_read_led.On = true;
+            this.MTR_read_led.Size = new System.Drawing.Size(35, 35);
+            this.MTR_read_led.TabIndex = 58;
+            this.MTR_read_led.Text = "ledBulb1";
+            // 
+            // ECU_read_led
+            // 
+            this.ECU_read_led.Color = System.Drawing.Color.Red;
+            this.ECU_read_led.Location = new System.Drawing.Point(283, 469);
+            this.ECU_read_led.Name = "ECU_read_led";
+            this.ECU_read_led.On = true;
+            this.ECU_read_led.Size = new System.Drawing.Size(35, 35);
+            this.ECU_read_led.TabIndex = 57;
+            this.ECU_read_led.Text = "ledBulb1";
+            // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1489, 846);
+            this.Controls.Add(this.MTR_read_led);
+            this.Controls.Add(this.ECU_read_led);
             this.Controls.Add(this.TextToSpeechFound_checkBox);
             this.Controls.Add(this.WarningSoundFound_checkBox);
             this.Controls.Add(this.GetFolderButton);
@@ -816,6 +851,9 @@
         private System.Windows.Forms.CheckBox TextToSpeechFound_checkBox;
         public System.Windows.Forms.TextBox StartNr_box;
         public System.Windows.Forms.TextBox SearchCard_Txtbox;
+        private Brikkesjekk.LedBulb ECU_read_led;
+        private LedBulb MTR_read_led;
+        private LedBulb ledBulb_funnet;
     }
 }
 

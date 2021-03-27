@@ -43,6 +43,7 @@ namespace Brikkesjekk
         public Color _batterycolor;
         public string _EcuCode;
         public string StartlistFilename;
+        private int _blink = 0;
         SerialPortManager _spManager;
         SpeechSynthesizer SpeechReader = new SpeechSynthesizer();
 
@@ -192,8 +193,11 @@ namespace Brikkesjekk
                         ReadEcu_btn.Text = "Stop ECU";
                         //ReadEcu_btn.BackColor = Color.LightGreen;
                         UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
+                        ECU_read_led.Color = Color.FromArgb(153, 255, 54); //LightGreen
+                        ECU_read_led_blink(ECU_read_led, new EventArgs());
                         _spManager.StartListeningECU();
                         _stop = false;
+                        
                     }
                 }
                 else
@@ -204,7 +208,15 @@ namespace Brikkesjekk
                     UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
                     _stop = true;
                     ECUComPortOpen = "";
+                    ECU_read_led.Color = Color.Red;
+                    ECU_read_led_blink(ECU_read_led, new EventArgs());
+                    ECU_read_led.On = true;
                 }
+            }
+
+            if (dataGridView1.Rows.Count < 1 && ReadEcu_btn.Text == "Stop ECU")
+            {
+                MessageBox.Show("Startliste er ikke lest inn!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -228,6 +240,8 @@ namespace Brikkesjekk
                         btnStartMTR.Text = "Stop MTR";
                         //btnStartMTR.BackColor = Color.LightGreen;
                         UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
+                        MTR_read_led.Color = Color.FromArgb(153, 255, 54); //LightGreen
+                        MTR_read_led_Click(MTR_read_led, new EventArgs());
                         _spManager.StartListeningMTR();
                         _stop = false;
                     }
@@ -240,7 +254,14 @@ namespace Brikkesjekk
                     UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
                     MTRComPortOpen = "";
                     _stop = true;
+                    MTR_read_led.Color = Color.Red;
+                    MTR_read_led_Click(MTR_read_led, new EventArgs());
+                    MTR_read_led.On = true;
                 }
+            }
+            if (dataGridView1.Rows.Count < 1 && btnStartMTR.Text == "Stop MTR")
+            {
+                MessageBox.Show("Startliste er ikke lest inn!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -365,22 +386,22 @@ namespace Brikkesjekk
             Clock_lbl.Text = time;
 
             //Lager blinkende knapp ved lesing av ECU og MTR
-            if ((ReadEcu_btn.BackColor == SystemColors.ButtonHighlight) && (ReadEcu_btn.Text == "Stop ECU"))
-            {
-                ReadEcu_btn.BackColor = Color.LightGreen;
-            }
-            else
-            {
-                ReadEcu_btn.BackColor = SystemColors.ButtonHighlight;
-            }
-            if ((btnStartMTR.BackColor == SystemColors.ButtonHighlight) && (btnStartMTR.Text == "Stop MTR"))
-            {
-                btnStartMTR.BackColor = Color.LightGreen;
-            }
-            else
-            {
-                btnStartMTR.BackColor = SystemColors.ButtonHighlight; ;
-            }
+        //    if ((ReadEcu_btn.BackColor == SystemColors.ButtonHighlight) && (ReadEcu_btn.Text == "Stop ECU"))
+        //    {
+        //        ReadEcu_btn.BackColor = Color.LightGreen;
+        //    }
+        //    else
+        //    {
+        //        ReadEcu_btn.BackColor = SystemColors.ButtonHighlight;
+        //    }
+        //    if ((btnStartMTR.BackColor == SystemColors.ButtonHighlight) && (btnStartMTR.Text == "Stop MTR"))
+        //    {
+        //        btnStartMTR.BackColor = Color.LightGreen;
+        //    }
+        //    else
+        //    {
+        //        btnStartMTR.BackColor = SystemColors.ButtonHighlight; ;
+        //    }
         }
          
         private void UsbPort_listBox_SelectedIndexChanged(object sender, EventArgs e) //Velger ønsket Usb Port
@@ -470,10 +491,13 @@ namespace Brikkesjekk
 
         private void UnknownEcard(string ecardname) //Ecard not found - Write "Ukjent brikke"
         {
+            ledBulb_funnet.On = true;
+            ledBulb_funnet.Color = Color.Red;
             if (StartNr_box != null && !StartNr_box.IsDisposed)
             {
                 StartNr_box.BeginInvoke(new MethodInvoker(delegate
                 {
+                    StartNr_box.ForeColor = Color.Red;
                     StartNr_box.Text = "XX";
                 }));
             }
@@ -481,6 +505,7 @@ namespace Brikkesjekk
             {
                 Ecard_box.BeginInvoke(new MethodInvoker(delegate
                 {
+                    Ecard_box.ForeColor = Color.Red;
                     Ecard_box.Text = ecardname;
                 }));
             }
@@ -495,6 +520,7 @@ namespace Brikkesjekk
             {
                 Navn_box.BeginInvoke(new MethodInvoker(delegate
                 {
+                    Navn_box.ForeColor = Color.Red;
                     Navn_box.Text = "Ukjent brikke";
                     if ((File.Exists(@"ukjentbrikke.wav")) && (WarningSoundNotFound_checkBox.Checked))
                     {
@@ -507,6 +533,7 @@ namespace Brikkesjekk
             {
                 Klubb_box.BeginInvoke(new MethodInvoker(delegate
                 {
+                    Klubb_box.ForeColor = Color.Red;
                     Klubb_box.Text = "XX";
                 }));
             }
@@ -514,6 +541,7 @@ namespace Brikkesjekk
             {
                 Klasse_box.BeginInvoke(new MethodInvoker(delegate
                 {
+                    Klasse_box.ForeColor = Color.Red;
                     Klasse_box.Text = "XX";
                 }));
             }
@@ -521,6 +549,7 @@ namespace Brikkesjekk
             {
                 Ecard2_box.BeginInvoke(new MethodInvoker(delegate
                 {
+                    Ecard2_box.ForeColor = Color.Red;
                     Ecard2_box.Text = "";
                 }));
             }
@@ -797,11 +826,14 @@ namespace Brikkesjekk
                 {
                     if ((row.Cells["ecard"].Value.ToString().Equals(searchString)) || (row.Cells["ecard2"].Value.ToString().Equals(searchString)))
                     {
+                        ledBulb_funnet.On = true;
+                        ledBulb_funnet.Color = Color.FromArgb(153, 255, 54); //LightGreen
                         dataGridView1.Rows[row.Index].Selected = true;
                         if (StartNr_box != null && !StartNr_box.IsDisposed)
                         {
                             StartNr_box.BeginInvoke(new MethodInvoker(delegate
                             {
+                                StartNr_box.ForeColor = Color.Green;
                                 StartNr_box.Text = dataGridView1.Rows[row.Index].Cells[0].Value.ToString();
                             }));
                         }
@@ -809,6 +841,7 @@ namespace Brikkesjekk
                         {
                             Navn_box.BeginInvoke(new MethodInvoker(delegate
                             {
+                                Navn_box.ForeColor = Color.Green; 
                                 Navn_box.Text = dataGridView1.Rows[row.Index].Cells[1].Value.ToString();
                             }));
                         }
@@ -816,6 +849,7 @@ namespace Brikkesjekk
                         {
                             Klubb_box.BeginInvoke(new MethodInvoker(delegate
                             {
+                                Klubb_box.ForeColor = Color.Green;
                                 Klubb_box.Text = dataGridView1.Rows[row.Index].Cells[2].Value.ToString();
                             }));
                         }
@@ -823,6 +857,7 @@ namespace Brikkesjekk
                         {
                             Klasse_box.BeginInvoke(new MethodInvoker(delegate
                             {
+                                Klasse_box.ForeColor = Color.Green; 
                                 Klasse_box.Text = dataGridView1.Rows[row.Index].Cells[3].Value.ToString();
                             }));
                         }
@@ -830,6 +865,7 @@ namespace Brikkesjekk
                         {
                             Ecard_box.BeginInvoke(new MethodInvoker(delegate
                             {
+                                Ecard_box.ForeColor = Color.Green;
                                 Ecard_box.Text = dataGridView1.Rows[row.Index].Cells[4].Value.ToString();
                             }));
                         }
@@ -837,6 +873,7 @@ namespace Brikkesjekk
                         {
                             Ecard2_box.BeginInvoke(new MethodInvoker(delegate
                             {
+                                Ecard2_box.ForeColor = Color.Green;
                                 Ecard2_box.Text = dataGridView1.Rows[row.Index].Cells[5].Value.ToString();
                             }));
                         }
@@ -857,7 +894,7 @@ namespace Brikkesjekk
                             Battery_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 Battery_box.Text = _batterylevel.ToString() + "V";
-                                Battery_box.BackColor = _batterycolor;
+                                Battery_box.ForeColor = _batterycolor;
                             }));
                         }
                         _valueFound = true;
@@ -1427,6 +1464,31 @@ namespace Brikkesjekk
             SetValueForLopsid = lopsid_box.Text;
             SendMessage_form f1 = new SendMessage_form();
             f1.Show();
+        }
+
+        private void ECU_read_led_blink(object sender, EventArgs e)
+        {
+            //((LedBulb)sender).On = !((LedBulb)sender).On;
+            if (_blink == 0) _blink = 500;
+            else _blink = 0;
+            ((LedBulb)sender).Blink(_blink);
+
+        }
+
+        private void ECU_read_led_Click(object sender, EventArgs e)
+        {
+            ((LedBulb)sender).On = !((LedBulb)sender).On;
+            if (_blink == 0) _blink = 500;
+            else _blink = 0;
+            ((LedBulb)sender).Blink(_blink);
+
+        }
+
+        private void MTR_read_led_Click(object sender, EventArgs e)
+        {
+            if (_blink == 0) _blink = 500;
+            else _blink = 0;
+            ((LedBulb)sender).Blink(_blink);
         }
     }
 }
