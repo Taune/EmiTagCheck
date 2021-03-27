@@ -1,7 +1,12 @@
 # EmiTagCheck
 Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
 
-07.02.2021
+27.03.2021
+- Diverse endringer på layout
+- Grønn tekst ved Brikke OK og rød tekst ved Ukjent Brikke
+- Lagt inn blinkende led diode for aktive ECU/MTR
+
+29.02.2021
 - Korrigert feil ved bruk av knapp for "Send melding" slik at riktig dialogboks kommer opp.
 - Ved bruke av "Lukk-x" ved avslutning av program så blir valgte data lagret til config-fil
 - Nedtrekssmeny for LiveRes-arrengement er korrigert slik at sist brukte arrangement blir default-verid
