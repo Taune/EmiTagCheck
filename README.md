@@ -1,6 +1,11 @@
 # EmiTagCheck
 Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
 
+13.06.2021
+- Lagt inn mulighet for søk etter navn. Skriv inn navn i søkefelt under datagridview.
+- Ved å skrive inn et startnummer og trykke "enter" så søkes det etter aktuell løper.
+- Endret datagridview fra "unbounded" til "bounded". Dette har medført en omstrukturering av kolonnenavn i forhold til tidligere.
+
 27.03.2021
 - Diverse endringer på layout
 - Grønn tekst ved Brikke OK og rød tekst ved Ukjent Brikke
