@@ -44,6 +44,7 @@ namespace Brikkesjekk
         public string _EcuCode;
         public string StartlistFilename;
         private int _blink = 0;
+        DataTable GridTable = new DataTable();
         SerialPortManager _spManager;
         SpeechSynthesizer SpeechReader = new SpeechSynthesizer();
 
@@ -468,7 +469,6 @@ namespace Brikkesjekk
 
         private void SearchCard_btn_Click(object sender, EventArgs e) //Manually search after ecard number
         {
-
             if (SearchCard_Txtbox.Text != "")
             {
                 if (dataGridView1.Rows.Count > 1 && dataGridView1.Rows != null)
@@ -688,6 +688,12 @@ namespace Brikkesjekk
         {
             if (readLiveResfil_btn.Text == "Les startliste LiveRes")
             {
+                if (GridTable != null)
+                {
+                    GridTable.Columns.Clear();
+                    GridTable.Rows.Clear();
+                    dataGridView1.Refresh();
+                }
                 readLiveResfil_btn.Text = "Stopp startliste LiveRes";
                 readLiveResfil_btn.BackColor = Color.LightGreen;
                 _stopLiveRes = false;
@@ -715,15 +721,17 @@ namespace Brikkesjekk
 
         private void readLiveResfil() //Read start list from LiveRes
         {
+
             Cursor.Current = Cursors.WaitCursor;
             int i = 1;
             progressBar1.Minimum = 0;
+
             //File for saving startlist from LiveRes local on computer
             _LiveResfileName = @folderLogfile_box.Text + @"\" + "LiveResStartlist" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv";
 
             using (StreamWriter logfile = new StreamWriter(File.Open(_LiveResfileName, FileMode.Create), Encoding.Default))
             {
-                logfile.WriteLine("id,name,class,name_1,ecard,ecard2,startno,ename");
+                logfile.WriteLine("id,name,class,name_1,ecard1,ecard2,startno,ename");
             }
 
             try
@@ -731,81 +739,83 @@ namespace Brikkesjekk
                 WebClient client = new WebClient();
                 client.Encoding = Encoding.UTF8;
                 string downloadString = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + "api.php?method=getrunners&comp=" + lopsid_box.Text);
-
                 var objects = JsonConvert.DeserializeObject<dynamic>(downloadString);
                 if (objects.status == "OK")
                 {
                     JArray items = (JArray)objects["runners"];
+                    GridTable = JsonConvert.DeserializeObject<DataTable>(items.ToString());
+                    dataGridView1.DataSource = GridTable;
                     progressBar1.Maximum = items.Count+1;
 
-                    dataGridView1.Rows.Clear();
-                    dataGridView1.Refresh();
-                    dataGridView1.ColumnCount = 7;
-                    dataGridView1.Columns[0].Name = "bib";
-                    dataGridView1.Columns[1].Name = "name";
-                    dataGridView1.Columns[2].Name = "club";
-                    dataGridView1.Columns[3].Name = "class";
-                    dataGridView1.Columns[4].Name = "ecard";
-                    dataGridView1.Columns[5].Name = "ecard2";
-                    dataGridView1.Columns[6].Name = "id";
+                    //dataGridView1.Rows.Clear();
+                    //dataGridView1.Refresh();
+                    //dataGridView1.ColumnCount = 7;
+                    //dataGridView1.Columns[0].Name = "bib";
+                    //dataGridView1.Columns[1].Name = "name";
+                    //dataGridView1.Columns[2].Name = "club";
+                    //dataGridView1.Columns[3].Name = "class";
+                    //dataGridView1.Columns[4].Name = "ecard";
+                    //dataGridView1.Columns[5].Name = "ecard2";
+                    //dataGridView1.Columns[6].Name = "id";
 
-                    foreach (JObject element in items)
-                    {
-                        progressBar1.Value = ++i;
-                        var NameConv = element["name"].ToString();
-                        var ClubConv = element["club"].ToString();
-                        var ClassConv = element["class"].ToString();
-                        var StartNoConv = "";
-                        //byte[] bytes = Encoding.Default.GetBytes(NameConv);
-                        //NameConv = Encoding.UTF8.GetString(bytes);
-                        //byte[] bytes1 = Encoding.Default.GetBytes(ClubConv);
-                        try
-                        {
-                            string[] Nameresult = NameConv.Split(')');
-                            NameConv = Nameresult[1].Trim();
-                        }
-                        catch
-                        {
-                        }
-                        //ClubConv = Encoding.UTF8.GetString(bytes1);
-                        //byte[] bytes2 = Encoding.Default.GetBytes(ClassConv);
-                        //ClassConv = Encoding.UTF8.GetString(bytes2);
+                    //foreach (JObject element in items)
+                    //{
+                    //    progressBar1.Value = ++i;
+                    //    var NameConv = element["name"].ToString();
+                    //    var ClubConv = element["club"].ToString();
+                    //    var ClassConv = element["class"].ToString();
+                    //    var StartNoConv = "";
+                    //    //byte[] bytes = Encoding.Default.GetBytes(NameConv);
+                    //    //NameConv = Encoding.UTF8.GetString(bytes);
+                    //    //byte[] bytes1 = Encoding.Default.GetBytes(ClubConv);
+                    //    try
+                    //    {
+                    //        string[] Nameresult = NameConv.Split(')');
+                    //        NameConv = Nameresult[1].Trim();
+                    //    }
+                    //    catch
+                    //    {
+                    //    }
+                    //    //ClubConv = Encoding.UTF8.GetString(bytes1);
+                    //    //byte[] bytes2 = Encoding.Default.GetBytes(ClassConv);
+                    //    //ClassConv = Encoding.UTF8.GetString(bytes2);
 
-                        if (element["bib"].ToString().Substring(0, 1) == "-")  //Startnr ved stafett -16003
-                        {
-                            switch (element["bib"].ToString().Length)
-                            {
-                                case 6: //3-sifret startnr
-                                    {
-                                        StartNoConv = element["bib"].ToString().Substring(1, 5);
-                                        break;
-                                    }
-                                case 5: //2-sifret startnr
-                                    {
-                                        StartNoConv = element["bib"].ToString().Substring(1, 4);
-                                        break;
-                                    }
-                                case 4: //1-sifret startnr 
-                                    {
-                                        StartNoConv = element["bib"].ToString().Substring(1, 3);
-                                        break;
-                                    }
-                            }
-                        }
-                        else
-                        {
-                            StartNoConv = element["bib"].ToString();
-                        }
-                        dataGridView1.Rows.Add(StartNoConv, NameConv, ClubConv, ClassConv, element["ecard1"], element["ecard2"], element["dbid"]);
-
-                        using (StreamWriter logfile = new StreamWriter(File.Open(_LiveResfileName, FileMode.Append), Encoding.Default))
-                        {
-                            logfile.WriteLine(element["dbid"] + "," + NameConv + "," + ClassConv + "," + ClubConv + "," +
-                                element["ecard1"] + "," + element["ecard2"] + "," + StartNoConv);
-                            //logfile.Close;
-                        }
-                    }
+                    //    if (element["bib"].ToString().Substring(0, 1) == "-")  //Startnr ved stafett -16003
+                    //    {
+                    //        switch (element["bib"].ToString().Length)
+                    //        {
+                    //            case 6: //3-sifret startnr
+                    //                {
+                    //                    StartNoConv = element["bib"].ToString().Substring(1, 5);
+                    //                    break;
+                    //                }
+                    //            case 5: //2-sifret startnr
+                    //                {
+                    //                    StartNoConv = element["bib"].ToString().Substring(1, 4);
+                    //                    break;
+                    //                }
+                    //            case 4: //1-sifret startnr 
+                    //                {
+                    //                    StartNoConv = element["bib"].ToString().Substring(1, 3);
+                    //                    break;
+                    //                }
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        StartNoConv = element["bib"].ToString();
+                    //    }
+                    //    dataGridView1.Rows.Add(StartNoConv, NameConv, ClubConv, ClassConv, element["ecard1"], element["ecard2"], element["dbid"]);
+                        
+                    //    using (StreamWriter logfile = new StreamWriter(File.Open(_LiveResfileName, FileMode.Append), Encoding.Default))
+                    //    {
+                    //        logfile.WriteLine(element["dbid"] + "," + NameConv + "," + ClassConv + "," + ClubConv + "," +
+                    //            element["ecard1"] + "," + element["ecard2"] + "," + StartNoConv);
+                    //        //logfile.Close;
+                    //    }
+                    //}
                 }
+
             }
             catch
             {
@@ -814,8 +824,9 @@ namespace Brikkesjekk
             Cursor.Current = Cursors.Default;
         }
 
-        private void SearchEcard(string searchString) //Search for Ecard in "Ecard" and "Ecard2"
+        private void SearchEcard(string searchString) //Search for Ecard in "Ecard1" and "Ecard2"
         {
+            SearchName_Box.Clear();
             var MaxRows = dataGridView1.Rows.Count;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
@@ -824,7 +835,7 @@ namespace Brikkesjekk
                 bool _valueFound = false;
                 foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    if ((row.Cells["ecard"].Value.ToString().Equals(searchString)) || (row.Cells["ecard2"].Value.ToString().Equals(searchString)))
+                    if ((row.Cells["ecard1"].Value.ToString().Equals(searchString)) || (row.Cells["ecard2"].Value.ToString().Equals(searchString)))
                     {
                         ledBulb_funnet.On = true;
                         ledBulb_funnet.Color = Color.FromArgb(153, 255, 54); //LightGreen
@@ -834,7 +845,7 @@ namespace Brikkesjekk
                             StartNr_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 StartNr_box.ForeColor = Color.Green;
-                                StartNr_box.Text = dataGridView1.Rows[row.Index].Cells[0].Value.ToString();
+                                StartNr_box.Text = dataGridView1.Rows[row.Index].Cells[1].Value.ToString();
                             }));
                         }
                         if (Navn_box != null && !Navn_box.IsDisposed)
@@ -842,7 +853,7 @@ namespace Brikkesjekk
                             Navn_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 Navn_box.ForeColor = Color.Green; 
-                                Navn_box.Text = dataGridView1.Rows[row.Index].Cells[1].Value.ToString();
+                                Navn_box.Text = dataGridView1.Rows[row.Index].Cells[3].Value.ToString();
                             }));
                         }
                         if (Klubb_box != null && !Klubb_box.IsDisposed)
@@ -850,7 +861,7 @@ namespace Brikkesjekk
                             Klubb_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 Klubb_box.ForeColor = Color.Green;
-                                Klubb_box.Text = dataGridView1.Rows[row.Index].Cells[2].Value.ToString();
+                                Klubb_box.Text = dataGridView1.Rows[row.Index].Cells[4].Value.ToString();
                             }));
                         }
                         if (Klasse_box != null && !Klasse_box.IsDisposed)
@@ -858,7 +869,7 @@ namespace Brikkesjekk
                             Klasse_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 Klasse_box.ForeColor = Color.Green; 
-                                Klasse_box.Text = dataGridView1.Rows[row.Index].Cells[3].Value.ToString();
+                                Klasse_box.Text = dataGridView1.Rows[row.Index].Cells[6].Value.ToString();
                             }));
                         }
                         if (Ecard_box != null && !Ecard_box.IsDisposed)
@@ -866,7 +877,7 @@ namespace Brikkesjekk
                             Ecard_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 Ecard_box.ForeColor = Color.Green;
-                                Ecard_box.Text = dataGridView1.Rows[row.Index].Cells[4].Value.ToString();
+                                Ecard_box.Text = dataGridView1.Rows[row.Index].Cells[7].Value.ToString();
                             }));
                         }
                         if (Ecard2_box != null && !Ecard2_box.IsDisposed)
@@ -874,14 +885,14 @@ namespace Brikkesjekk
                             Ecard2_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 Ecard2_box.ForeColor = Color.Green;
-                                Ecard2_box.Text = dataGridView1.Rows[row.Index].Cells[5].Value.ToString();
+                                Ecard2_box.Text = dataGridView1.Rows[row.Index].Cells[8].Value.ToString();
                             }));
                         }
                         if (ID_box != null && !ID_box.IsDisposed)
                         {
                             ID_box.BeginInvoke(new MethodInvoker(delegate
                             {
-                                ID_box.Text = dataGridView1.Rows[row.Index].Cells[6].Value.ToString();
+                                ID_box.Text = dataGridView1.Rows[row.Index].Cells[0].Value.ToString();
                             }));
                         }
                         if (Battery_box != null && !Battery_box.IsDisposed)
@@ -907,19 +918,19 @@ namespace Brikkesjekk
 
                         if (TextToSpeechFound_checkBox.Checked)
                         {
-                            TextToSpeech("Startnummer " + dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + " "+ dataGridView1.Rows[row.Index].Cells[1].Value.ToString());
+                            TextToSpeech("Startnummer " + dataGridView1.Rows[row.Index].Cells[1].Value.ToString() + " "+ dataGridView1.Rows[row.Index].Cells[3].Value.ToString());
                         }
 
-                        NavnScrollInfo = " - (" + dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + ") " +
-                                       dataGridView1.Rows[row.Index].Cells[1].Value.ToString();
+                        NavnScrollInfo = " - (" + dataGridView1.Rows[row.Index].Cells[1].Value.ToString() + ") " +
+                                       dataGridView1.Rows[row.Index].Cells[3].Value.ToString();
 
                         //Sender melding til LiveRes om at brikke er sjekket
-                        if (LiveRes_checkBox.Enabled == true)
+                        if (LiveRes_checkBox.Checked)
                         {
                             using (var client = new WebClient())
                             {
                                 var lopid = int.Parse(lopsid_box.Text);
-                                var id_no = int.Parse(dataGridView1.Rows[row.Index].Cells[6].Value.ToString());
+                                var id_no = int.Parse(dataGridView1.Rows[row.Index].Cells[0].Value.ToString());
                                 try
                                 {
                                     var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&dbid={1}",
@@ -933,8 +944,8 @@ namespace Brikkesjekk
                         using (StreamWriter sr = File.AppendText(_LogfileName))
                         {
                             sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + searchString + "\t" +
-                                dataGridView1.Rows[row.Index].Cells[0].Value.ToString() + "\t" +
-                                dataGridView1.Rows[row.Index].Cells[1].Value.ToString());
+                                dataGridView1.Rows[row.Index].Cells[1].Value.ToString() + "\t" +
+                                dataGridView1.Rows[row.Index].Cells[3].Value.ToString());
                         }
 
                         break;
@@ -965,16 +976,24 @@ namespace Brikkesjekk
                 _stopLiveRes = true;
             }
 
-            dataGridView1.Rows.Clear();
-            dataGridView1.Refresh();
-            dataGridView1.ColumnCount = 7;
-            dataGridView1.Columns[0].Name = "bib";
-            dataGridView1.Columns[1].Name = "name";
-            dataGridView1.Columns[2].Name = "club";
-            dataGridView1.Columns[3].Name = "class";
-            dataGridView1.Columns[4].Name = "ecard";
-            dataGridView1.Columns[5].Name = "ecard2";
-            dataGridView1.Columns[6].Name = "id";
+            //Delete existing data i datatable and clear datagridview.
+            if (GridTable != null)
+            {
+                GridTable.Columns.Clear();
+                GridTable.Rows.Clear();
+                dataGridView1.Refresh();
+            }
+
+            //dataGridView1.Rows.Clear();
+            //dataGridView1.Refresh();
+            //dataGridView1.ColumnCount = 7;
+            //dataGridView1.Columns[0].Name = "bib";
+            //dataGridView1.Columns[1].Name = "name";
+            //dataGridView1.Columns[2].Name = "club";
+            //dataGridView1.Columns[3].Name = "class";
+            //dataGridView1.Columns[4].Name = "ecard";
+            //dataGridView1.Columns[5].Name = "ecard2";
+            //dataGridView1.Columns[6].Name = "id";
 
             try
             {
@@ -1001,12 +1020,23 @@ namespace Brikkesjekk
 
                 progressBar1.Maximum = ds.Rows.Count;
 
+
+                GridTable.Columns.AddRange(new DataColumn[9] { new DataColumn("dbid", typeof(string)),
+                        new DataColumn("bib", typeof(string)),
+                        new DataColumn("status",typeof(string)), new DataColumn("name", typeof(string)), 
+                        new DataColumn("club", typeof(string)), new DataColumn("start", typeof(string)), 
+                        new DataColumn("class", typeof(string)), new DataColumn("ecard1", typeof(string)),
+                        new DataColumn("ecard2", typeof(string)),});
+
                 foreach (DataRow row in ds.Rows)
                 {
+                    
                     progressBar1.Value = ++i;
-                    var nyttnavn = row["id"];
-                    dataGridView1.Rows.Add(row["startno"], row["name"] + " " + row["ename"], row["name_1"], row["class"], row["ecard"], row["ecard2"], row["id"]);
+                    //dataGridView1.Rows.Add(row["startno"], row["name"] + " " + row["ename"], row["name_1"], row["class"], row["ecard"], row["ecard2"], row["id"]);
+                    GridTable.Rows.Add(row["id"], row["startno"], "0", row["name"] + " " + row["ename"], row["name_1"], "", row["class"], row["ecard"], row["ecard2"]);
                 }
+                dataGridView1.DataSource = GridTable;
+
             }
             catch (Exception ex)
             {
@@ -1077,7 +1107,7 @@ namespace Brikkesjekk
                 {
                     if (row1.Cells["bib"].Value.ToString().Equals(searchStringStr))
                     {
-                        SetValueForID = dataGridView1.Rows[row1.Index].Cells[6].Value.ToString();
+                        SetValueForID = dataGridView1.Rows[row1.Index].Cells[0].Value.ToString();
                         break;
                     }
                     else
@@ -1139,6 +1169,13 @@ namespace Brikkesjekk
                             Ecard2_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 Ecard2_box.Text = dataGridView1.Rows[row2.Index].Cells[5].Value.ToString();
+                            }));
+                        }
+                        if (ID_box != null && !ID_box.IsDisposed)
+                        {
+                            ID_box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                ID_box.Text = dataGridView1.Rows[row2.Index].Cells[6].Value.ToString();
                             }));
                         }
                         break;
@@ -1281,8 +1318,6 @@ namespace Brikkesjekk
                     DialogSendMelding = frm2.SendMessage;
                 }
 
-                //var result = MessageBox.Show("Vil du sende melding om at startnr **" + StartNr_box.Text + "** bytter brikke til **" + SearchCard_Txtbox.Text + "** ?", "Endre brikkenummer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                //if (result == DialogResult.Yes)
                 if (DialogSendMelding == true)
                     {
                     var lopid = lopsid_box.Text;
@@ -1293,13 +1328,19 @@ namespace Brikkesjekk
                     {
                         try
                         {
+                            var id_no = ID_box.Text;
+
                             var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}",
     lopid, brikkenr, startnr));
-                            var result2 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&bib={1}",
-                        lopid, startnr));
+                        //    var result2 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&bib={1}",
+                        //lopid, startnr));
+                            var result3 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&dbid={1}",
+lopid, id_no));
+
+
 
                             Console.WriteLine(result1);
-                            Console.WriteLine(result2);
+                            Console.WriteLine(result3);
                             using (StreamWriter sr = File.AppendText(_LogfileName))
                             {
                                 sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + startnr + " byttet brikke til " + brikkenr);
@@ -1322,27 +1363,12 @@ namespace Brikkesjekk
 
         private void SearchCard_Txtbox_KeyPress(object sender, KeyPressEventArgs e)
         {
+
             if (e.KeyChar == (char)Keys.Enter)
             {
+                SearchName_Box.Clear();
                 e.Handled = true;
                 SearchCard_btn.PerformClick();
-            }
-        }
-
-        private void StartNr_box_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == (char)Keys.Enter)
-            {
-                e.Handled = true;
-                int IntStartNo;
-                if (int.TryParse(StartNr_box.Text, out IntStartNo))
-                {
-                    SearchStartno(IntStartNo);
-                }
-                else
-                {
-                    MessageBox.Show(StartNr_box.Text + " ikke gyldig startnummer", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
             }
         }
 
@@ -1489,6 +1515,59 @@ namespace Brikkesjekk
             if (_blink == 0) _blink = 500;
             else _blink = 0;
             ((LedBulb)sender).Blink(_blink);
+        }
+
+        private void SearchName_Box_TextChanged(object sender, EventArgs e)
+        {
+           if (GridTable != null && GridTable.Rows.Count > 0)
+                {
+                    dataGridView1.DataSource = GridTable;
+                    (dataGridView1.DataSource as DataTable).DefaultView.RowFilter = string.Format("name LIKE '%{0}%'", SearchName_Box.Text);
+                }
+        }
+
+        private void StartNr_box_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)Keys.Enter)
+            {
+                SearchName_Box.Clear();
+                e.Handled = true;
+                if (GridTable != null && GridTable.Rows.Count > 0)
+                {
+                    var MaxRows = dataGridView1.Rows.Count;
+                    dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                    var searchStringStr = StartNr_box.Text;
+
+                    try
+                    {
+                        foreach (DataGridViewRow row1 in dataGridView1.Rows)
+                        {
+                            if (row1.Cells["bib"].Value.ToString().Equals(searchStringStr))
+                            {
+                                Navn_box.Text = dataGridView1.Rows[row1.Index].Cells[3].Value.ToString();
+                                Klubb_box.Text = dataGridView1.Rows[row1.Index].Cells[4].Value.ToString();
+                                Klasse_box.Text = dataGridView1.Rows[row1.Index].Cells[6].Value.ToString();
+                                Ecard_box.Text = dataGridView1.Rows[row1.Index].Cells[7].Value.ToString();
+                                Ecard2_box.Text = dataGridView1.Rows[row1.Index].Cells[8].Value.ToString();
+                                break;
+                            }
+                            else
+                            {
+                                Navn_box.Text = "";
+                                Klubb_box.Text = "";
+                                Klasse_box.Text = "";
+                                Ecard_box.Text = "";
+                                Ecard2_box.Text = "";
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+
+            }
+
         }
     }
 }
