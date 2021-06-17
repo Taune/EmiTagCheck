@@ -1,6 +1,9 @@
 # EmiTagCheck
 Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
 
+![image](https://user-images.githubusercontent.com/59508210/122427162-2bfadb00-cf91-11eb-9517-702f5acb6b13.png)
+
+
 16.06.2021
 - Muligheter ved søk i løperbase med startnummer. Skriv inn nummer i startnummerfelt og trykk enter.
 - Ved å trykke på startnummer i datagrid så kommer startnummer og løperinfo opp. Dette er nyttig ved tildeling av ukjent brikke til løper som er blitt søkt opp med navn.
