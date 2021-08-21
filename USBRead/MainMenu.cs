@@ -192,7 +192,6 @@ namespace Brikkesjekk
                     {
 
                         ReadEcu_btn.Text = "Stop ECU";
-                        //ReadEcu_btn.BackColor = Color.LightGreen;
                         UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
                         ECU_read_led.Color = Color.FromArgb(153, 255, 54); //LightGreen
                         ECU_read_led_blink(ECU_read_led, new EventArgs());
@@ -745,6 +744,9 @@ namespace Brikkesjekk
                     JArray items = (JArray)objects["runners"];
                     GridTable = JsonConvert.DeserializeObject<DataTable>(items.ToString());
                     dataGridView1.DataSource = GridTable;
+                    dataGridView1.EnableHeadersVisualStyles = false;
+                    dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray; 
+                    dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.LightSalmon;
                     progressBar1.Maximum = items.Count+1;
 
                     //dataGridView1.Rows.Clear();
@@ -1036,7 +1038,7 @@ namespace Brikkesjekk
                     GridTable.Rows.Add(row["id"], row["startno"], "0", row["name"] + " " + row["ename"], row["name_1"], "", row["class"], row["ecard"], row["ecard2"]);
                 }
                 dataGridView1.DataSource = GridTable;
-
+                dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.LightSalmon;
             }
             catch (Exception ex)
             {
@@ -1328,19 +1330,12 @@ namespace Brikkesjekk
                     {
                         try
                         {
-                            var id_no = ID_box.Text;
-
                             var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}",
-    lopid, brikkenr, startnr));
-                        //    var result2 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&bib={1}",
-                        //lopid, startnr));
-                            var result3 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&dbid={1}",
-lopid, id_no));
+                            lopid, brikkenr, startnr));
+                            Thread.Sleep(20);
+                            var result3 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&bib={1}",
+                            lopid, startnr));
 
-
-
-                            Console.WriteLine(result1);
-                            Console.WriteLine(result3);
                             using (StreamWriter sr = File.AppendText(_LogfileName))
                             {
                                 sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + startnr + " byttet brikke til " + brikkenr);
@@ -1544,10 +1539,15 @@ lopid, id_no));
                         {
                             if (row1.Cells["bib"].Value.ToString().Equals(searchStringStr))
                             {
+                                Navn_box.ForeColor = Color.Gray;
                                 Navn_box.Text = dataGridView1.Rows[row1.Index].Cells[3].Value.ToString();
+                                Klubb_box.ForeColor = Color.Gray;
                                 Klubb_box.Text = dataGridView1.Rows[row1.Index].Cells[4].Value.ToString();
+                                Klasse_box.ForeColor = Color.Gray;
                                 Klasse_box.Text = dataGridView1.Rows[row1.Index].Cells[6].Value.ToString();
+                                Ecard_box.ForeColor = Color.Gray;
                                 Ecard_box.Text = dataGridView1.Rows[row1.Index].Cells[7].Value.ToString();
+                                Ecard2_box.ForeColor = Color.Gray;
                                 Ecard2_box.Text = dataGridView1.Rows[row1.Index].Cells[8].Value.ToString();
                                 break;
                             }
@@ -1565,9 +1565,21 @@ lopid, id_no));
                     {
                     }
                 }
-
             }
+        }
 
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex != -1 && e.ColumnIndex != -1)
+            {       
+                if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null && e.ColumnIndex == 1)
+                {
+                    StartNr_box.Text = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    sender = this;
+                    KeyPressEventArgs kpea = new KeyPressEventArgs((char)Keys.Enter);
+                    StartNr_box_KeyPress(null, kpea);
+                }
+            }
         }
     }
 }

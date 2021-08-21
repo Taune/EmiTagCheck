@@ -34,7 +34,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainMenu));
             this.UsbPort_listBox = new System.Windows.Forms.ListBox();
             this.Close_btn = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.Clock_lbl = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.SearchCard_btn = new System.Windows.Forms.Button();
@@ -122,16 +121,6 @@
             this.Close_btn.UseVisualStyleBackColor = false;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(613, 478);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(81, 20);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "Deltakere";
-            // 
             // Clock_lbl
             // 
             this.Clock_lbl.AutoSize = true;
@@ -169,7 +158,7 @@
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.Location = new System.Drawing.Point(617, 514);
+            this.dataGridView1.Location = new System.Drawing.Point(617, 516);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -184,6 +173,7 @@
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(843, 263);
             this.dataGridView1.TabIndex = 11;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // SearchCard_btn
             // 
@@ -214,7 +204,7 @@
             this.UsbRead_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UsbRead_listBox.FormattingEnabled = true;
             this.UsbRead_listBox.ItemHeight = 18;
-            this.UsbRead_listBox.Location = new System.Drawing.Point(15, 514);
+            this.UsbRead_listBox.Location = new System.Drawing.Point(15, 516);
             this.UsbRead_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbRead_listBox.Name = "UsbRead_listBox";
             this.UsbRead_listBox.Size = new System.Drawing.Size(581, 274);
@@ -443,7 +433,7 @@
             // 
             this.readLiveResfil_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.readLiveResfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readLiveResfil_btn.Location = new System.Drawing.Point(971, 469);
+            this.readLiveResfil_btn.Location = new System.Drawing.Point(885, 460);
             this.readLiveResfil_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readLiveResfil_btn.Name = "readLiveResfil_btn";
             this.readLiveResfil_btn.Size = new System.Drawing.Size(240, 39);
@@ -456,7 +446,7 @@
             // 
             this.readBrikkesjekkfil_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.readBrikkesjekkfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(703, 469);
+            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(617, 459);
             this.readBrikkesjekkfil_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readBrikkesjekkfil_btn.Name = "readBrikkesjekkfil_btn";
             this.readBrikkesjekkfil_btn.Size = new System.Drawing.Size(252, 39);
@@ -712,14 +702,14 @@
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 13.06.2021";
+            this.version.Text = "Ver 21.08.2021";
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(1220, 469);
+            this.progressBar1.Location = new System.Drawing.Point(617, 502);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(239, 39);
+            this.progressBar1.Size = new System.Drawing.Size(841, 10);
             this.progressBar1.TabIndex = 53;
             // 
             // GetFolderButton
@@ -771,10 +761,10 @@
             // 
             this.SearchName_Box.BackColor = System.Drawing.SystemColors.Info;
             this.SearchName_Box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchName_Box.Location = new System.Drawing.Point(747, 801);
+            this.SearchName_Box.Location = new System.Drawing.Point(1144, 468);
             this.SearchName_Box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchName_Box.Name = "SearchName_Box";
-            this.SearchName_Box.Size = new System.Drawing.Size(373, 27);
+            this.SearchName_Box.Size = new System.Drawing.Size(316, 27);
             this.SearchName_Box.TabIndex = 60;
             this.SearchName_Box.TextChanged += new System.EventHandler(this.SearchName_Box_TextChanged);
             // 
@@ -802,7 +792,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(613, 804);
+            this.label10.Location = new System.Drawing.Point(1142, 447);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(116, 20);
             this.label10.TabIndex = 61;
@@ -842,7 +832,6 @@
             this.Controls.Add(this.SearchCard_btn);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.Clock_lbl);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.Close_btn);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -867,7 +856,6 @@
         private System.Windows.Forms.ListBox UsbPort_listBox;
         private System.Windows.Forms.Button RefreshUsbPort_btn;
         private System.Windows.Forms.Button Close_btn;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label Clock_lbl;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button SearchCard_btn;
