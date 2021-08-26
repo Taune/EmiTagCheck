@@ -3,9 +3,10 @@ Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR
 
 ![image](https://user-images.githubusercontent.com/59508210/122427162-2bfadb00-cf91-11eb-9517-702f5acb6b13.png)
 
-21.08.2021
-- Lagt inn pause mellom kommandoer til LiveRes for å sikre at begge blir kjørt ved tregt internett
-- 
+26.08.2021
+- Ved import av stafett fra LiveRes så blir "-" foran startnr fjernet.
+- Ved endring av brikke og bruk av LiveRes så er kall til LiveRes endret slik at brikke blir satt til "sjekket" samtidig med brikkeendring.
+
 17.06.2021
 - Fikset feil ved trykk på header i datagridview
 - Fikset api-kall for at brikke er sjekket ved tildeling av ny brikke
