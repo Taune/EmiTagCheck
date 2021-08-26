@@ -554,14 +554,15 @@ namespace Brikkesjekk
             }
             if (Battery_box != null && !Battery_box.IsDisposed)
             {
-                if (_batterylevel > 3) { _batterycolor = Color.Green; }
-                if (_batterylevel > 2.95 && _batterylevel <= 3) { _batterycolor = Color.Yellow; }
+                if (_batterylevel > 2.97) { _batterycolor = Color.Green; }
+                if (_batterylevel > 2.95 && _batterylevel <= 2.97) { _batterycolor = Color.Yellow; }
                 if (_batterylevel <= 2.95) { _batterycolor = Color.Red; }
                 if (_batterylevel == 0) { _batterycolor = Color.LightGray; }
 
                 Battery_box.BeginInvoke(new MethodInvoker(delegate
                 {
                     Battery_box.Text = _batterylevel.ToString() + "V";
+                    Battery_box.ForeColor = Color.Black;
                     Battery_box.BackColor = _batterycolor;
                 }));
             }
@@ -705,8 +706,8 @@ namespace Brikkesjekk
                 readLiveResfil_btn.Text = "Les startliste LiveRes";
                 readLiveResfil_btn.BackColor = SystemColors.ButtonHighlight;
                 _stopLiveRes = true;
+                progressBar1.Value = 0;
             }
-
         }
 
         async Task RunPeriodically(TimeSpan interval, CancellationToken token) //read start list from LiveRes every 5 min
@@ -720,9 +721,8 @@ namespace Brikkesjekk
 
         private void readLiveResfil() //Read start list from LiveRes
         {
-
             Cursor.Current = Cursors.WaitCursor;
-            int i = 1;
+            int i = 0;
             progressBar1.Minimum = 0;
 
             //File for saving startlist from LiveRes local on computer
@@ -730,7 +730,7 @@ namespace Brikkesjekk
 
             using (StreamWriter logfile = new StreamWriter(File.Open(_LiveResfileName, FileMode.Create), Encoding.Default))
             {
-                logfile.WriteLine("id,name,class,name_1,ecard1,ecard2,startno,ename");
+                logfile.WriteLine("id,name,ename,class,name_1,ecard,ecard2,startno");
             }
 
             try
@@ -742,82 +742,32 @@ namespace Brikkesjekk
                 if (objects.status == "OK")
                 {
                     JArray items = (JArray)objects["runners"];
-                    GridTable = JsonConvert.DeserializeObject<DataTable>(items.ToString());
+                    progressBar1.Maximum = items.Count;
+
+                    //Fjerner "-" foran startnr på stafett
+                    var jObjects = items.ToObject<List<JObject>>();          //Get list of objects inside array
+                    foreach (var obj in jObjects)                            //Loop through all list
+                    {
+                        foreach (var prop in obj.Properties())            
+                        {
+                            if (prop.Name == "bib")                         //Find field "bib"
+                                obj["bib"] = obj["bib"].ToString().Trim(new Char[] { '-' });    //Remove "-"
+                        }
+                        using (StreamWriter sr = File.AppendText(_LiveResfileName))
+                        {
+                            sr.WriteLine(obj["dbid"] + "," + obj["name"] + ", ," + obj["class"] + "," + obj["club"] + "," + obj["ecard1"]
+                                 + "," + obj["ecard2"] + "," + obj["ecard1"] + "," + obj["bib"]);
+                        }
+                        progressBar1.Value = ++i;
+                    }
+                    JArray outputArray = JArray.FromObject(jObjects);         //Output array
+
+                    GridTable = JsonConvert.DeserializeObject<DataTable>(outputArray.ToString());
                     dataGridView1.DataSource = GridTable;
                     dataGridView1.EnableHeadersVisualStyles = false;
                     dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray; 
                     dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.LightSalmon;
-                    progressBar1.Maximum = items.Count+1;
-
-                    //dataGridView1.Rows.Clear();
-                    //dataGridView1.Refresh();
-                    //dataGridView1.ColumnCount = 7;
-                    //dataGridView1.Columns[0].Name = "bib";
-                    //dataGridView1.Columns[1].Name = "name";
-                    //dataGridView1.Columns[2].Name = "club";
-                    //dataGridView1.Columns[3].Name = "class";
-                    //dataGridView1.Columns[4].Name = "ecard";
-                    //dataGridView1.Columns[5].Name = "ecard2";
-                    //dataGridView1.Columns[6].Name = "id";
-
-                    //foreach (JObject element in items)
-                    //{
-                    //    progressBar1.Value = ++i;
-                    //    var NameConv = element["name"].ToString();
-                    //    var ClubConv = element["club"].ToString();
-                    //    var ClassConv = element["class"].ToString();
-                    //    var StartNoConv = "";
-                    //    //byte[] bytes = Encoding.Default.GetBytes(NameConv);
-                    //    //NameConv = Encoding.UTF8.GetString(bytes);
-                    //    //byte[] bytes1 = Encoding.Default.GetBytes(ClubConv);
-                    //    try
-                    //    {
-                    //        string[] Nameresult = NameConv.Split(')');
-                    //        NameConv = Nameresult[1].Trim();
-                    //    }
-                    //    catch
-                    //    {
-                    //    }
-                    //    //ClubConv = Encoding.UTF8.GetString(bytes1);
-                    //    //byte[] bytes2 = Encoding.Default.GetBytes(ClassConv);
-                    //    //ClassConv = Encoding.UTF8.GetString(bytes2);
-
-                    //    if (element["bib"].ToString().Substring(0, 1) == "-")  //Startnr ved stafett -16003
-                    //    {
-                    //        switch (element["bib"].ToString().Length)
-                    //        {
-                    //            case 6: //3-sifret startnr
-                    //                {
-                    //                    StartNoConv = element["bib"].ToString().Substring(1, 5);
-                    //                    break;
-                    //                }
-                    //            case 5: //2-sifret startnr
-                    //                {
-                    //                    StartNoConv = element["bib"].ToString().Substring(1, 4);
-                    //                    break;
-                    //                }
-                    //            case 4: //1-sifret startnr 
-                    //                {
-                    //                    StartNoConv = element["bib"].ToString().Substring(1, 3);
-                    //                    break;
-                    //                }
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        StartNoConv = element["bib"].ToString();
-                    //    }
-                    //    dataGridView1.Rows.Add(StartNoConv, NameConv, ClubConv, ClassConv, element["ecard1"], element["ecard2"], element["dbid"]);
-                        
-                    //    using (StreamWriter logfile = new StreamWriter(File.Open(_LiveResfileName, FileMode.Append), Encoding.Default))
-                    //    {
-                    //        logfile.WriteLine(element["dbid"] + "," + NameConv + "," + ClassConv + "," + ClubConv + "," +
-                    //            element["ecard1"] + "," + element["ecard2"] + "," + StartNoConv);
-                    //        //logfile.Close;
-                    //    }
-                    //}
                 }
-
             }
             catch
             {
@@ -897,17 +847,25 @@ namespace Brikkesjekk
                                 ID_box.Text = dataGridView1.Rows[row.Index].Cells[0].Value.ToString();
                             }));
                         }
+                        if (SearchCard_Txtbox != null && !SearchCard_Txtbox.IsDisposed)
+                        {
+                            SearchCard_Txtbox.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                SearchCard_Txtbox.Text = "";
+                            }));
+                        }
                         if (Battery_box != null && !Battery_box.IsDisposed)
                         {
-                            if (_batterylevel > 3) { _batterycolor = Color.Green; }
-                            if (_batterylevel > 2.95 && _batterylevel <= 3) { _batterycolor = Color.Yellow; }
+                            if (_batterylevel > 2.97) { _batterycolor = Color.Green; }
+                            if (_batterylevel > 2.95 && _batterylevel <= 2.97) { _batterycolor = Color.Yellow; }
                             if (_batterylevel <= 2.95) { _batterycolor = Color.Red; }
                             if (_batterylevel == 0) { _batterycolor = Color.LightGray; }
 
                             Battery_box.BeginInvoke(new MethodInvoker(delegate
                             {
                                 Battery_box.Text = _batterylevel.ToString() + "V";
-                                Battery_box.ForeColor = _batterycolor;
+                                Battery_box.ForeColor = Color.Black;
+                                Battery_box.BackColor = _batterycolor;
                             }));
                         }
                         _valueFound = true;
@@ -986,17 +944,6 @@ namespace Brikkesjekk
                 dataGridView1.Refresh();
             }
 
-            //dataGridView1.Rows.Clear();
-            //dataGridView1.Refresh();
-            //dataGridView1.ColumnCount = 7;
-            //dataGridView1.Columns[0].Name = "bib";
-            //dataGridView1.Columns[1].Name = "name";
-            //dataGridView1.Columns[2].Name = "club";
-            //dataGridView1.Columns[3].Name = "class";
-            //dataGridView1.Columns[4].Name = "ecard";
-            //dataGridView1.Columns[5].Name = "ecard2";
-            //dataGridView1.Columns[6].Name = "id";
-
             try
             {
                 DataTable ds = new DataTable("Data");
@@ -1022,7 +969,6 @@ namespace Brikkesjekk
 
                 progressBar1.Maximum = ds.Rows.Count;
 
-
                 GridTable.Columns.AddRange(new DataColumn[9] { new DataColumn("dbid", typeof(string)),
                         new DataColumn("bib", typeof(string)),
                         new DataColumn("status",typeof(string)), new DataColumn("name", typeof(string)), 
@@ -1032,7 +978,6 @@ namespace Brikkesjekk
 
                 foreach (DataRow row in ds.Rows)
                 {
-                    
                     progressBar1.Value = ++i;
                     //dataGridView1.Rows.Add(row["startno"], row["name"] + " " + row["ename"], row["name_1"], row["class"], row["ecard"], row["ecard2"], row["id"]);
                     GridTable.Rows.Add(row["id"], row["startno"], "0", row["name"] + " " + row["ename"], row["name_1"], "", row["class"], row["ecard"], row["ecard2"]);
@@ -1045,7 +990,6 @@ namespace Brikkesjekk
                 MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 _fileloaded = false;
             }
-
         }
 
         private void ChangeEcuCode_btn_Click(object sender, EventArgs e)
@@ -1281,10 +1225,14 @@ namespace Brikkesjekk
                             {
                                 var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
         lopid, dbidNo));
-                                Console.WriteLine(result1);
                                 using (StreamWriter sr = File.AppendText(_LogfileName))
                                 {
                                     sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + IntStartNo + " ikke startet");
+                                }
+                                if ((File.Exists(@"Emailsent.wav")) && (WarningSoundNotFound_checkBox.Checked))
+                                {
+                                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"Emailsent.wav");
+                                    player.Play();
                                 }
                             }
                             catch
@@ -1330,17 +1278,18 @@ namespace Brikkesjekk
                     {
                         try
                         {
-                            var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}",
-                            lopid, brikkenr, startnr));
-                            Thread.Sleep(20);
-                            var result3 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&bib={1}",
-                            lopid, startnr));
+                            var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}&bib={2}", lopid, brikkenr,
+                            startnr));
 
                             using (StreamWriter sr = File.AppendText(_LogfileName))
                             {
                                 sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + startnr + " byttet brikke til " + brikkenr);
                             }
-
+                            if ((File.Exists(@"Emailsent.wav")) && (WarningSoundNotFound_checkBox.Checked))
+                            {
+                                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"Emailsent.wav");
+                                player.Play();
+                            }
                         }
                         catch
                         {

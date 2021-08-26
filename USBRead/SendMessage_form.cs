@@ -37,7 +37,6 @@ namespace Brikkesjekk
                 {
                     var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&message={2}",
 lopid, startnr, melding));
-                    Console.WriteLine(result1);
                 }
                 catch
                 {

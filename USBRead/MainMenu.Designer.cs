@@ -223,12 +223,12 @@
             // StartNr_box
             // 
             this.StartNr_box.BackColor = System.Drawing.SystemColors.Info;
-            this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 54F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartNr_box.ForeColor = System.Drawing.Color.Red;
-            this.StartNr_box.Location = new System.Drawing.Point(16, 43);
+            this.StartNr_box.Location = new System.Drawing.Point(16, 47);
             this.StartNr_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StartNr_box.Name = "StartNr_box";
-            this.StartNr_box.Size = new System.Drawing.Size(243, 109);
+            this.StartNr_box.Size = new System.Drawing.Size(277, 98);
             this.StartNr_box.TabIndex = 18;
             this.StartNr_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.StartNr_box.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.StartNr_box_KeyPress);
@@ -274,7 +274,7 @@
             this.Ecard_box.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard_box.Location = new System.Drawing.Point(280, 43);
+            this.Ecard_box.Location = new System.Drawing.Point(303, 43);
             this.Ecard_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard_box.Name = "Ecard_box";
             this.Ecard_box.ReadOnly = true;
@@ -286,7 +286,7 @@
             this.Ecard2_box.BackColor = System.Drawing.SystemColors.Control;
             this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard2_box.ForeColor = System.Drawing.Color.Blue;
-            this.Ecard2_box.Location = new System.Drawing.Point(280, 108);
+            this.Ecard2_box.Location = new System.Drawing.Point(303, 108);
             this.Ecard2_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard2_box.Name = "Ecard2_box";
             this.Ecard2_box.ReadOnly = true;
@@ -297,7 +297,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(276, 22);
+            this.label4.Location = new System.Drawing.Point(299, 22);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(62, 18);
             this.label4.TabIndex = 27;
@@ -307,7 +307,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(276, 89);
+            this.label5.Location = new System.Drawing.Point(299, 89);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 18);
             this.label5.TabIndex = 28;
@@ -532,7 +532,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(515, 89);
+            this.label12.Location = new System.Drawing.Point(538, 89);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(90, 18);
             this.label12.TabIndex = 32;
@@ -555,7 +555,7 @@
             this.ID_box.Enabled = false;
             this.ID_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ID_box.ForeColor = System.Drawing.SystemColors.Menu;
-            this.ID_box.Location = new System.Drawing.Point(517, 45);
+            this.ID_box.Location = new System.Drawing.Point(540, 45);
             this.ID_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ID_box.Name = "ID_box";
             this.ID_box.Size = new System.Drawing.Size(115, 39);
@@ -566,7 +566,7 @@
             this.Battery_box.BackColor = System.Drawing.SystemColors.Control;
             this.Battery_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Battery_box.ForeColor = System.Drawing.Color.Blue;
-            this.Battery_box.Location = new System.Drawing.Point(517, 108);
+            this.Battery_box.Location = new System.Drawing.Point(540, 108);
             this.Battery_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Battery_box.Name = "Battery_box";
             this.Battery_box.ReadOnly = true;
