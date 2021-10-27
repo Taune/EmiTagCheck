@@ -61,7 +61,7 @@ namespace Brikkesjekk
 
         public class RootObject
         {
-            public List<Competition> competitions { get; set; }
+            public List<Competition> competitions { get; set; }                
         }
 
         public MainMenu()
@@ -86,6 +86,7 @@ namespace Brikkesjekk
             AppSettingsSection app = config.AppSettings;
             config.AppSettings.Settings["lopid"].Value = lopsid_box.Text;
             config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
+            config.AppSettings.Settings["lopdato"].Value = lopsdato_box.Text;
             config.AppSettings.Settings["logfolder"].Value = folderLogfile_box.Text;
             config.AppSettings.Settings["liveresCheckBox"].Value = LiveRes_checkBox.Checked.ToString();
             config.AppSettings.Settings["SoundCheckBox_NotFound"].Value = WarningSoundNotFound_checkBox.Checked.ToString();
@@ -275,6 +276,7 @@ namespace Brikkesjekk
             // Read a keys from the config file            
             lopsid_box.Text = ConfigurationManager.AppSettings.Get("lopid");
             lopsnavn_box.Text = ConfigurationManager.AppSettings.Get("lopnavn");
+            lopsdato_box.Text = ConfigurationManager.AppSettings.Get("lopdato");
             folderLogfile_box.Text = ConfigurationManager.AppSettings.Get("logfolder");
             if (ConfigurationManager.AppSettings.Get("SoundCheckBox_Found") == "False")
             {
@@ -453,8 +455,9 @@ namespace Brikkesjekk
             //Update config file when exit
             Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             AppSettingsSection app = config.AppSettings;
-            config.AppSettings.Settings["lopid"].Value = lopsid_box.Text;
+            config.AppSettings.Settings["lopid"].Value = lopsid_box.Text; 
             config.AppSettings.Settings["lopnavn"].Value = lopsnavn_box.Text;
+            config.AppSettings.Settings["lopdato"].Value = lopsdato_box.Text;
             config.AppSettings.Settings["logfolder"].Value = folderLogfile_box.Text;
             config.AppSettings.Settings["liveresCheckBox"].Value = LiveRes_checkBox.Checked.ToString();
             config.AppSettings.Settings["SoundCheckBox_NotFound"].Value = WarningSoundNotFound_checkBox.Checked.ToString();
@@ -490,8 +493,10 @@ namespace Brikkesjekk
 
         private void UnknownEcard(string ecardname) //Ecard not found - Write "Ukjent brikke"
         {
-            ledBulb_funnet.On = true;
-            ledBulb_funnet.Color = Color.Red;
+            EmitCard_picture.Visible = false;
+            EmiTag_picture.Visible = false;
+            //ledBulb_funnet.On = true;
+            //ledBulb_funnet.Color = Color.Red;
             if (StartNr_box != null && !StartNr_box.IsDisposed)
             {
                 StartNr_box.BeginInvoke(new MethodInvoker(delegate
@@ -789,8 +794,18 @@ namespace Brikkesjekk
                 {
                     if ((row.Cells["ecard1"].Value.ToString().Equals(searchString)) || (row.Cells["ecard2"].Value.ToString().Equals(searchString)))
                     {
-                        ledBulb_funnet.On = true;
-                        ledBulb_funnet.Color = Color.FromArgb(153, 255, 54); //LightGreen
+                        if (searchString.Length < 5 || searchString.Length > 6)
+                        {
+                            EmitCard_picture.Visible = false;
+                            EmiTag_picture.Visible = true;
+                        }
+                        if (searchString.Length == 5 || searchString.Length == 6)
+                        {
+                            EmitCard_picture.Visible = true;
+                            EmiTag_picture.Visible = false;
+                        }
+                        //ledBulb_funnet.On = true;
+                        //ledBulb_funnet.Color = Color.FromArgb(153, 255, 54); //LightGreen
                         dataGridView1.Rows[row.Index].Selected = true;
                         if (StartNr_box != null && !StartNr_box.IsDisposed)
                         {
@@ -863,7 +878,7 @@ namespace Brikkesjekk
 
                             Battery_box.BeginInvoke(new MethodInvoker(delegate
                             {
-                                Battery_box.Text = _batterylevel.ToString() + "V";
+                                Battery_box.Text = _batterylevel.ToString() + "v";
                                 Battery_box.ForeColor = Color.Black;
                                 Battery_box.BackColor = _batterycolor;
                             }));
@@ -1210,7 +1225,7 @@ namespace Brikkesjekk
             int IntStartNo;
             if (int.TryParse(StartNr_box.Text, out IntStartNo))
             {
-                var result = MessageBox.Show("Vil du sende melding om at startnr **" + IntStartNo + "** ikke starter?", "Sett ikke startet", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                var result = MessageBox.Show("Vil du sende melding om at startnr **" + IntStartNo + "** ikke starter?", "Sett ikke startet", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (result == DialogResult.Yes)
                 {
                     FindID_no(IntStartNo);
@@ -1259,7 +1274,7 @@ namespace Brikkesjekk
             {
                 if (StartNr_box.Text == "" || SearchCard_Txtbox.Text == "")
                 {
-                    MessageBox.Show("please don't leave any textbox is empty");
+                    MessageBox.Show("Sjekk at feltet for startnr og manuell brikkesøk er fylt ut!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
@@ -1300,7 +1315,7 @@ namespace Brikkesjekk
             }
             else
             {
-                MessageBox.Show("Ikke gyldig startnummer eller brikkenummer" , "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Sjekk at feltet for startnr og manuell brikkesøk er fylt ut!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -1348,7 +1363,8 @@ namespace Brikkesjekk
                 string downloadString = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + "api.php?method=getcompetitions");
                 var objects = JsonConvert.DeserializeObject<RootObject>(downloadString);
 
-                comboBoxLiveRes.DataSource = objects.competitions;                
+                comboBoxLiveRes.DataSource = objects.competitions;
+                //var mylist = mylist.Select(Competition => { Competition.Total = Competition.Discount + Competition.Deposit; return Competition; });
                 comboBoxLiveRes.DisplayMember = "Name";
                 comboBoxLiveRes.ValueMember = "id";
                 comboBoxLiveRes.SelectedValue = int.Parse(lopsid_box.Text);
@@ -1362,15 +1378,12 @@ namespace Brikkesjekk
 
         private void comboBoxLiveRes_SelectedValueChanged(object sender, EventArgs e)
         {
-            //int ValgtIndex = comboBoxLiveRes.SelectedIndex;
-            //var ValgtItem = comboBoxLiveRes.SelectedItem;
             var SelectedValue = comboBoxLiveRes.SelectedValue;
             lopsid_box.Text = SelectedValue.ToString();
             var ArrConv = comboBoxLiveRes.Text.ToString();
-            //byte[] bytes = Encoding.Default.GetBytes(ArrConv);
-            //ArrConv = Encoding.UTF8.GetString(bytes);
 
-            lopsnavn_box.Text = ArrConv;
+            lopsnavn_box.Text = ArrConv.Substring(13);
+            lopsdato_box.Text = ArrConv.Substring(0, 10);
         }
 
         private void Code70_radioButton_CheckedChanged(object sender, EventArgs e)
@@ -1528,6 +1541,16 @@ namespace Brikkesjekk
                     KeyPressEventArgs kpea = new KeyPressEventArgs((char)Keys.Enter);
                     StartNr_box_KeyPress(null, kpea);
                 }
+            }
+        }
+
+        private void comboBoxLiveRes_Format(object sender, ListControlConvertEventArgs e)
+        {
+            {
+                // Assuming your class called Employee , and Firstname & Lastname are the fields
+                string lastname = ((Competition)e.ListItem).date;
+                string firstname = ((Competition)e.ListItem).name;
+                e.Value = lastname + " - " + firstname;
             }
         }
     }

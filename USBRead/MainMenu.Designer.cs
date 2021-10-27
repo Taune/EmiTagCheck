@@ -54,6 +54,8 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.LiveRes_groupBox = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lopsdato_box = new System.Windows.Forms.TextBox();
             this.comboBoxLiveRes = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.RefreshUsbPort_btn = new System.Windows.Forms.Button();
@@ -61,7 +63,8 @@
             this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Løperinfo = new System.Windows.Forms.GroupBox();
-            this.ledBulb_funnet = new Brikkesjekk.LedBulb();
+            this.EmitCard_picture = new System.Windows.Forms.PictureBox();
+            this.EmiTag_picture = new System.Windows.Forms.PictureBox();
             this.ChangeEcardNo_btn = new System.Windows.Forms.Button();
             this.NotStared_btn = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
@@ -92,6 +95,8 @@
             this.LiveRes_groupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.Løperinfo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EmitCard_picture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EmiTag_picture)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -272,7 +277,7 @@
             // Ecard_box
             // 
             this.Ecard_box.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard_box.ForeColor = System.Drawing.Color.Blue;
             this.Ecard_box.Location = new System.Drawing.Point(303, 43);
             this.Ecard_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -284,7 +289,7 @@
             // Ecard2_box
             // 
             this.Ecard2_box.BackColor = System.Drawing.SystemColors.Control;
-            this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard2_box.ForeColor = System.Drawing.Color.Blue;
             this.Ecard2_box.Location = new System.Drawing.Point(303, 108);
             this.Ecard2_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -330,7 +335,7 @@
             // 
             this.lopsid_box.BackColor = System.Drawing.SystemColors.Control;
             this.lopsid_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lopsid_box.Location = new System.Drawing.Point(79, 35);
+            this.lopsid_box.Location = new System.Drawing.Point(79, 29);
             this.lopsid_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lopsid_box.Name = "lopsid_box";
             this.lopsid_box.ReadOnly = true;
@@ -340,7 +345,7 @@
             // lopsnavn_box
             // 
             this.lopsnavn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lopsnavn_box.Location = new System.Drawing.Point(79, 70);
+            this.lopsnavn_box.Location = new System.Drawing.Point(79, 102);
             this.lopsnavn_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lopsnavn_box.Name = "lopsnavn_box";
             this.lopsnavn_box.ReadOnly = true;
@@ -351,7 +356,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(13, 37);
+            this.label6.Location = new System.Drawing.Point(13, 31);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(26, 20);
             this.label6.TabIndex = 32;
@@ -361,7 +366,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(13, 73);
+            this.label7.Location = new System.Drawing.Point(13, 105);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 20);
             this.label7.TabIndex = 33;
@@ -369,20 +374,43 @@
             // 
             // LiveRes_groupBox
             // 
+            this.LiveRes_groupBox.Controls.Add(this.label2);
+            this.LiveRes_groupBox.Controls.Add(this.lopsdato_box);
             this.LiveRes_groupBox.Controls.Add(this.comboBoxLiveRes);
             this.LiveRes_groupBox.Controls.Add(this.label7);
             this.LiveRes_groupBox.Controls.Add(this.label6);
             this.LiveRes_groupBox.Controls.Add(this.lopsnavn_box);
             this.LiveRes_groupBox.Controls.Add(this.lopsid_box);
             this.LiveRes_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LiveRes_groupBox.Location = new System.Drawing.Point(15, 317);
+            this.LiveRes_groupBox.Location = new System.Drawing.Point(15, 301);
             this.LiveRes_groupBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LiveRes_groupBox.Name = "LiveRes_groupBox";
             this.LiveRes_groupBox.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.LiveRes_groupBox.Size = new System.Drawing.Size(421, 123);
+            this.LiveRes_groupBox.Size = new System.Drawing.Size(421, 139);
             this.LiveRes_groupBox.TabIndex = 34;
             this.LiveRes_groupBox.TabStop = false;
             this.LiveRes_groupBox.Text = "Arrangementsinfo LiveRes";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(13, 70);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(45, 20);
+            this.label2.TabIndex = 40;
+            this.label2.Text = "Dato";
+            // 
+            // lopsdato_box
+            // 
+            this.lopsdato_box.BackColor = System.Drawing.SystemColors.Control;
+            this.lopsdato_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lopsdato_box.Location = new System.Drawing.Point(79, 67);
+            this.lopsdato_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lopsdato_box.Name = "lopsdato_box";
+            this.lopsdato_box.ReadOnly = true;
+            this.lopsdato_box.Size = new System.Drawing.Size(111, 27);
+            this.lopsdato_box.TabIndex = 39;
             // 
             // comboBoxLiveRes
             // 
@@ -392,12 +420,13 @@
             this.comboBoxLiveRes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBoxLiveRes.FormattingEnabled = true;
             this.comboBoxLiveRes.ItemHeight = 20;
-            this.comboBoxLiveRes.Location = new System.Drawing.Point(196, 34);
+            this.comboBoxLiveRes.Location = new System.Drawing.Point(196, 28);
             this.comboBoxLiveRes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBoxLiveRes.Name = "comboBoxLiveRes";
             this.comboBoxLiveRes.Size = new System.Drawing.Size(210, 28);
             this.comboBoxLiveRes.TabIndex = 38;
             this.comboBoxLiveRes.SelectionChangeCommitted += new System.EventHandler(this.comboBoxLiveRes_SelectedValueChanged);
+            this.comboBoxLiveRes.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.comboBoxLiveRes_Format);
             // 
             // groupBox2
             // 
@@ -468,7 +497,8 @@
             // Løperinfo
             // 
             this.Løperinfo.BackColor = System.Drawing.SystemColors.Control;
-            this.Løperinfo.Controls.Add(this.ledBulb_funnet);
+            this.Løperinfo.Controls.Add(this.EmitCard_picture);
+            this.Løperinfo.Controls.Add(this.EmiTag_picture);
             this.Løperinfo.Controls.Add(this.ChangeEcardNo_btn);
             this.Løperinfo.Controls.Add(this.NotStared_btn);
             this.Løperinfo.Controls.Add(this.label12);
@@ -493,14 +523,28 @@
             this.Løperinfo.TabStop = false;
             this.Løperinfo.Text = "Løperinfo";
             // 
-            // ledBulb_funnet
+            // EmitCard_picture
             // 
-            this.ledBulb_funnet.Location = new System.Drawing.Point(671, 66);
-            this.ledBulb_funnet.Name = "ledBulb_funnet";
-            this.ledBulb_funnet.On = false;
-            this.ledBulb_funnet.Size = new System.Drawing.Size(60, 60);
-            this.ledBulb_funnet.TabIndex = 35;
-            this.ledBulb_funnet.Text = "ledBulb1";
+            this.EmitCard_picture.Image = global::Brikkesjekk.Properties.Resources.emitbrikke;
+            this.EmitCard_picture.InitialImage = null;
+            this.EmitCard_picture.Location = new System.Drawing.Point(677, 66);
+            this.EmitCard_picture.Name = "EmitCard_picture";
+            this.EmitCard_picture.Size = new System.Drawing.Size(50, 50);
+            this.EmitCard_picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.EmitCard_picture.TabIndex = 37;
+            this.EmitCard_picture.TabStop = false;
+            this.EmitCard_picture.Visible = false;
+            // 
+            // EmiTag_picture
+            // 
+            this.EmiTag_picture.Image = ((System.Drawing.Image)(resources.GetObject("EmiTag_picture.Image")));
+            this.EmiTag_picture.Location = new System.Drawing.Point(677, 66);
+            this.EmiTag_picture.Name = "EmiTag_picture";
+            this.EmiTag_picture.Size = new System.Drawing.Size(50, 50);
+            this.EmiTag_picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.EmiTag_picture.TabIndex = 36;
+            this.EmiTag_picture.TabStop = false;
+            this.EmiTag_picture.Visible = false;
             // 
             // ChangeEcardNo_btn
             // 
@@ -534,9 +578,9 @@
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(538, 89);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(90, 18);
+            this.label12.Size = new System.Drawing.Size(105, 18);
             this.label12.TabIndex = 32;
-            this.label12.Text = "Batteristatus";
+            this.label12.Text = "Batteri EmiTag";
             // 
             // label11
             // 
@@ -560,17 +604,18 @@
             this.ID_box.Name = "ID_box";
             this.ID_box.Size = new System.Drawing.Size(115, 39);
             this.ID_box.TabIndex = 30;
+            this.ID_box.Visible = false;
             // 
             // Battery_box
             // 
             this.Battery_box.BackColor = System.Drawing.SystemColors.Control;
-            this.Battery_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Battery_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Battery_box.ForeColor = System.Drawing.Color.Blue;
-            this.Battery_box.Location = new System.Drawing.Point(540, 108);
+            this.Battery_box.Location = new System.Drawing.Point(540, 115);
             this.Battery_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Battery_box.Name = "Battery_box";
             this.Battery_box.ReadOnly = true;
-            this.Battery_box.Size = new System.Drawing.Size(113, 45);
+            this.Battery_box.Size = new System.Drawing.Size(99, 38);
             this.Battery_box.TabIndex = 29;
             // 
             // folderLogfile_box
@@ -611,7 +656,7 @@
             this.groupBox3.Controls.Add(this.Code251_radioButton);
             this.groupBox3.Controls.Add(this.Code70_radioButton);
             this.groupBox3.Controls.Add(this.readECUcode_box);
-            this.groupBox3.Location = new System.Drawing.Point(15, 216);
+            this.groupBox3.Location = new System.Drawing.Point(15, 209);
             this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -702,7 +747,7 @@
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 21.08.2021";
+            this.version.Text = "Ver 17.10.2021";
             // 
             // progressBar1
             // 
@@ -845,6 +890,8 @@
             this.groupBox2.ResumeLayout(false);
             this.Løperinfo.ResumeLayout(false);
             this.Løperinfo.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.EmitCard_picture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.EmiTag_picture)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
@@ -905,10 +952,13 @@
         public System.Windows.Forms.TextBox SearchCard_Txtbox;
         private Brikkesjekk.LedBulb ECU_read_led;
         private LedBulb MTR_read_led;
-        private LedBulb ledBulb_funnet;
         private System.Windows.Forms.Label label8;
         public System.Windows.Forms.TextBox SearchName_Box;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.PictureBox EmiTag_picture;
+        private System.Windows.Forms.PictureBox EmitCard_picture;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox lopsdato_box;
     }
 }
 

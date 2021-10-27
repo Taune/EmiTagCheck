@@ -15,6 +15,7 @@ namespace Brikkesjekk
         {
             InitializeComponent();
             this._MainMenuManager = frm1;
+ 
         }
 
 

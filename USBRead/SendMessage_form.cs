@@ -2,10 +2,12 @@
 using System.Net;
 using System.Configuration;
 using System.Windows.Forms;
+using MaterialSkin;
+using MaterialSkin.Controls;
 
 namespace Brikkesjekk
 {
-    public partial class SendMessage_form : Form
+    public partial class SendMessage_form : MaterialForm
     {
         MainMenu _MainMenuManager;
 

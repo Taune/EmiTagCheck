@@ -108,7 +108,7 @@
             this.ByttBrikkeBox.TabIndex = 15;
             this.ByttBrikkeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // SendMessage_form
+            // ChangeEcard_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -121,7 +121,7 @@
             this.Controls.Add(this.Close_btn);
             this.Controls.Add(this.SendMessage_btn);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "SendMessage_form";
+            this.Name = "ChangeEcard_form";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Bytte brikke";
             this.Load += new System.EventHandler(this.SendMessage_form_Load);
