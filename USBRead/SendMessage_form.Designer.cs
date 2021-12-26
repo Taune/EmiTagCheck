@@ -40,68 +40,78 @@ namespace Brikkesjekk
             // 
             // CloseMessage_btn
             // 
-            this.CloseMessage_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.CloseMessage_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CloseMessage_btn.Location = new System.Drawing.Point(65, 299);
+            this.CloseMessage_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.CloseMessage_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CloseMessage_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CloseMessage_btn.ForeColor = System.Drawing.Color.White;
+            this.CloseMessage_btn.Location = new System.Drawing.Point(36, 275);
+            this.CloseMessage_btn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.CloseMessage_btn.Name = "CloseMessage_btn";
-            this.CloseMessage_btn.Size = new System.Drawing.Size(87, 33);
+            this.CloseMessage_btn.Size = new System.Drawing.Size(94, 35);
             this.CloseMessage_btn.TabIndex = 0;
-            this.CloseMessage_btn.Text = "Avbryt";
+            this.CloseMessage_btn.Text = "AVBRYT";
             this.CloseMessage_btn.UseVisualStyleBackColor = false;
             this.CloseMessage_btn.Click += new System.EventHandler(this.CloseMessage_btn_Click);
             // 
             // Meldinger_listBox
             // 
-            this.Meldinger_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Meldinger_listBox.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Meldinger_listBox.FormattingEnabled = true;
-            this.Meldinger_listBox.ItemHeight = 20;
+            this.Meldinger_listBox.ItemHeight = 19;
             this.Meldinger_listBox.Items.AddRange(new object[] {
             "Startnr * fikk ny starttid *",
             "Startnr * byttet klasse til *",
             "Startnr * gikk med startnr *"});
-            this.Meldinger_listBox.Location = new System.Drawing.Point(22, 41);
+            this.Meldinger_listBox.Location = new System.Drawing.Point(16, 89);
+            this.Meldinger_listBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Meldinger_listBox.Name = "Meldinger_listBox";
-            this.Meldinger_listBox.Size = new System.Drawing.Size(317, 144);
+            this.Meldinger_listBox.Size = new System.Drawing.Size(261, 80);
             this.Meldinger_listBox.TabIndex = 1;
             this.Meldinger_listBox.SelectedIndexChanged += new System.EventHandler(this.Meldinger_listBox_SelectedIndexChanged);
             // 
             // Comment_box
             // 
-            this.Comment_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Comment_box.Location = new System.Drawing.Point(22, 230);
+            this.Comment_box.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Comment_box.Location = new System.Drawing.Point(16, 218);
+            this.Comment_box.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Comment_box.Name = "Comment_box";
-            this.Comment_box.Size = new System.Drawing.Size(317, 27);
+            this.Comment_box.Size = new System.Drawing.Size(261, 27);
             this.Comment_box.TabIndex = 2;
             // 
             // SendMessage_btn
             // 
-            this.SendMessage_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.SendMessage_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SendMessage_btn.Location = new System.Drawing.Point(189, 299);
+            this.SendMessage_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.SendMessage_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SendMessage_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SendMessage_btn.ForeColor = System.Drawing.Color.White;
+            this.SendMessage_btn.Location = new System.Drawing.Point(160, 275);
+            this.SendMessage_btn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.SendMessage_btn.Name = "SendMessage_btn";
-            this.SendMessage_btn.Size = new System.Drawing.Size(81, 33);
+            this.SendMessage_btn.Size = new System.Drawing.Size(94, 35);
             this.SendMessage_btn.TabIndex = 3;
-            this.SendMessage_btn.Text = "Send";
+            this.SendMessage_btn.Text = "SEND";
             this.SendMessage_btn.UseVisualStyleBackColor = false;
             this.SendMessage_btn.Click += new System.EventHandler(this.SendMessage_btn_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(18, 18);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(15, 66);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(174, 20);
+            this.label1.Size = new System.Drawing.Size(147, 19);
             this.label1.TabIndex = 4;
             this.label1.Text = "Standardkommentarer";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(18, 207);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(14, 199);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(95, 20);
+            this.label2.Size = new System.Drawing.Size(81, 19);
             this.label2.TabIndex = 5;
             this.label2.Text = "Kommentar";
             // 
@@ -109,17 +119,18 @@ namespace Brikkesjekk
             // 
             this.label3.AutoSize = true;
             this.label3.ForeColor = System.Drawing.Color.Red;
-            this.label3.Location = new System.Drawing.Point(19, 260);
+            this.label3.Location = new System.Drawing.Point(14, 248);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(315, 17);
+            this.label3.Size = new System.Drawing.Size(233, 13);
             this.label3.TabIndex = 6;
             this.label3.Text = "Oppgi tilstrekkelig info; startnr, starttidspunkt mm";
             // 
             // SendMessage_form
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(366, 364);
+            this.ClientSize = new System.Drawing.Size(296, 331);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -127,7 +138,9 @@ namespace Brikkesjekk
             this.Controls.Add(this.Comment_box);
             this.Controls.Add(this.Meldinger_listBox);
             this.Controls.Add(this.CloseMessage_btn);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "SendMessage_form";
+            this.Padding = new System.Windows.Forms.Padding(2, 52, 2, 2);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Send melding";
             this.Load += new System.EventHandler(this.SendMessage_form_Load);

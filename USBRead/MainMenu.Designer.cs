@@ -39,7 +39,6 @@
             this.SearchCard_btn = new System.Windows.Forms.Button();
             this.SearchCard_Txtbox = new System.Windows.Forms.TextBox();
             this.UsbRead_listBox = new System.Windows.Forms.ListBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.StartNr_box = new System.Windows.Forms.TextBox();
             this.Navn_box = new System.Windows.Forms.TextBox();
             this.Klubb_box = new System.Windows.Forms.TextBox();
@@ -88,9 +87,9 @@
             this.TextToSpeechFound_checkBox = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.SearchName_Box = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             this.MTR_read_led = new Brikkesjekk.LedBulb();
             this.ECU_read_led = new Brikkesjekk.LedBulb();
-            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.LiveRes_groupBox.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -102,38 +101,42 @@
             // 
             // UsbPort_listBox
             // 
-            this.UsbPort_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.UsbPort_listBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.UsbPort_listBox.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UsbPort_listBox.FormattingEnabled = true;
-            this.UsbPort_listBox.ItemHeight = 20;
+            this.UsbPort_listBox.ItemHeight = 23;
             this.UsbPort_listBox.Location = new System.Drawing.Point(16, 28);
             this.UsbPort_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbPort_listBox.Name = "UsbPort_listBox";
-            this.UsbPort_listBox.Size = new System.Drawing.Size(143, 104);
+            this.UsbPort_listBox.Size = new System.Drawing.Size(143, 69);
             this.UsbPort_listBox.Sorted = true;
             this.UsbPort_listBox.TabIndex = 2;
             this.UsbPort_listBox.SelectedIndexChanged += new System.EventHandler(this.UsbPort_listBox_SelectedIndexChanged);
             // 
             // Close_btn
             // 
-            this.Close_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Close_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Close_btn.Location = new System.Drawing.Point(15, 14);
+            this.Close_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.Close_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Close_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Close_btn.ForeColor = System.Drawing.Color.White;
+            this.Close_btn.Location = new System.Drawing.Point(15, 10);
             this.Close_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Close_btn.Name = "Close_btn";
-            this.Close_btn.Size = new System.Drawing.Size(141, 34);
+            this.Close_btn.Size = new System.Drawing.Size(213, 39);
             this.Close_btn.TabIndex = 4;
-            this.Close_btn.Text = "Avslutt program";
+            this.Close_btn.Text = "AVSLUTT PROGRAM";
             this.Close_btn.UseVisualStyleBackColor = false;
             this.Close_btn.Click += new System.EventHandler(this.Close_btn_Click);
             // 
             // Clock_lbl
             // 
+            this.Clock_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Clock_lbl.AutoSize = true;
-            this.Clock_lbl.BackColor = System.Drawing.Color.DarkRed;
+            this.Clock_lbl.BackColor = System.Drawing.SystemColors.HotTrack;
             this.Clock_lbl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Clock_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Clock_lbl.ForeColor = System.Drawing.Color.Yellow;
-            this.Clock_lbl.Location = new System.Drawing.Point(1331, 11);
+            this.Clock_lbl.ForeColor = System.Drawing.Color.White;
+            this.Clock_lbl.Location = new System.Drawing.Point(1604, 18);
             this.Clock_lbl.Name = "Clock_lbl";
             this.Clock_lbl.Size = new System.Drawing.Size(129, 34);
             this.Clock_lbl.TabIndex = 9;
@@ -146,6 +149,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -176,28 +180,31 @@
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(843, 263);
+            this.dataGridView1.Size = new System.Drawing.Size(869, 258);
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // SearchCard_btn
             // 
-            this.SearchCard_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.SearchCard_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchCard_btn.Location = new System.Drawing.Point(464, 9);
+            this.SearchCard_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.SearchCard_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SearchCard_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SearchCard_btn.ForeColor = System.Drawing.Color.White;
+            this.SearchCard_btn.Location = new System.Drawing.Point(464, 10);
             this.SearchCard_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchCard_btn.Name = "SearchCard_btn";
-            this.SearchCard_btn.Size = new System.Drawing.Size(195, 34);
+            this.SearchCard_btn.Size = new System.Drawing.Size(231, 39);
             this.SearchCard_btn.TabIndex = 12;
-            this.SearchCard_btn.Text = "Søk brikke manuelt";
+            this.SearchCard_btn.Text = "SØK BRIKKE MANUELT";
             this.SearchCard_btn.UseVisualStyleBackColor = false;
             this.SearchCard_btn.Click += new System.EventHandler(this.SearchCard_btn_Click);
             // 
             // SearchCard_Txtbox
             // 
-            this.SearchCard_Txtbox.BackColor = System.Drawing.SystemColors.Info;
+            this.SearchCard_Txtbox.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SearchCard_Txtbox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SearchCard_Txtbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchCard_Txtbox.Location = new System.Drawing.Point(664, 12);
+            this.SearchCard_Txtbox.Location = new System.Drawing.Point(701, 15);
             this.SearchCard_Txtbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchCard_Txtbox.Name = "SearchCard_Txtbox";
             this.SearchCard_Txtbox.Size = new System.Drawing.Size(153, 30);
@@ -206,57 +213,52 @@
             // 
             // UsbRead_listBox
             // 
+            this.UsbRead_listBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UsbRead_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.UsbRead_listBox.FormattingEnabled = true;
             this.UsbRead_listBox.ItemHeight = 18;
             this.UsbRead_listBox.Location = new System.Drawing.Point(15, 516);
             this.UsbRead_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbRead_listBox.Name = "UsbRead_listBox";
-            this.UsbRead_listBox.Size = new System.Drawing.Size(581, 274);
+            this.UsbRead_listBox.Size = new System.Drawing.Size(581, 234);
             this.UsbRead_listBox.TabIndex = 25;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(15, 474);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(99, 20);
-            this.label3.TabIndex = 26;
-            this.label3.Text = "EmiTag Log";
             // 
             // StartNr_box
             // 
-            this.StartNr_box.BackColor = System.Drawing.SystemColors.Info;
+            this.StartNr_box.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.StartNr_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.StartNr_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StartNr_box.ForeColor = System.Drawing.Color.Red;
-            this.StartNr_box.Location = new System.Drawing.Point(16, 47);
+            this.StartNr_box.Location = new System.Drawing.Point(16, 43);
             this.StartNr_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StartNr_box.Name = "StartNr_box";
-            this.StartNr_box.Size = new System.Drawing.Size(277, 98);
+            this.StartNr_box.Size = new System.Drawing.Size(278, 98);
             this.StartNr_box.TabIndex = 18;
             this.StartNr_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.StartNr_box.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.StartNr_box_KeyPress);
             // 
             // Navn_box
             // 
-            this.Navn_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Navn_box.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Navn_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Navn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 42F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Navn_box.ForeColor = System.Drawing.Color.Green;
-            this.Navn_box.Location = new System.Drawing.Point(16, 179);
+            this.Navn_box.Location = new System.Drawing.Point(16, 178);
             this.Navn_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Navn_box.Name = "Navn_box";
             this.Navn_box.ReadOnly = true;
-            this.Navn_box.Size = new System.Drawing.Size(993, 87);
+            this.Navn_box.Size = new System.Drawing.Size(993, 80);
             this.Navn_box.TabIndex = 19;
             // 
             // Klubb_box
             // 
-            this.Klubb_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Klubb_box.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Klubb_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Klubb_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klubb_box.ForeColor = System.Drawing.Color.Red;
-            this.Klubb_box.Location = new System.Drawing.Point(16, 275);
+            this.Klubb_box.Location = new System.Drawing.Point(16, 272);
             this.Klubb_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Klubb_box.Multiline = true;
             this.Klubb_box.Name = "Klubb_box";
             this.Klubb_box.ReadOnly = true;
             this.Klubb_box.Size = new System.Drawing.Size(993, 49);
@@ -264,38 +266,41 @@
             // 
             // Klasse_box
             // 
-            this.Klasse_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Klasse_box.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Klasse_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Klasse_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Klasse_box.ForeColor = System.Drawing.Color.Red;
-            this.Klasse_box.Location = new System.Drawing.Point(16, 332);
+            this.Klasse_box.Location = new System.Drawing.Point(16, 327);
             this.Klasse_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klasse_box.Name = "Klasse_box";
             this.Klasse_box.ReadOnly = true;
-            this.Klasse_box.Size = new System.Drawing.Size(993, 49);
+            this.Klasse_box.Size = new System.Drawing.Size(993, 42);
             this.Klasse_box.TabIndex = 21;
             // 
             // Ecard_box
             // 
             this.Ecard_box.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Ecard_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Ecard_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard_box.ForeColor = System.Drawing.Color.Blue;
             this.Ecard_box.Location = new System.Drawing.Point(303, 43);
             this.Ecard_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard_box.Name = "Ecard_box";
             this.Ecard_box.ReadOnly = true;
-            this.Ecard_box.Size = new System.Drawing.Size(219, 45);
+            this.Ecard_box.Size = new System.Drawing.Size(219, 38);
             this.Ecard_box.TabIndex = 22;
             // 
             // Ecard2_box
             // 
-            this.Ecard2_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Ecard2_box.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Ecard2_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Ecard2_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Ecard2_box.ForeColor = System.Drawing.Color.Blue;
             this.Ecard2_box.Location = new System.Drawing.Point(303, 108);
             this.Ecard2_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Ecard2_box.Name = "Ecard2_box";
             this.Ecard2_box.ReadOnly = true;
-            this.Ecard2_box.Size = new System.Drawing.Size(219, 45);
+            this.Ecard2_box.Size = new System.Drawing.Size(219, 38);
             this.Ecard2_box.TabIndex = 23;
             // 
             // label4
@@ -320,36 +325,41 @@
             // 
             // SendMessage_btn
             // 
-            this.SendMessage_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.SendMessage_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SendMessage_btn.Location = new System.Drawing.Point(764, 133);
-            this.SendMessage_btn.Margin = new System.Windows.Forms.Padding(4);
+            this.SendMessage_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.SendMessage_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.SendMessage_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SendMessage_btn.ForeColor = System.Drawing.Color.White;
+            this.SendMessage_btn.Location = new System.Drawing.Point(764, 121);
+            this.SendMessage_btn.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.SendMessage_btn.Name = "SendMessage_btn";
             this.SendMessage_btn.Size = new System.Drawing.Size(244, 39);
             this.SendMessage_btn.TabIndex = 29;
-            this.SendMessage_btn.Text = "Melding til LiveRes";
+            this.SendMessage_btn.Text = "MELDING TIL LIVERES";
             this.SendMessage_btn.UseVisualStyleBackColor = false;
             this.SendMessage_btn.Click += new System.EventHandler(this.SendMessage_btn_Click);
             // 
             // lopsid_box
             // 
-            this.lopsid_box.BackColor = System.Drawing.SystemColors.Control;
+            this.lopsid_box.BackColor = System.Drawing.SystemColors.Window;
+            this.lopsid_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lopsid_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lopsid_box.Location = new System.Drawing.Point(79, 29);
+            this.lopsid_box.Location = new System.Drawing.Point(79, 30);
             this.lopsid_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lopsid_box.Name = "lopsid_box";
             this.lopsid_box.ReadOnly = true;
-            this.lopsid_box.Size = new System.Drawing.Size(111, 27);
+            this.lopsid_box.Size = new System.Drawing.Size(110, 27);
             this.lopsid_box.TabIndex = 30;
             // 
             // lopsnavn_box
             // 
+            this.lopsnavn_box.BackColor = System.Drawing.SystemColors.Window;
+            this.lopsnavn_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lopsnavn_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lopsnavn_box.Location = new System.Drawing.Point(79, 102);
             this.lopsnavn_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lopsnavn_box.Name = "lopsnavn_box";
             this.lopsnavn_box.ReadOnly = true;
-            this.lopsnavn_box.Size = new System.Drawing.Size(327, 27);
+            this.lopsnavn_box.Size = new System.Drawing.Size(326, 27);
             this.lopsnavn_box.TabIndex = 31;
             // 
             // label6
@@ -374,6 +384,7 @@
             // 
             // LiveRes_groupBox
             // 
+            this.LiveRes_groupBox.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.LiveRes_groupBox.Controls.Add(this.label2);
             this.LiveRes_groupBox.Controls.Add(this.lopsdato_box);
             this.LiveRes_groupBox.Controls.Add(this.comboBoxLiveRes);
@@ -382,7 +393,7 @@
             this.LiveRes_groupBox.Controls.Add(this.lopsnavn_box);
             this.LiveRes_groupBox.Controls.Add(this.lopsid_box);
             this.LiveRes_groupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LiveRes_groupBox.Location = new System.Drawing.Point(15, 301);
+            this.LiveRes_groupBox.Location = new System.Drawing.Point(15, 302);
             this.LiveRes_groupBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LiveRes_groupBox.Name = "LiveRes_groupBox";
             this.LiveRes_groupBox.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -403,18 +414,20 @@
             // 
             // lopsdato_box
             // 
-            this.lopsdato_box.BackColor = System.Drawing.SystemColors.Control;
+            this.lopsdato_box.BackColor = System.Drawing.SystemColors.Window;
+            this.lopsdato_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.lopsdato_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lopsdato_box.Location = new System.Drawing.Point(79, 67);
+            this.lopsdato_box.Location = new System.Drawing.Point(79, 66);
             this.lopsdato_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lopsdato_box.Name = "lopsdato_box";
             this.lopsdato_box.ReadOnly = true;
-            this.lopsdato_box.Size = new System.Drawing.Size(111, 27);
+            this.lopsdato_box.Size = new System.Drawing.Size(110, 27);
             this.lopsdato_box.TabIndex = 39;
+            this.lopsdato_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // comboBoxLiveRes
             // 
-            this.comboBoxLiveRes.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.comboBoxLiveRes.BackColor = System.Drawing.SystemColors.Window;
             this.comboBoxLiveRes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxLiveRes.DropDownWidth = 400;
             this.comboBoxLiveRes.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -423,7 +436,7 @@
             this.comboBoxLiveRes.Location = new System.Drawing.Point(196, 28);
             this.comboBoxLiveRes.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBoxLiveRes.Name = "comboBoxLiveRes";
-            this.comboBoxLiveRes.Size = new System.Drawing.Size(210, 28);
+            this.comboBoxLiveRes.Size = new System.Drawing.Size(209, 28);
             this.comboBoxLiveRes.TabIndex = 38;
             this.comboBoxLiveRes.SelectionChangeCommitted += new System.EventHandler(this.comboBoxLiveRes_SelectedValueChanged);
             this.comboBoxLiveRes.Format += new System.Windows.Forms.ListControlConvertEventHandler(this.comboBoxLiveRes_Format);
@@ -444,43 +457,47 @@
             // 
             // RefreshUsbPort_btn
             // 
-            this.RefreshUsbPort_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.RefreshUsbPort_btn.Image = global::Brikkesjekk.Properties.Resources.reload_button11;
+            this.RefreshUsbPort_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.RefreshUsbPort_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RefreshUsbPort_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RefreshUsbPort_btn.ForeColor = System.Drawing.Color.White;
             this.RefreshUsbPort_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.RefreshUsbPort_btn.Location = new System.Drawing.Point(16, 132);
             this.RefreshUsbPort_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RefreshUsbPort_btn.Name = "RefreshUsbPort_btn";
             this.RefreshUsbPort_btn.Size = new System.Drawing.Size(141, 43);
             this.RefreshUsbPort_btn.TabIndex = 3;
-            this.RefreshUsbPort_btn.Text = "Oppfrisk";
-            this.RefreshUsbPort_btn.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.RefreshUsbPort_btn.Text = "OPPFRISK";
             this.RefreshUsbPort_btn.UseVisualStyleBackColor = false;
             this.RefreshUsbPort_btn.Click += new System.EventHandler(this.RefreshUsbPort_btn_Click);
             // 
             // readLiveResfil_btn
             // 
-            this.readLiveResfil_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.readLiveResfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readLiveResfil_btn.Location = new System.Drawing.Point(885, 460);
+            this.readLiveResfil_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.readLiveResfil_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.readLiveResfil_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.readLiveResfil_btn.ForeColor = System.Drawing.Color.White;
+            this.readLiveResfil_btn.Location = new System.Drawing.Point(883, 469);
             this.readLiveResfil_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readLiveResfil_btn.Name = "readLiveResfil_btn";
-            this.readLiveResfil_btn.Size = new System.Drawing.Size(240, 39);
+            this.readLiveResfil_btn.Size = new System.Drawing.Size(260, 39);
             this.readLiveResfil_btn.TabIndex = 37;
-            this.readLiveResfil_btn.Text = "Les startliste LiveRes";
+            this.readLiveResfil_btn.Text = "LES STARTLISTE LIVERES";
             this.readLiveResfil_btn.UseVisualStyleBackColor = false;
             this.readLiveResfil_btn.Click += new System.EventHandler(this.readLiveResfil_btn_Click);
             // 
             // readBrikkesjekkfil_btn
             // 
-            this.readBrikkesjekkfil_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.readBrikkesjekkfil_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(617, 459);
+            this.readBrikkesjekkfil_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.readBrikkesjekkfil_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.readBrikkesjekkfil_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.readBrikkesjekkfil_btn.ForeColor = System.Drawing.Color.White;
+            this.readBrikkesjekkfil_btn.Location = new System.Drawing.Point(617, 469);
             this.readBrikkesjekkfil_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readBrikkesjekkfil_btn.Name = "readBrikkesjekkfil_btn";
-            this.readBrikkesjekkfil_btn.Size = new System.Drawing.Size(252, 39);
+            this.readBrikkesjekkfil_btn.Size = new System.Drawing.Size(260, 39);
             this.readBrikkesjekkfil_btn.TabIndex = 39;
-            this.readBrikkesjekkfil_btn.Text = "Les startliste Brikkesjekkfil";
+            this.readBrikkesjekkfil_btn.Text = "LES STARTLISTE ETIMING";
             this.readBrikkesjekkfil_btn.UseVisualStyleBackColor = false;
             this.readBrikkesjekkfil_btn.Click += new System.EventHandler(this.readBrikkesjekkfil_btn_Click);
             // 
@@ -496,7 +513,7 @@
             // 
             // Løperinfo
             // 
-            this.Løperinfo.BackColor = System.Drawing.SystemColors.Control;
+            this.Løperinfo.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.Løperinfo.Controls.Add(this.EmitCard_picture);
             this.Løperinfo.Controls.Add(this.EmiTag_picture);
             this.Løperinfo.Controls.Add(this.ChangeEcardNo_btn);
@@ -514,11 +531,11 @@
             this.Løperinfo.Controls.Add(this.SendMessage_btn);
             this.Løperinfo.Controls.Add(this.Navn_box);
             this.Løperinfo.Controls.Add(this.StartNr_box);
-            this.Løperinfo.Location = new System.Drawing.Point(456, 49);
+            this.Løperinfo.Location = new System.Drawing.Point(464, 62);
             this.Løperinfo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Løperinfo.Name = "Løperinfo";
             this.Løperinfo.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Løperinfo.Size = new System.Drawing.Size(1023, 392);
+            this.Løperinfo.Size = new System.Drawing.Size(1023, 378);
             this.Løperinfo.TabIndex = 41;
             this.Løperinfo.TabStop = false;
             this.Løperinfo.Text = "Løperinfo";
@@ -528,6 +545,7 @@
             this.EmitCard_picture.Image = global::Brikkesjekk.Properties.Resources.emitbrikke;
             this.EmitCard_picture.InitialImage = null;
             this.EmitCard_picture.Location = new System.Drawing.Point(677, 66);
+            this.EmitCard_picture.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.EmitCard_picture.Name = "EmitCard_picture";
             this.EmitCard_picture.Size = new System.Drawing.Size(50, 50);
             this.EmitCard_picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -539,6 +557,7 @@
             // 
             this.EmiTag_picture.Image = ((System.Drawing.Image)(resources.GetObject("EmiTag_picture.Image")));
             this.EmiTag_picture.Location = new System.Drawing.Point(677, 66);
+            this.EmiTag_picture.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.EmiTag_picture.Name = "EmiTag_picture";
             this.EmiTag_picture.Size = new System.Drawing.Size(50, 50);
             this.EmiTag_picture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -548,27 +567,31 @@
             // 
             // ChangeEcardNo_btn
             // 
-            this.ChangeEcardNo_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ChangeEcardNo_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ChangeEcardNo_btn.Location = new System.Drawing.Point(764, 14);
+            this.ChangeEcardNo_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.ChangeEcardNo_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ChangeEcardNo_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ChangeEcardNo_btn.ForeColor = System.Drawing.Color.White;
+            this.ChangeEcardNo_btn.Location = new System.Drawing.Point(764, 20);
             this.ChangeEcardNo_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ChangeEcardNo_btn.Name = "ChangeEcardNo_btn";
-            this.ChangeEcardNo_btn.Size = new System.Drawing.Size(244, 69);
+            this.ChangeEcardNo_btn.Size = new System.Drawing.Size(244, 39);
             this.ChangeEcardNo_btn.TabIndex = 34;
-            this.ChangeEcardNo_btn.Text = "Endre brikkenummer";
+            this.ChangeEcardNo_btn.Text = "ENDRE BRIKKENUMMER";
             this.ChangeEcardNo_btn.UseVisualStyleBackColor = false;
             this.ChangeEcardNo_btn.Click += new System.EventHandler(this.ChangeEcardNo_btn_Click);
             // 
             // NotStared_btn
             // 
-            this.NotStared_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.NotStared_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.NotStared_btn.Location = new System.Drawing.Point(764, 88);
+            this.NotStared_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.NotStared_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.NotStared_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.NotStared_btn.ForeColor = System.Drawing.Color.White;
+            this.NotStared_btn.Location = new System.Drawing.Point(764, 69);
             this.NotStared_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.NotStared_btn.Name = "NotStared_btn";
-            this.NotStared_btn.Size = new System.Drawing.Size(244, 40);
+            this.NotStared_btn.Size = new System.Drawing.Size(244, 39);
             this.NotStared_btn.TabIndex = 33;
-            this.NotStared_btn.Text = "Startnr ikke startet";
+            this.NotStared_btn.Text = "STARTNR IKKE STARTET";
             this.NotStared_btn.UseVisualStyleBackColor = false;
             this.NotStared_btn.Click += new System.EventHandler(this.NotStared_btn_Click);
             // 
@@ -576,7 +599,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(538, 89);
+            this.label12.Location = new System.Drawing.Point(539, 89);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(105, 18);
             this.label12.TabIndex = 32;
@@ -594,12 +617,12 @@
             // 
             // ID_box
             // 
-            this.ID_box.BackColor = System.Drawing.SystemColors.Menu;
+            this.ID_box.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ID_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.ID_box.Enabled = false;
             this.ID_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ID_box.ForeColor = System.Drawing.SystemColors.Menu;
-            this.ID_box.Location = new System.Drawing.Point(540, 45);
+            this.ID_box.Location = new System.Drawing.Point(540, 46);
             this.ID_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ID_box.Name = "ID_box";
             this.ID_box.Size = new System.Drawing.Size(115, 39);
@@ -608,23 +631,25 @@
             // 
             // Battery_box
             // 
-            this.Battery_box.BackColor = System.Drawing.SystemColors.Control;
+            this.Battery_box.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.Battery_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Battery_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Battery_box.ForeColor = System.Drawing.Color.Blue;
-            this.Battery_box.Location = new System.Drawing.Point(540, 115);
+            this.Battery_box.Location = new System.Drawing.Point(540, 114);
             this.Battery_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Battery_box.Name = "Battery_box";
             this.Battery_box.ReadOnly = true;
-            this.Battery_box.Size = new System.Drawing.Size(99, 38);
+            this.Battery_box.Size = new System.Drawing.Size(99, 31);
             this.Battery_box.TabIndex = 29;
             // 
             // folderLogfile_box
             // 
+            this.folderLogfile_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.folderLogfile_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.folderLogfile_box.Location = new System.Drawing.Point(171, 798);
-            this.folderLogfile_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.folderLogfile_box.Location = new System.Drawing.Point(175, 801);
+            this.folderLogfile_box.Margin = new System.Windows.Forms.Padding(5, 2, 3, 2);
             this.folderLogfile_box.Name = "folderLogfile_box";
-            this.folderLogfile_box.Size = new System.Drawing.Size(265, 27);
+            this.folderLogfile_box.Size = new System.Drawing.Size(245, 27);
             this.folderLogfile_box.TabIndex = 42;
             this.folderLogfile_box.Leave += new System.EventHandler(this.folderLogfile_box_TextChanged);
             // 
@@ -632,7 +657,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(11, 799);
+            this.label9.Location = new System.Drawing.Point(11, 800);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(136, 20);
             this.label9.TabIndex = 43;
@@ -640,19 +665,22 @@
             // 
             // btnStartMTR
             // 
-            this.btnStartMTR.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnStartMTR.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStartMTR.Location = new System.Drawing.Point(348, 466);
+            this.btnStartMTR.BackColor = System.Drawing.Color.DodgerBlue;
+            this.btnStartMTR.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStartMTR.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStartMTR.ForeColor = System.Drawing.Color.White;
+            this.btnStartMTR.Location = new System.Drawing.Point(227, 463);
             this.btnStartMTR.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnStartMTR.Name = "btnStartMTR";
-            this.btnStartMTR.Size = new System.Drawing.Size(123, 42);
+            this.btnStartMTR.Size = new System.Drawing.Size(132, 39);
             this.btnStartMTR.TabIndex = 44;
-            this.btnStartMTR.Text = "Start MTR";
+            this.btnStartMTR.Text = "START MTR";
             this.btnStartMTR.UseVisualStyleBackColor = false;
             this.btnStartMTR.Click += new System.EventHandler(this.btnReadMTR_Click);
             // 
             // groupBox3
             // 
+            this.groupBox3.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.groupBox3.Controls.Add(this.Code251_radioButton);
             this.groupBox3.Controls.Add(this.Code70_radioButton);
             this.groupBox3.Controls.Add(this.readECUcode_box);
@@ -668,7 +696,8 @@
             // Code251_radioButton
             // 
             this.Code251_radioButton.AutoSize = true;
-            this.Code251_radioButton.Location = new System.Drawing.Point(22, 50);
+            this.Code251_radioButton.Location = new System.Drawing.Point(21, 50);
+            this.Code251_radioButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Code251_radioButton.Name = "Code251_radioButton";
             this.Code251_radioButton.Size = new System.Drawing.Size(272, 21);
             this.Code251_radioButton.TabIndex = 52;
@@ -680,7 +709,8 @@
             // Code70_radioButton
             // 
             this.Code70_radioButton.AutoSize = true;
-            this.Code70_radioButton.Location = new System.Drawing.Point(22, 23);
+            this.Code70_radioButton.Location = new System.Drawing.Point(21, 23);
+            this.Code70_radioButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Code70_radioButton.Name = "Code70_radioButton";
             this.Code70_radioButton.Size = new System.Drawing.Size(133, 21);
             this.Code70_radioButton.TabIndex = 51;
@@ -691,11 +721,11 @@
             // 
             // readECUcode_box
             // 
-            this.readECUcode_box.BackColor = System.Drawing.SystemColors.Menu;
+            this.readECUcode_box.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.readECUcode_box.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.readECUcode_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.readECUcode_box.ForeColor = System.Drawing.Color.Red;
-            this.readECUcode_box.Location = new System.Drawing.Point(333, 35);
+            this.readECUcode_box.Location = new System.Drawing.Point(333, 34);
             this.readECUcode_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.readECUcode_box.Name = "readECUcode_box";
             this.readECUcode_box.Size = new System.Drawing.Size(73, 20);
@@ -703,23 +733,25 @@
             // 
             // ReadEcu_btn
             // 
-            this.ReadEcu_btn.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.ReadEcu_btn.BackColor = System.Drawing.Color.DodgerBlue;
             this.ReadEcu_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.ReadEcu_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReadEcu_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.ReadEcu_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ReadEcu_btn.ForeColor = System.Drawing.Color.White;
             this.ReadEcu_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ReadEcu_btn.Location = new System.Drawing.Point(136, 466);
+            this.ReadEcu_btn.Location = new System.Drawing.Point(15, 463);
             this.ReadEcu_btn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ReadEcu_btn.Name = "ReadEcu_btn";
-            this.ReadEcu_btn.Size = new System.Drawing.Size(133, 42);
+            this.ReadEcu_btn.Size = new System.Drawing.Size(133, 39);
             this.ReadEcu_btn.TabIndex = 49;
-            this.ReadEcu_btn.Text = "Start ECU";
+            this.ReadEcu_btn.Text = "START ECU";
             this.ReadEcu_btn.UseVisualStyleBackColor = false;
             this.ReadEcu_btn.Click += new System.EventHandler(this.btnStartECU_Click);
             // 
             // LiveRes_checkBox
             // 
             this.LiveRes_checkBox.AutoSize = true;
-            this.LiveRes_checkBox.Location = new System.Drawing.Point(19, 88);
+            this.LiveRes_checkBox.Location = new System.Drawing.Point(19, 89);
             this.LiveRes_checkBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.LiveRes_checkBox.Name = "LiveRes_checkBox";
             this.LiveRes_checkBox.Size = new System.Drawing.Size(219, 21);
@@ -731,7 +763,7 @@
             // WarningSoundNotFound_checkBox
             // 
             this.WarningSoundNotFound_checkBox.AutoSize = true;
-            this.WarningSoundNotFound_checkBox.Location = new System.Drawing.Point(19, 115);
+            this.WarningSoundNotFound_checkBox.Location = new System.Drawing.Point(19, 114);
             this.WarningSoundNotFound_checkBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.WarningSoundNotFound_checkBox.Name = "WarningSoundNotFound_checkBox";
             this.WarningSoundNotFound_checkBox.Size = new System.Drawing.Size(204, 21);
@@ -743,15 +775,16 @@
             // 
             this.version.AutoSize = true;
             this.version.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.version.Location = new System.Drawing.Point(489, 807);
+            this.version.Location = new System.Drawing.Point(497, 807);
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 17.10.2021";
+            this.version.Text = "Ver 26.12.2021";
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(617, 502);
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(713, 940);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(841, 10);
@@ -759,12 +792,14 @@
             // 
             // GetFolderButton
             // 
-            this.GetFolderButton.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.GetFolderButton.BackColor = System.Drawing.Color.DodgerBlue;
+            this.GetFolderButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GetFolderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GetFolderButton.Location = new System.Drawing.Point(441, 798);
+            this.GetFolderButton.ForeColor = System.Drawing.Color.White;
+            this.GetFolderButton.Location = new System.Drawing.Point(439, 794);
             this.GetFolderButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.GetFolderButton.Name = "GetFolderButton";
-            this.GetFolderButton.Size = new System.Drawing.Size(43, 28);
+            this.GetFolderButton.Size = new System.Drawing.Size(53, 39);
             this.GetFolderButton.TabIndex = 54;
             this.GetFolderButton.Text = "...";
             this.GetFolderButton.UseVisualStyleBackColor = false;
@@ -774,6 +809,7 @@
             // 
             this.WarningSoundFound_checkBox.AutoSize = true;
             this.WarningSoundFound_checkBox.Location = new System.Drawing.Point(19, 142);
+            this.WarningSoundFound_checkBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.WarningSoundFound_checkBox.Name = "WarningSoundFound_checkBox";
             this.WarningSoundFound_checkBox.Size = new System.Drawing.Size(186, 21);
             this.WarningSoundFound_checkBox.TabIndex = 55;
@@ -785,6 +821,7 @@
             // 
             this.TextToSpeechFound_checkBox.AutoSize = true;
             this.TextToSpeechFound_checkBox.Location = new System.Drawing.Point(19, 169);
+            this.TextToSpeechFound_checkBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TextToSpeechFound_checkBox.Name = "TextToSpeechFound_checkBox";
             this.TextToSpeechFound_checkBox.Size = new System.Drawing.Size(193, 21);
             this.TextToSpeechFound_checkBox.TabIndex = 56;
@@ -795,59 +832,64 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(837, 19);
+            this.label8.Location = new System.Drawing.Point(872, 18);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(268, 17);
+            this.label8.Size = new System.Drawing.Size(264, 19);
             this.label8.TabIndex = 59;
             this.label8.Text = "F2 - Gå til startnrfelt   F3 - Endre brikkenr";
             // 
             // SearchName_Box
             // 
-            this.SearchName_Box.BackColor = System.Drawing.SystemColors.Info;
-            this.SearchName_Box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.SearchName_Box.Location = new System.Drawing.Point(1144, 468);
+            this.SearchName_Box.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.SearchName_Box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.SearchName_Box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SearchName_Box.Location = new System.Drawing.Point(1164, 475);
             this.SearchName_Box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SearchName_Box.Name = "SearchName_Box";
-            this.SearchName_Box.Size = new System.Drawing.Size(316, 27);
+            this.SearchName_Box.Size = new System.Drawing.Size(322, 28);
             this.SearchName_Box.TabIndex = 60;
             this.SearchName_Box.TextChanged += new System.EventHandler(this.SearchName_Box_TextChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(1160, 449);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(116, 20);
+            this.label10.TabIndex = 61;
+            this.label10.Text = "Søk etter navn";
             // 
             // MTR_read_led
             // 
             this.MTR_read_led.Color = System.Drawing.Color.Red;
-            this.MTR_read_led.Location = new System.Drawing.Point(486, 469);
+            this.MTR_read_led.Location = new System.Drawing.Point(364, 465);
+            this.MTR_read_led.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MTR_read_led.Name = "MTR_read_led";
             this.MTR_read_led.On = true;
-            this.MTR_read_led.Size = new System.Drawing.Size(35, 35);
+            this.MTR_read_led.Size = new System.Drawing.Size(35, 34);
             this.MTR_read_led.TabIndex = 58;
             this.MTR_read_led.Text = "ledBulb1";
             // 
             // ECU_read_led
             // 
             this.ECU_read_led.Color = System.Drawing.Color.Red;
-            this.ECU_read_led.Location = new System.Drawing.Point(283, 469);
+            this.ECU_read_led.Location = new System.Drawing.Point(161, 465);
+            this.ECU_read_led.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ECU_read_led.Name = "ECU_read_led";
             this.ECU_read_led.On = true;
-            this.ECU_read_led.Size = new System.Drawing.Size(35, 35);
+            this.ECU_read_led.Size = new System.Drawing.Size(35, 34);
             this.ECU_read_led.TabIndex = 57;
             this.ECU_read_led.Text = "ledBulb1";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(1142, 447);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(116, 20);
-            this.label10.TabIndex = 61;
-            this.label10.Text = "Søk etter navn";
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1489, 846);
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ClientSize = new System.Drawing.Size(1504, 846);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.SearchName_Box);
             this.Controls.Add(this.label8);
@@ -871,7 +913,6 @@
             this.Controls.Add(this.readLiveResfil_btn);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.LiveRes_groupBox);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.UsbRead_listBox);
             this.Controls.Add(this.SearchCard_Txtbox);
             this.Controls.Add(this.SearchCard_btn);
@@ -907,7 +948,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button SearchCard_btn;
         private System.Windows.Forms.ListBox UsbRead_listBox;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox Navn_box;
         private System.Windows.Forms.TextBox Klubb_box;
         private System.Windows.Forms.TextBox Klasse_box;

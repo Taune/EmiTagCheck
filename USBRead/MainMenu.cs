@@ -182,7 +182,7 @@ namespace Brikkesjekk
             }
             else
             {
-                if (ReadEcu_btn.Text == "Start ECU")
+                if (ReadEcu_btn.Text == "START ECU")
                 {
                     //Check if COM-port already opened
                     if (MTRComPortOpen == ActiveUsbPort)
@@ -191,8 +191,8 @@ namespace Brikkesjekk
                     }
                     else
                     {
-
-                        ReadEcu_btn.Text = "Stop ECU";
+                        ReadEcu_btn.Text = "STOPP ECU";
+                        ReadEcu_btn.BackColor = Color.LightSeaGreen;
                         UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
                         ECU_read_led.Color = Color.FromArgb(153, 255, 54); //LightGreen
                         ECU_read_led_blink(ECU_read_led, new EventArgs());
@@ -203,8 +203,8 @@ namespace Brikkesjekk
                 }
                 else
                 {
-                    ReadEcu_btn.Text = "Start ECU";
-                    //ReadEcu_btn.BackColor = Color.LightCoral;
+                    ReadEcu_btn.Text = "START ECU";
+                    ReadEcu_btn.BackColor = Color.DodgerBlue;
                     _spManager.StopListeningECU();
                     UsbRead_listBox.Items.Insert(0, "ECU - " + DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
                     _stop = true;
@@ -215,7 +215,7 @@ namespace Brikkesjekk
                 }
             }
 
-            if (dataGridView1.Rows.Count < 1 && ReadEcu_btn.Text == "Stop ECU")
+            if (dataGridView1.Rows.Count < 1 && ReadEcu_btn.Text == "STOPP ECU")
             {
                 MessageBox.Show("Startliste er ikke lest inn!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -229,7 +229,7 @@ namespace Brikkesjekk
             }
             else
             {
-                if (btnStartMTR.Text == "Start MTR")
+                if (btnStartMTR.Text == "START MTR")
                 {
                     //Check if COM-port already opened 
                     if (ECUComPortOpen == ActiveUsbPort)
@@ -238,8 +238,8 @@ namespace Brikkesjekk
                     }
                     else
                     {
-                        btnStartMTR.Text = "Stop MTR";
-                        //btnStartMTR.BackColor = Color.LightGreen;
+                        btnStartMTR.Text = "STOPP MTR";
+                        btnStartMTR.BackColor = Color.LightSeaGreen;
                         UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + "  Open Communication");
                         MTR_read_led.Color = Color.FromArgb(153, 255, 54); //LightGreen
                         MTR_read_led_Click(MTR_read_led, new EventArgs());
@@ -249,8 +249,8 @@ namespace Brikkesjekk
                 }
                 else
                 {
-                    btnStartMTR.Text = "Start MTR";
-                    //btnStartMTR.BackColor = Color.LightCoral;
+                    btnStartMTR.Text = "START MTR";
+                    btnStartMTR.BackColor = Color.DodgerBlue;
                     _spManager.StopListeningMTR();
                     UsbRead_listBox.Items.Insert(0, "MTR - " + DateTime.Now.ToString("HH:mm:ss") + "  Communication Closed");
                     MTRComPortOpen = "";
@@ -260,7 +260,7 @@ namespace Brikkesjekk
                     MTR_read_led.On = true;
                 }
             }
-            if (dataGridView1.Rows.Count < 1 && btnStartMTR.Text == "Stop MTR")
+            if (dataGridView1.Rows.Count < 1 && btnStartMTR.Text == "STOPP MTR")
             {
                 MessageBox.Show("Startliste er ikke lest inn!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -562,7 +562,7 @@ namespace Brikkesjekk
                 if (_batterylevel > 2.97) { _batterycolor = Color.Green; }
                 if (_batterylevel > 2.95 && _batterylevel <= 2.97) { _batterycolor = Color.Yellow; }
                 if (_batterylevel <= 2.95) { _batterycolor = Color.Red; }
-                if (_batterylevel == 0) { _batterycolor = Color.LightGray; }
+                if (_batterylevel == 0) { _batterycolor = Color.WhiteSmoke; }
 
                 Battery_box.BeginInvoke(new MethodInvoker(delegate
                 {
@@ -691,7 +691,7 @@ namespace Brikkesjekk
 
         private void readLiveResfil_btn_Click(object sender, EventArgs e) //Start reading startlist from LiveRes
         {
-            if (readLiveResfil_btn.Text == "Les startliste LiveRes")
+            if (readLiveResfil_btn.Text == "LES STARTLISTE LIVERES")
             {
                 if (GridTable != null)
                 {
@@ -699,8 +699,8 @@ namespace Brikkesjekk
                     GridTable.Rows.Clear();
                     dataGridView1.Refresh();
                 }
-                readLiveResfil_btn.Text = "Stopp startliste LiveRes";
-                readLiveResfil_btn.BackColor = Color.LightGreen;
+                readLiveResfil_btn.Text = "STOPP STARTLISTE LIVERES";
+                readLiveResfil_btn.BackColor = Color.LightSeaGreen;
                 _stopLiveRes = false;
                 CancellationTokenSource tokenSource = new CancellationTokenSource();
                 Task timerTask = RunPeriodically(TimeSpan.FromMinutes(10), tokenSource.Token);
@@ -708,8 +708,8 @@ namespace Brikkesjekk
             }
             else
             {
-                readLiveResfil_btn.Text = "Les startliste LiveRes";
-                readLiveResfil_btn.BackColor = SystemColors.ButtonHighlight;
+                readLiveResfil_btn.Text = "LES STARTLISTE LIVERES";
+                readLiveResfil_btn.BackColor = Color.DodgerBlue;
                 _stopLiveRes = true;
                 progressBar1.Value = 0;
             }
@@ -770,8 +770,8 @@ namespace Brikkesjekk
                     GridTable = JsonConvert.DeserializeObject<DataTable>(outputArray.ToString());
                     dataGridView1.DataSource = GridTable;
                     dataGridView1.EnableHeadersVisualStyles = false;
-                    dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray; 
-                    dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.LightSalmon;
+                    dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
+                    dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.AliceBlue;
                 }
             }
             catch
@@ -1553,5 +1553,6 @@ namespace Brikkesjekk
                 e.Value = lastname + " - " + firstname;
             }
         }
+
     }
 }
