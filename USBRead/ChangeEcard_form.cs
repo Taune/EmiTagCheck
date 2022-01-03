@@ -37,6 +37,5 @@ namespace Brikkesjekk
             ByttStartnrBox.Text = _MainMenuManager.StartNr_box.Text;
             ByttBrikkeBox.Text = _MainMenuManager.SearchCard_Txtbox.Text;
         }
-
      }
 }

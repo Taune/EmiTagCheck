@@ -495,8 +495,6 @@ namespace Brikkesjekk
         {
             EmitCard_picture.Visible = false;
             EmiTag_picture.Visible = false;
-            //ledBulb_funnet.On = true;
-            //ledBulb_funnet.Color = Color.Red;
             if (StartNr_box != null && !StartNr_box.IsDisposed)
             {
                 StartNr_box.BeginInvoke(new MethodInvoker(delegate
