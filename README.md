@@ -3,6 +3,10 @@ Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR
 
 ![image](https://user-images.githubusercontent.com/59508210/122427162-2bfadb00-cf91-11eb-9517-702f5acb6b13.png)
 
+2021-10-17
+- Ved valg av løp fra LiveRes så er nå dato inkludert i tillegg til løpsnavn.
+- Ved lesing av brikke så vises det et symbol om det er en EmiTag eller en Emit o-løper brikke
+
 26.08.2021
 - Ved import av stafett fra LiveRes så blir "-" foran startnr fjernet.
 - Ved endring av brikke og bruk av LiveRes så er kall til LiveRes endret slik at brikke blir satt til "sjekket" samtidig med brikkeendring.
