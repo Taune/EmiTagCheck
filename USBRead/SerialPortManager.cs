@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace Brikkesjekk
 {
-    class SerialPortManager : IDisposable
+    public partial class SerialPortManager : IDisposable
     {
         ~SerialPortManager()
         {
@@ -142,6 +142,7 @@ namespace Brikkesjekk
         // Closes the serial port
         public void StopListeningECU()
         {
+            Task.Delay(50).Wait();
             _serialPortA.Close();
         }
 
@@ -178,6 +179,7 @@ namespace Brikkesjekk
 
         void mtrParseMsg(List<int> msg)
         {
+            //_spResultater = new Resultater_form();
             _MtrEcardfound = false;
             int MtrEcardNo = 0;
             int checksum = 0xFF + 0xFF + 0xFF + 0xFF;
@@ -200,6 +202,8 @@ namespace Brikkesjekk
             //return msgObj; 
             msgObj = MtrEcardNo.ToString();
 
+            List<MTRDataCheckPoint> checkPoints = new List<MTRDataCheckPoint>();
+
         }
 
 
@@ -214,8 +218,8 @@ namespace Brikkesjekk
         //TS - [ms]     2 Milliseconds NOT YET USED, WILL BE 0 IN THIS VERSION
         //Package#      4 Binary Counter, from 1 and up; Least sign byte first
         //Card - id     3 Binary, Least sign byte first
-        //Producweek 1  0 - 53; 0 when package is retrived from "history"
-        //Producyear 1  94 - 99,0 -..X; 0 when package is retrived from "history"
+        //Producweek    1  0 - 53; 0 when package is retrived from "history"
+        //Producyear    1  94 - 99,0 -..X; 0 when package is retrived from "history"
         //ECardHeadSum  1 Headchecksum from card; 0 when package is retrived from "history"
 
         //The following fields are repeated 50 times:
@@ -227,7 +231,31 @@ namespace Brikkesjekk
         //    ----------------------------------------
         //Size 234
 
+        private void TotalTimeMTR (string emitCardNo, List<MTRDataCheckPoint> CheckPoints)
+        {
+            int TotalTime = 0;
 
+            for (int i=0; i < CheckPoints.Count; i++)
+            {
+                if (CheckPoints[i].CodeN < 250)
+                {
+                    TotalTime = CheckPoints[i].TimeN + CheckPoints[i].InfoField * 256;
+                }
+                else
+                {
+                    WriteResults(TotalTime, emitCardNo);
+                    break;
+                }
+            }
+        }
+
+        private void WriteResults(int time, string emitCardNumber)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\Temp\Results.txt", true))
+            {
+                file.WriteLine(DateTime.Now.ToString("yyyy-MM-dd") + "," + emitCardNumber + "," + time);
+            }
+        }
     }
 
     // EventArgs used to send bytes recieved on serial port

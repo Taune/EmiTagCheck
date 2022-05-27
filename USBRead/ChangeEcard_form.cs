@@ -14,8 +14,7 @@ namespace Brikkesjekk
         public ChangeEcard_form(MainMenu frm1)
         {
             InitializeComponent();
-            this._MainMenuManager = frm1;
- 
+            this._MainMenuManager = frm1; 
         }
 
 

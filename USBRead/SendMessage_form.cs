@@ -16,7 +16,7 @@ namespace Brikkesjekk
 
         private void SendMessage_form_Load(object sender, EventArgs e)
         {
-
+ 
         }
 
         private void CloseMessage_btn_Click(object sender, EventArgs e)
