@@ -3,7 +3,14 @@ Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR
 
 ![image](https://user-images.githubusercontent.com/59508210/122427162-2bfadb00-cf91-11eb-9517-702f5acb6b13.png)
 
-2021-10-17
+27.05.2022
+- Endret link i config-fil til ny LiveRes-server (https://api.liveres.live/)
+- Ved bruke av ECU kan intern kode settes til 70. Dersom ECU skal benyttes til avlesning av brikker i Etiming eller Brikkesys, så må kode være 250. Kode blir derfor nå automatisk satt tilbake til kode 250.
+
+26.12.2021
+Layout på skjermbilder endret.
+
+17.10.2021
 - Ved valg av løp fra LiveRes så er nå dato inkludert i tillegg til løpsnavn.
 - Ved lesing av brikke så vises det et symbol om det er en EmiTag eller en Emit o-løper brikke
 
