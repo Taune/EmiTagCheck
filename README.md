@@ -6,6 +6,7 @@ Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR
 27.05.2022
 - Endret link i config-fil til ny LiveRes-server (https://api.liveres.live/)
 - Ved bruke av ECU kan intern kode settes til 70. Dersom ECU skal benyttes til avlesning av brikker i Etiming eller Brikkesys, så må kode være 250. Kode blir derfor nå automatisk satt tilbake til kode 250.
+- Dersom Brikkesjekk-program skal benyttes på en PC med Windows 7 eller 8, så må sertifikat for TLS 1.2 aktiveres. Dette må være aktivert for at kommunikasjon med LivRes-server skal fungere. Fremgangsmåte for aktivering av TLS 1.2 ligger her: https://hosting.ca/how-to-enable-tls-1-2-on-windows-7/
 
 26.12.2021
 Layout på skjermbilder endret.
