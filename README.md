@@ -6,6 +6,11 @@ Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR
 For PC med Windows 7 eller 8:
 - Dersom Brikkesjekk-program skal benyttes på en PC med Windows 7 eller 8, så må sertifikat for TLS 1.2 aktiveres. Dette må være aktivert for at kommunikasjon med LivRes-server skal fungere. Fremgangsmåte for aktivering av TLS 1.2 ligger her: https://hosting.ca/how-to-enable-tls-1-2-on-windows-7/
 
+13.06.2022
+- Starttid for løper vises sammen med annen løperinfo
+- Det er nå mulig å klikke på alle felt i startliste for å få opp startnummer
+- Standard verdi for oppdatering av startliste fra LiveRes er satt til 5 min. Denne kan nå endres i config-fil (Brikkesjekk.exe.Config). Der kan man legge inn antall ønskede minutter i variabel "liveres_interval". Ved mange deltakere (mer enn 500 stk), så kan det være lurt å sjekke hvor lang tid en opplastning tar. Dette er avhengig av nettilgang.
+
 27.05.2022
 - Endret link i config-fil til ny LiveRes-server (https://api.liveres.live/)
 - Ved bruke av ECU kan intern kode settes til 70. Dersom ECU skal benyttes til avlesning av brikker i Etiming eller Brikkesys, så må kode være 250. Kode blir derfor nå automatisk satt tilbake til kode 250.
