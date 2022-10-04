@@ -1,5 +1,6 @@
 # EmiTagCheck
 Software for checking EmiTag (use of Emit ECU-reader) and ECard (use of Emit MTR-reader) before start.
+If used with Pål Kittilsen LiveRes (https://github.com/palkitt/liveresults), eTiming can be updated automatically. 
 
 ![image](https://user-images.githubusercontent.com/59508210/122427162-2bfadb00-cf91-11eb-9517-702f5acb6b13.png)
 
