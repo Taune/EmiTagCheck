@@ -7,6 +7,12 @@ If used with Pål Kittilsen LiveRes (https://github.com/palkitt/liveresults), eT
 For PC med Windows 7 eller 8:
 - Dersom Brikkesjekk-program skal benyttes på en PC med Windows 7 eller 8, så må sertifikat for TLS 1.2 aktiveres. Dette må være aktivert for at kommunikasjon med LivRes-server skal fungere. Fremgangsmåte for aktivering av TLS 1.2 ligger her: https://hosting.ca/how-to-enable-tls-1-2-on-windows-7/
 
+08.10.2022
+- Har endret vindu for startliste slik at det ikke er mulig å gjøre endringer på feltene der ved en feiltakelse
+- Lagt til en knapp med link til LiveRes meldingsserver slik at man kan følge med på status til endringer.
+- Har endret funksjon på ny lesing av startliste fra LiveRes. Dersom det ikke er gjort endringer fra Etiming og startliste i LiveRes er uendret, så blir ikke startliste lest på nytt.
+- Lagt til et felt hvor man kan legge inn hvor ofte startliste skal leses fra LiveRes. Ved mange deltakere så bør ikke dette skje for ofte.
+
 13.06.2022
 - Starttid for løper vises sammen med annen løperinfo
 - Det er nå mulig å klikke på alle felt i startliste for å få opp startnummer
