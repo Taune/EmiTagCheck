@@ -30,6 +30,7 @@ namespace Brikkesjekk
         public string ecardRead;
         public bool _ecardfound;
         public bool _serialportfound;
+        public bool _liveresCellClick = false;
         private bool _fileloaded = false;
         public static string SetValueForEmitag;
         public static string SetValueForLopsid;
@@ -38,16 +39,20 @@ namespace Brikkesjekk
         public static string SetValueForID;
         public string _LogfileName;
         public string _LiveResfileName;
+        //public int _LiveResInterval;
         public double _batterylevel;
         public Color _batterycolor;
         public string _EcuCode;
         public string StartlistFilename;
+        public string _LiveResLastModifiedHash;
         private int _blink = 0;
         DataTable GridTable = new DataTable();
         SerialPortManager _spManager;
         SpeechSynthesizer SpeechReader = new SpeechSynthesizer();
-        public Stack<string> myStack = new Stack<string>();
-        
+        public Stack<string> myStack_Messages = new Stack<string>();
+        System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
+        System.Timers.Timer p = new System.Timers.Timer();
+
         public class Competition
         {
             public int id { get; set; }
@@ -64,15 +69,6 @@ namespace Brikkesjekk
             public List<Competition> competitions { get; set; }                
         }
 
-        public class ExThread
-        {
-            // Non-static method
-            public void mythread1()
-            {
-                          
-            }
-        }
-
         public MainMenu()
         {
             InitializeComponent();
@@ -84,10 +80,6 @@ namespace Brikkesjekk
             _spManager = new SerialPortManager();
             _spManager.NewSerialDataRecievedECU += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedECU);
             _spManager.NewSerialDataRecievedMTR += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedMTR);
-
-            //ExThread thr = new ExThread(job1);
-            //thr.Start();
-            ////Thread ThreadMtrMessag = new Thread();
 
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyEvent);
             this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
@@ -115,12 +107,10 @@ namespace Brikkesjekk
             else
             {
             }
-            //this.Close();
         }
 
         private void KeyEvent(object sender, KeyEventArgs e) //Keyup Event 
         {
-
             if (e.KeyCode == Keys.F2)
             {
                 StartNr_box.Select();
@@ -131,32 +121,141 @@ namespace Brikkesjekk
             }
         }
 
-        public void PushLiveResMessage (object sender, SerialDataEventArgs e)
+        private void MainMenu_Load(object sender, EventArgs e)
         {
-            Thread.Sleep(5000);
-            WebClient client = new WebClient();
-            client.Encoding = Encoding.UTF8; 
-            
-            if (myStack.Count > 0)
+            bool _LiveRes = true;
+            bool _SoundOnNotFound = true;
+            bool _SoundOnFound = true;
+            bool _TextTSpeech = true;
+
+            // Read a keys from the config file            
+            lopsid_box.Text = ConfigurationManager.AppSettings.Get("lopid");
+            lopsnavn_box.Text = ConfigurationManager.AppSettings.Get("lopnavn");
+            lopsdato_box.Text = ConfigurationManager.AppSettings.Get("lopdato");
+            folderLogfile_box.Text = ConfigurationManager.AppSettings.Get("logfolder");
+            OppdaterFrekvens_box.Text = ConfigurationManager.AppSettings.Get("liveres_interval");
+            if (ConfigurationManager.AppSettings.Get("SoundCheckBox_Found") == "False")
             {
-                foreach (var item in myStack)
+                _SoundOnFound = false;
+            }
+            WarningSoundFound_checkBox.Checked = _SoundOnFound;
+
+            if (ConfigurationManager.AppSettings.Get("SoundCheckBox_NotFound") == "False")
+            {
+                _SoundOnNotFound = false;
+            }
+            WarningSoundNotFound_checkBox.Checked = _SoundOnNotFound;
+
+            if (ConfigurationManager.AppSettings.Get("TextToSpeechBox") == "False")
+            {
+                _TextTSpeech = false;
+            }
+            TextToSpeechFound_checkBox.Checked = _TextTSpeech;
+
+            if (ConfigurationManager.AppSettings.Get("liveresCheckBox") == "False")
+            {
+                _LiveRes = false;
+            }
+            LiveRes_checkBox.Checked = _LiveRes;
+            if (LiveRes_checkBox.Checked == true)
+            {
+                readLiveResfil_btn.Enabled = true;
+                SendMessage_btn.Enabled = true;
+                LiveresMessages_btn.Enabled = true;
+                LiveRes_groupBox.Enabled = true;
+                NotStared_btn.Enabled = true;
+                ChangeEcardNo_btn.Enabled = true;
+                OppdaterFrekvens_box.Enabled = true;
+            }
+            if (LiveRes_checkBox.Checked == false)
+            {
+                readLiveResfil_btn.Enabled = false;
+                SendMessage_btn.Enabled = false;
+                LiveresMessages_btn.Enabled = false;
+                LiveRes_groupBox.Enabled = false;
+                NotStared_btn.Enabled = false;
+                ChangeEcardNo_btn.Enabled = false;
+                OppdaterFrekvens_box.Enabled = false;
+            }
+
+            _stop = true;
+
+            if (@folderLogfile_box.Text.Substring(@folderLogfile_box.Text.Length - 1, 1) != @"\")
+            {
+                _LogfileName = @folderLogfile_box.Text + @"\" + "brikkesjekk " + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
+            }
+            else
+            {
+                _LogfileName = @folderLogfile_box.Text + "brikkesjekk " + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
+            }
+            //Create a log-file for todays race
+            if (!File.Exists(_LogfileName))
+            {
+                // Create a file to write to.
+                try
                 {
-                    var result1 = client.DownloadString(string.Format(item));
-                    try
+                    using (StreamWriter logfile = File.CreateText(_LogfileName))
                     {
-                        if (result1.Contains("OK")) //Fjerner sist innleste melding dersom meldingserver OK
-                        {
-                            myStack.Pop();
-                        }
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Melding ikke sendt - forsøker på nytt", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        logfile.WriteLine("Log created: " + DateTime.Now.ToString("HH:mm:ss"));
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
+
+            //Starter klokke
+            t.Interval = 1000; //Tidsintervall for klokke
+            t.Tick += new EventHandler(this.t_Tick);
+            t.Start();
+
+            //Starter tråd med sjekk av push meldinger
+            //p.Interval = 20000;
+            //p.AutoReset = true;
+            //p.Elapsed += new System.Timers.ElapsedEventHandler(CheckForPushMessage);
+            //p.Start();
+
+            string[] ports = SerialPort.GetPortNames();
+            if (ports != null && ports.Length != 0)
+            {
+                UsbPort_listBox.Items.AddRange(ports);
+                UsbPort_listBox.SelectedIndex = 0;
+                _serialportfound = true;
+            }
+            else
+            {
+                UsbPort_listBox.Items.Add("COM-port ikke funnet");
+                _serialportfound = false;
+            }
+            Close_btn.Enabled = true;
         }
-        
+
+        public void CheckForPushMessage(object sender, System.Timers.ElapsedEventArgs e) //Start prosedyre for sjekk av melding som ligger i stack
+        {
+            WebClient client = new WebClient();
+            client.Encoding = Encoding.UTF8;
+
+                if (myStack_Messages.Count > 0) //Sjekker om det er meldinger som ligger i stack og ikke er sendt
+                {
+                    foreach (var item in myStack_Messages)
+                    {
+                        try
+                        {
+                            var result1 = client.DownloadString(string.Format(item));
+                            if (result1.Contains("OK")) //Fjerner sist innleste melding dersom meldingserver OK
+                            {
+                                myStack_Messages.Pop();
+                            }
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Sjekk internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                }
+        }
+
         void _spManager_NewSerialDataRecievedECU(object sender, SerialDataEventArgs e)
         {
             if (this.InvokeRequired)
@@ -186,7 +285,6 @@ namespace Brikkesjekk
 
         void _spManager_NewSerialDataRecievedMTR(object sender, SerialDataEventArgs e)
         {
-
             if (this.InvokeRequired)
             {
                 // Using this.Invoke causes deadlock when closing serial port, and BeginInvoke is good practice anyway.
@@ -211,7 +309,6 @@ namespace Brikkesjekk
             }
         }
 
-        System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
 
         // Start listening to the ECU-unit
         private void btnStartECU_Click(object sender, EventArgs e)
@@ -314,106 +411,6 @@ namespace Brikkesjekk
             }
         }
 
-        private void MainMenu_Load(object sender, EventArgs e)
-        {
-            bool _LiveRes = true;
-            bool _SoundOnNotFound = true;
-            bool _SoundOnFound = true;
-            bool _TextTSpeech = true;
-
-            // Read a keys from the config file            
-            lopsid_box.Text = ConfigurationManager.AppSettings.Get("lopid");
-            lopsnavn_box.Text = ConfigurationManager.AppSettings.Get("lopnavn");
-            lopsdato_box.Text = ConfigurationManager.AppSettings.Get("lopdato");
-            folderLogfile_box.Text = ConfigurationManager.AppSettings.Get("logfolder");
-            if (ConfigurationManager.AppSettings.Get("SoundCheckBox_Found") == "False")
-            {
-                _SoundOnFound = false;
-            }
-            WarningSoundFound_checkBox.Checked = _SoundOnFound;
-
-            if (ConfigurationManager.AppSettings.Get("SoundCheckBox_NotFound") == "False")
-            {
-                _SoundOnNotFound= false;
-            }
-            WarningSoundNotFound_checkBox.Checked = _SoundOnNotFound;
-
-            if (ConfigurationManager.AppSettings.Get("TextToSpeechBox") == "False")
-            {
-                _TextTSpeech = false;
-            }
-            TextToSpeechFound_checkBox.Checked = _TextTSpeech;
-
-            if (ConfigurationManager.AppSettings.Get("liveresCheckBox") == "False")
-            {
-                _LiveRes = false;
-            }
-            LiveRes_checkBox.Checked = _LiveRes;
-            if (LiveRes_checkBox.Checked == true)
-            {
-                //ReadLiveResRaces();
-                readLiveResfil_btn.Enabled = true;
-                SendMessage_btn.Enabled = true;
-                LiveRes_groupBox.Enabled = true;
-                NotStared_btn.Enabled = true;
-                ChangeEcardNo_btn.Enabled = true;
-            }
-            if (LiveRes_checkBox.Checked == false)
-            {
-                readLiveResfil_btn.Enabled = false;
-                SendMessage_btn.Enabled = false;
-                LiveRes_groupBox.Enabled = false;
-                NotStared_btn.Enabled = false;
-                ChangeEcardNo_btn.Enabled = false;
-            }
-
-            _stop = true;
-
-            if (@folderLogfile_box.Text.Substring(@folderLogfile_box.Text.Length-1,1) != @"\")
-            {
-                _LogfileName = @folderLogfile_box.Text + @"\" + "brikkesjekk " + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
-            }
-            else
-            {
-                _LogfileName = @folderLogfile_box.Text + "brikkesjekk " + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
-            }
-            //Create a log-file for todays race
-            if (!File.Exists(_LogfileName))
-            {
-                // Create a file to write to.
-                try
-                {
-                    using (StreamWriter logfile = File.CreateText(_LogfileName))
-                    {
-                        logfile.WriteLine("Log created: " + DateTime.Now.ToString("HH:mm:ss"));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
-
-            //Starter klokke
-            t.Interval = 700; //Tidsintervall for klokke
-            t.Tick += new EventHandler(this.t_Tick);
-            t.Start();
-
-            string[] ports = SerialPort.GetPortNames();
-            if (ports != null && ports.Length != 0)
-            {
-                UsbPort_listBox.Items.AddRange(ports);
-                UsbPort_listBox.SelectedIndex = 0;
-                _serialportfound = true;
-            }
-            else
-            {
-                UsbPort_listBox.Items.Add("COM-port ikke funnet");
-                _serialportfound = false;
-            }
-            Close_btn.Enabled = true;
-        }
-
         private void t_Tick(object sender, EventArgs e)
         {
             int hh = DateTime.Now.Hour;
@@ -481,7 +478,6 @@ namespace Brikkesjekk
         {
             if (_stop == false)
             {
-                //                MessageBox.Show("Stopp kommunikasjon før program avsluttes!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             else
@@ -511,6 +507,7 @@ namespace Brikkesjekk
             config.AppSettings.Settings["SoundCheckBox_NotFound"].Value = WarningSoundNotFound_checkBox.Checked.ToString();
             config.AppSettings.Settings["SoundCheckBox_Found"].Value = WarningSoundFound_checkBox.Checked.ToString();
             config.AppSettings.Settings["TextToSpeechBox"].Value = TextToSpeechFound_checkBox.Checked.ToString();
+            config.AppSettings.Settings["liveres_interval"].Value = OppdaterFrekvens_box.Text.ToString();
             config.Save(ConfigurationSaveMode.Modified);
 
             System.Windows.Forms.Application.ExitThread();
@@ -595,6 +592,15 @@ namespace Brikkesjekk
                     Klasse_box.Text = "XX";
                 }));
             }
+            if (Starttid_Box != null && !Starttid_Box.IsDisposed)
+            {
+                Starttid_Box.BeginInvoke(new MethodInvoker(delegate
+                {
+                    Starttid_Box.ForeColor = Color.Red;
+                    Starttid_Box.Text = "XX";
+                }));
+            }
+
             if (Ecard2_box != null && !Ecard2_box.IsDisposed)
             {
                 Ecard2_box.BeginInvoke(new MethodInvoker(delegate
@@ -624,10 +630,8 @@ namespace Brikkesjekk
             }
         }
 
-        public void ChangeEcuCode(string cmd) //Change code on ECU reader
+        public void ChangeEcuCode(string cmd) //Change code on the ECU reader
         {
-            //string cmd = "";
-
             if (ActiveUsbPort == null)
             {
                 MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -662,7 +666,7 @@ namespace Brikkesjekk
             f2.Show();
         }
 
-        public void EmitagParser(string ecbMessage) //Split the message from ECU and find Ecard number
+        public void EmitagParser(string ecbMessage) //Split the message from ECU and find the Ecard number
         {
             //Statusmelding fra ECU (ikke lest brikke):
             //IECU - HW1 - SW5 - V1.72  M1 - 103  Y878100473 W12:00:42.216   C253 X7
@@ -741,7 +745,7 @@ namespace Brikkesjekk
                 readLiveResfil_btn.BackColor = Color.LightSeaGreen;
                 _stopLiveRes = false;
                 CancellationTokenSource tokenSource = new CancellationTokenSource();
-                Task timerTask = RunPeriodically(TimeSpan.FromMinutes(7), tokenSource.Token);
+                Task timerTask = Task_ReadStartlist(TimeSpan.FromMinutes(Int32.Parse(OppdaterFrekvens_box.Text)), tokenSource.Token);
                 _fileloaded = true;
             }
             else
@@ -749,15 +753,27 @@ namespace Brikkesjekk
                 readLiveResfil_btn.Text = "LES STARTLISTE LIVERES";
                 readLiveResfil_btn.BackColor = Color.DodgerBlue;
                 _stopLiveRes = true;
+                _LiveResLastModifiedHash = "0";
                 progressBar1.Value = 0;
             }
         }
 
-        async Task RunPeriodically(TimeSpan interval, CancellationToken token) //read start list from LiveRes every 5 min
+        async Task Task_ReadStartlist(TimeSpan interval, CancellationToken token) //read start list from LiveRes every 5 min
         {
             while (true && _stopLiveRes == false)
             {
-                readLiveResfil();
+                WebClient client = new WebClient();
+                client.Encoding = Encoding.UTF8;
+                string downloadString2 = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + 
+                    "api.php?method=getrunners&comp=" + lopsid_box.Text + "&last_hash=" + _LiveResLastModifiedHash);
+                var objects = JsonConvert.DeserializeObject<dynamic>(downloadString2);
+                if (objects.status == "NOT MODIFIED")
+                {
+                }
+                else 
+                {
+                    readLiveResfil();
+                }
                 await Task.Delay(interval, token);
             }
         }
@@ -767,6 +783,7 @@ namespace Brikkesjekk
             Cursor.Current = Cursors.WaitCursor;
             int i = 0;
             progressBar1.Minimum = 0;
+            progressBar1.Value = 0;
 
             //File for saving startlist from LiveRes local on computer
             _LiveResfileName = @folderLogfile_box.Text + @"\" + "LiveResStartlist" + DateTime.Now.ToString("yyyy-MM-dd") + ".csv";
@@ -778,12 +795,14 @@ namespace Brikkesjekk
 
             try
             {
-                WebClient client = new WebClient();
-                client.Encoding = Encoding.UTF8;
-                string downloadString = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + "api.php?method=getrunners&comp=" + lopsid_box.Text);
+                WebClient client2 = new WebClient();
+                client2.Encoding = Encoding.UTF8;
+                string downloadString = client2.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + 
+                    "api.php?method=getrunners&comp=" + lopsid_box.Text);
                 var objects = JsonConvert.DeserializeObject<dynamic>(downloadString);
                 if (objects.status == "OK")
                 {
+                    _LiveResLastModifiedHash = objects.hash;
                     JArray items = (JArray)objects["runners"];
                     progressBar1.Maximum = items.Count;
 
@@ -808,6 +827,7 @@ namespace Brikkesjekk
                     GridTable = JsonConvert.DeserializeObject<DataTable>(outputArray.ToString());
                     dataGridView1.DataSource = GridTable;
                     dataGridView1.EnableHeadersVisualStyles = false;
+                    dataGridView1.RowHeadersWidth = 20;
                     dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
                     dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.AliceBlue;
                 }
@@ -875,6 +895,14 @@ namespace Brikkesjekk
                             {
                                 Klasse_box.ForeColor = Color.Green; 
                                 Klasse_box.Text = dataGridView1.Rows[row.Index].Cells[6].Value.ToString();
+                            }));
+                        }
+                        if (Starttid_Box != null && !Starttid_Box.IsDisposed)
+                        {
+                            Starttid_Box.BeginInvoke(new MethodInvoker(delegate
+                            {
+                                Starttid_Box.ForeColor = Color.Green;
+                                Starttid_Box.Text = dataGridView1.Rows[row.Index].Cells[5].Value.ToString();
                             }));
                         }
                         if (Ecard_box != null && !Ecard_box.IsDisposed)
@@ -1035,6 +1063,7 @@ namespace Brikkesjekk
                     GridTable.Rows.Add(row["id"], row["startno"], "0", row["name"] + " " + row["ename"], row["name_1"], "", row["class"], row["ecard"], row["ecard2"]);
                 }
                 dataGridView1.DataSource = GridTable;
+                dataGridView1.RowHeadersWidth = 20;
                 dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.LightSalmon;
             }
             catch (Exception ex)
@@ -1044,27 +1073,6 @@ namespace Brikkesjekk
             }
         }
 
-        private void ChangeEcuCode_btn_Click(object sender, EventArgs e)
-        {
-            int InputValue = 0;
-            try
-            {
-                //InputValue = Int16.Parse(ecuCode_comboBox.SelectedItem.ToString());
-                //InputValue = Int16.Parse(ecuCode_box.Text);
-            }
-            catch (Exception)
-            { }
-
-            //if (InputValue >= 65 && InputValue <= 253)
-            //{
-            //    ChangeEcuCode("/CD250\r\n");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Kode må være mellom 65 og 253!", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            //}
-        }
-
         private void LiveRes_checkBox_CheckedChanged(object sender, EventArgs e)
         {
             if (LiveRes_checkBox.Checked == true)
@@ -1072,9 +1080,11 @@ namespace Brikkesjekk
                 ReadLiveResRaces();
                 readLiveResfil_btn.Enabled = true;
                 SendMessage_btn.Enabled = true;
+                LiveresMessages_btn.Enabled = true;
                 LiveRes_groupBox.Enabled = true;
                 NotStared_btn.Enabled = true;
                 ChangeEcardNo_btn.Enabled = true;
+                OppdaterFrekvens_box.Enabled = true;
             }
             if (LiveRes_checkBox.Checked == false)
             {
@@ -1086,9 +1096,11 @@ namespace Brikkesjekk
                 }
                 readLiveResfil_btn.Enabled = false;
                 SendMessage_btn.Enabled = false;
+                LiveresMessages_btn.Enabled = false;
                 LiveRes_groupBox.Enabled = false;
                 NotStared_btn.Enabled = false;
                 ChangeEcardNo_btn.Enabled = false;
+                OppdaterFrekvens_box.Enabled = false;
             }
         }
 
@@ -1255,7 +1267,7 @@ namespace Brikkesjekk
             FindLiveResName();
         }
 
-        private void NotStared_btn_Click(object sender, EventArgs e)
+        private void NotStarted_btn_Click(object sender, EventArgs e) //Send message "Not Started" to LiveRes
         {
             int IntStartNo;
             if (int.TryParse(StartNr_box.Text, out IntStartNo))
@@ -1275,12 +1287,12 @@ namespace Brikkesjekk
                             {
                                 string MsgText = string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
                                 lopid, dbidNo);
-                                myStack.Push(MsgText); 
+                                myStack_Messages.Push(MsgText); 
                                 var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
                                 lopid, dbidNo));
                                 if (result1.Contains("OK")) //Fjerner sist innleste melding dersom meldingserver OK
                                 {
-                                    myStack.Pop();
+                                    myStack_Messages.Pop();
                                 }
                                 using (StreamWriter sr = File.AppendText(_LogfileName))
                                 {
@@ -1357,7 +1369,7 @@ namespace Brikkesjekk
             }
             else
             {
-                MessageBox.Show("Sjekk at feltet for startnr og manuell brikkesøk er fylt ut!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Feltet Startnummer eller Brikke 1 inneholder ikke tall!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1528,6 +1540,7 @@ namespace Brikkesjekk
                 }
         }
 
+
         private void StartNr_box_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
@@ -1552,6 +1565,8 @@ namespace Brikkesjekk
                                 Klubb_box.Text = dataGridView1.Rows[row1.Index].Cells[4].Value.ToString();
                                 Klasse_box.ForeColor = Color.Gray;
                                 Klasse_box.Text = dataGridView1.Rows[row1.Index].Cells[6].Value.ToString();
+                                Starttid_Box.ForeColor = Color.Gray;
+                                Starttid_Box.Text = dataGridView1.Rows[row1.Index].Cells[5].Value.ToString();
                                 Ecard_box.ForeColor = Color.Gray;
                                 Ecard_box.Text = dataGridView1.Rows[row1.Index].Cells[7].Value.ToString();
                                 Ecard2_box.ForeColor = Color.Gray;
@@ -1563,6 +1578,7 @@ namespace Brikkesjekk
                                 Navn_box.Text = "";
                                 Klubb_box.Text = "";
                                 Klasse_box.Text = "";
+                                Starttid_Box.Text = "";
                                 Ecard_box.Text = "";
                                 Ecard2_box.Text = "";
                             }
@@ -1579,12 +1595,14 @@ namespace Brikkesjekk
         {
             if (e.RowIndex != -1 && e.ColumnIndex != -1)
             {       
-                if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null && e.ColumnIndex == 1)
+                if (dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value != null && e.ColumnIndex > -1)
                 {
-                    StartNr_box.Text = dataGridView1.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    StartNr_box.Text = dataGridView1.Rows[e.RowIndex].Cells[1].Value.ToString();
                     sender = this;
+                    _liveresCellClick = true;
                     KeyPressEventArgs kpea = new KeyPressEventArgs((char)Keys.Enter);
                     StartNr_box_KeyPress(null, kpea);
+                    _liveresCellClick = false;
                 }
             }
         }
@@ -1598,5 +1616,20 @@ namespace Brikkesjekk
                 e.Value = lastname + " - " + firstname;
             }
         }
+
+        private void StartNr_box_TextChanged(object sender, EventArgs e)
+        {
+            if (GridTable != null && GridTable.Rows.Count > 0 && _liveresCellClick == false)
+            {
+                //dataGridView1.DataSource = GridTable;
+                //(dataGridView1.DataSource as DataTable).DefaultView.RowFilter = string.Format("bib LIKE '%{0}%'", StartNr_box.Text);
+            }
+        }
+
+        private void LiveresMessages_btn_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://liveres.live/message.php?comp=" + lopsid_box.Text);
+        }
+
     }
 }

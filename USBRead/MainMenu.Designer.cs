@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -62,6 +63,7 @@
             this.readBrikkesjekkfil_btn = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.Løperinfo = new System.Windows.Forms.GroupBox();
+            this.Starttid_Box = new System.Windows.Forms.TextBox();
             this.EmitCard_picture = new System.Windows.Forms.PictureBox();
             this.EmiTag_picture = new System.Windows.Forms.PictureBox();
             this.ChangeEcardNo_btn = new System.Windows.Forms.Button();
@@ -88,6 +90,11 @@
             this.label8 = new System.Windows.Forms.Label();
             this.SearchName_Box = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
+            this.LiveresMessages_btn = new System.Windows.Forms.Button();
+            this.OppdaterFrekvens_box = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.MTR_read_led = new Brikkesjekk.LedBulb();
             this.ECU_read_led = new Brikkesjekk.LedBulb();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -137,7 +144,7 @@
             this.Clock_lbl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Clock_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Clock_lbl.ForeColor = System.Drawing.Color.White;
-            this.Clock_lbl.Location = new System.Drawing.Point(1604, 18);
+            this.Clock_lbl.Location = new System.Drawing.Point(1343, 15);
             this.Clock_lbl.Name = "Clock_lbl";
             this.Clock_lbl.Size = new System.Drawing.Size(129, 34);
             this.Clock_lbl.TabIndex = 9;
@@ -145,6 +152,8 @@
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -171,6 +180,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(617, 516);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -181,7 +191,7 @@
             this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(869, 258);
+            this.dataGridView1.Size = new System.Drawing.Size(869, 252);
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
@@ -214,6 +224,8 @@
             // 
             // UsbRead_listBox
             // 
+            this.UsbRead_listBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.UsbRead_listBox.BackColor = System.Drawing.SystemColors.Info;
             this.UsbRead_listBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.UsbRead_listBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -222,7 +234,7 @@
             this.UsbRead_listBox.Location = new System.Drawing.Point(15, 516);
             this.UsbRead_listBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UsbRead_listBox.Name = "UsbRead_listBox";
-            this.UsbRead_listBox.Size = new System.Drawing.Size(581, 216);
+            this.UsbRead_listBox.Size = new System.Drawing.Size(581, 252);
             this.UsbRead_listBox.TabIndex = 25;
             // 
             // StartNr_box
@@ -237,6 +249,7 @@
             this.StartNr_box.Size = new System.Drawing.Size(278, 98);
             this.StartNr_box.TabIndex = 18;
             this.StartNr_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.StartNr_box.TextChanged += new System.EventHandler(this.StartNr_box_TextChanged);
             this.StartNr_box.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.StartNr_box_KeyPress);
             // 
             // Navn_box
@@ -276,7 +289,7 @@
             this.Klasse_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Klasse_box.Name = "Klasse_box";
             this.Klasse_box.ReadOnly = true;
-            this.Klasse_box.Size = new System.Drawing.Size(993, 42);
+            this.Klasse_box.Size = new System.Drawing.Size(766, 42);
             this.Klasse_box.TabIndex = 21;
             // 
             // Ecard_box
@@ -517,6 +530,7 @@
             // Løperinfo
             // 
             this.Løperinfo.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Løperinfo.Controls.Add(this.Starttid_Box);
             this.Løperinfo.Controls.Add(this.EmitCard_picture);
             this.Løperinfo.Controls.Add(this.EmiTag_picture);
             this.Løperinfo.Controls.Add(this.ChangeEcardNo_btn);
@@ -543,9 +557,22 @@
             this.Løperinfo.TabStop = false;
             this.Løperinfo.Text = "Løperinfo";
             // 
+            // Starttid_Box
+            // 
+            this.Starttid_Box.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.Starttid_Box.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.Starttid_Box.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Starttid_Box.ForeColor = System.Drawing.Color.Red;
+            this.Starttid_Box.Location = new System.Drawing.Point(802, 327);
+            this.Starttid_Box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Starttid_Box.Name = "Starttid_Box";
+            this.Starttid_Box.ReadOnly = true;
+            this.Starttid_Box.Size = new System.Drawing.Size(207, 42);
+            this.Starttid_Box.TabIndex = 38;
+            // 
             // EmitCard_picture
             // 
-            this.EmitCard_picture.Image = global::Brikkesjekk.Properties.Resources.emitbrikke;
+            this.EmitCard_picture.Image = ((System.Drawing.Image)(resources.GetObject("EmitCard_picture.Image")));
             this.EmitCard_picture.InitialImage = null;
             this.EmitCard_picture.Location = new System.Drawing.Point(677, 66);
             this.EmitCard_picture.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -596,7 +623,7 @@
             this.NotStared_btn.TabIndex = 33;
             this.NotStared_btn.Text = "STARTNR IKKE STARTET";
             this.NotStared_btn.UseVisualStyleBackColor = false;
-            this.NotStared_btn.Click += new System.EventHandler(this.NotStared_btn_Click);
+            this.NotStared_btn.Click += new System.EventHandler(this.NotStarted_btn_Click);
             // 
             // label12
             // 
@@ -647,6 +674,7 @@
             // 
             // folderLogfile_box
             // 
+            this.folderLogfile_box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.folderLogfile_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.folderLogfile_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.folderLogfile_box.Location = new System.Drawing.Point(175, 801);
@@ -658,6 +686,7 @@
             // 
             // label9
             // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(11, 800);
@@ -776,25 +805,28 @@
             // 
             // version
             // 
+            this.version.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.version.AutoSize = true;
             this.version.ForeColor = System.Drawing.SystemColors.Highlight;
             this.version.Location = new System.Drawing.Point(497, 807);
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 27.05.2022";
+            this.version.Text = "Ver 08.10.2022";
             // 
             // progressBar1
             // 
-            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressBar1.Location = new System.Drawing.Point(713, 940);
+            this.progressBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progressBar1.Location = new System.Drawing.Point(617, 801);
             this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(841, 10);
+            this.progressBar1.Size = new System.Drawing.Size(380, 22);
             this.progressBar1.TabIndex = 53;
             // 
             // GetFolderButton
             // 
+            this.GetFolderButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.GetFolderButton.BackColor = System.Drawing.Color.DodgerBlue;
             this.GetFolderButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.GetFolderButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -837,7 +869,7 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.Red;
-            this.label8.Location = new System.Drawing.Point(872, 18);
+            this.label8.Location = new System.Drawing.Point(904, 22);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(264, 19);
             this.label8.TabIndex = 59;
@@ -864,6 +896,63 @@
             this.label10.Size = new System.Drawing.Size(116, 20);
             this.label10.TabIndex = 61;
             this.label10.Text = "Søk etter navn";
+            // 
+            // LiveresMessages_btn
+            // 
+            this.LiveresMessages_btn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.LiveresMessages_btn.AutoSize = true;
+            this.LiveresMessages_btn.BackColor = System.Drawing.Color.DodgerBlue;
+            this.LiveresMessages_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.LiveresMessages_btn.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LiveresMessages_btn.ForeColor = System.Drawing.Color.White;
+            this.LiveresMessages_btn.Location = new System.Drawing.Point(1228, 794);
+            this.LiveresMessages_btn.Margin = new System.Windows.Forms.Padding(4);
+            this.LiveresMessages_btn.Name = "LiveresMessages_btn";
+            this.LiveresMessages_btn.Size = new System.Drawing.Size(244, 39);
+            this.LiveresMessages_btn.TabIndex = 39;
+            this.LiveresMessages_btn.Text = "LIVERES MELDINGSERVER";
+            this.LiveresMessages_btn.UseVisualStyleBackColor = false;
+            this.LiveresMessages_btn.Click += new System.EventHandler(this.LiveresMessages_btn_Click);
+            // 
+            // OppdaterFrekvens_box
+            // 
+            this.OppdaterFrekvens_box.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.OppdaterFrekvens_box.BackColor = System.Drawing.SystemColors.Window;
+            this.OppdaterFrekvens_box.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.OppdaterFrekvens_box.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OppdaterFrekvens_box.Location = new System.Drawing.Point(1113, 799);
+            this.OppdaterFrekvens_box.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.OppdaterFrekvens_box.Name = "OppdaterFrekvens_box";
+            this.OppdaterFrekvens_box.Size = new System.Drawing.Size(43, 28);
+            this.OppdaterFrekvens_box.TabIndex = 62;
+            this.OppdaterFrekvens_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.OppdaterFrekvens_box, "Ant minutter mellom hver oppdatering av LiveRes startlste.");
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(1022, 792);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(86, 42);
+            this.label3.TabIndex = 63;
+            this.label3.Text = "Startliste oppdatering";
+            // 
+            // label13
+            // 
+            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(1164, 804);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(46, 17);
+            this.label13.TabIndex = 64;
+            this.label13.Text = "minutt";
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
             // MTR_read_led
             // 
@@ -893,6 +982,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(1504, 846);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.OppdaterFrekvens_box);
+            this.Controls.Add(this.LiveresMessages_btn);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.SearchName_Box);
             this.Controls.Add(this.label8);
@@ -911,6 +1004,7 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.folderLogfile_box);
             this.Controls.Add(this.Løperinfo);
+            this.Controls.Add(this.Clock_lbl);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.readBrikkesjekkfil_btn);
             this.Controls.Add(this.readLiveResfil_btn);
@@ -920,7 +1014,6 @@
             this.Controls.Add(this.SearchCard_Txtbox);
             this.Controls.Add(this.SearchCard_btn);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.Clock_lbl);
             this.Controls.Add(this.Close_btn);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -1002,6 +1095,12 @@
         private System.Windows.Forms.PictureBox EmitCard_picture;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox lopsdato_box;
+        private System.Windows.Forms.TextBox Starttid_Box;
+        private System.Windows.Forms.Button LiveresMessages_btn;
+        public System.Windows.Forms.TextBox OppdaterFrekvens_box;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 
