@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
@@ -7,9 +7,6 @@ namespace MTRSerial.ValueObjects
 {
     public class MTRDataCheckPoint
     {
-        private int timeN;
-        private int info;
-
         //The following fields are repeated 50 times:
         //CodeN         1 ControlCode; unused positions have 0
         //TimeN         2 Time binary seconds.Least sign. first, Most sign. last; unused: 0
@@ -20,11 +17,6 @@ namespace MTRSerial.ValueObjects
         public int CodeN { get; set; }
         public int TimeN { get; set; }
         public int InfoField { get; set; }
-
-        public MTRDataCheckPoint()
-        {
-
-        }
 
         public MTRDataCheckPoint(int codeN, int timeN, int info)
         {

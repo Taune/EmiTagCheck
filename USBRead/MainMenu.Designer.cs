@@ -249,7 +249,6 @@
             this.StartNr_box.Size = new System.Drawing.Size(278, 98);
             this.StartNr_box.TabIndex = 18;
             this.StartNr_box.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.StartNr_box.TextChanged += new System.EventHandler(this.StartNr_box_TextChanged);
             this.StartNr_box.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.StartNr_box_KeyPress);
             // 
             // Navn_box
@@ -812,7 +811,7 @@
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 08.10.2022";
+            this.version.Text = "Ver 04.04.2023";
             // 
             // progressBar1
             // 

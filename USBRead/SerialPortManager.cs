@@ -179,7 +179,6 @@ namespace Brikkesjekk
 
         void mtrParseMsg(List<int> msg)
         {
-            //_spResultater = new Resultater_form();
             _MtrEcardfound = false;
             int MtrEcardNo = 0;
             int checksum = 0xFF + 0xFF + 0xFF + 0xFF;
@@ -199,13 +198,10 @@ namespace Brikkesjekk
             {
                 MtrEcardNo = 0;
             }
-            //return msgObj; 
             msgObj = MtrEcardNo.ToString();
 
             List<MTRDataCheckPoint> checkPoints = new List<MTRDataCheckPoint>();
-
         }
-
 
         //MTR--datamessage
         //    ----------------
