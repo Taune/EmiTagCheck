@@ -7,6 +7,11 @@ If used with Pål Kittilsen LiveRes (https://github.com/palkitt/liveresults), eT
 For PC med Windows 7 eller 8:
 - Dersom Brikkesjekk-program skal benyttes på en PC med Windows 7 eller 8, så må sertifikat for TLS 1.2 aktiveres. Dette må være aktivert for at kommunikasjon med LivRes-server skal fungere. Fremgangsmåte for aktivering av TLS 1.2 ligger her: https://hosting.ca/how-to-enable-tls-1-2-on-windows-7/
 
+04.04.2023
+- Lagt inn sjekk om internettforbindelse før lesing av LiveRes startliste for å unngå at program henger seg.
+- Knapp for lesing av Etiming brikkesjekkfil satt inaktiv når LiveRes-startliste er aktiv.
+- Dersom PC mangler internettforbindelse ved sending av meldinger (gjelder alle typer meldinger), så lagres meldinger i minnet til programmet. Når internettforbindelse er i orden igjen, så blir meldinger sendt på nytt. Sjekker for uleste meldinger en gang hvert minutt. Meldingene blir slettet når programmet lukkes.
+
 08.10.2022
 - Har endret vindu for startliste slik at det ikke er mulig å gjøre endringer på feltene der ved en feiltakelse
 - Lagt til en knapp med link til LiveRes meldingsserver slik at man kan følge med på status til endringer.
