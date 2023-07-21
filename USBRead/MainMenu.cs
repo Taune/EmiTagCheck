@@ -10,6 +10,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Threading;
 using System.Configuration;
+using System.Net.NetworkInformation;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace Brikkesjekk
         DataTable GridTable = new DataTable();
         SerialPortManager _spManager;
         SpeechSynthesizer SpeechReader = new SpeechSynthesizer();
-        public Stack<string> myStack_Messages = new Stack<string>();
+        public static Stack<string> myStack_Messages = new Stack<string>();
         System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
         System.Timers.Timer p = new System.Timers.Timer();
 
@@ -211,10 +212,10 @@ namespace Brikkesjekk
             t.Start();
 
             //Starter tråd med sjekk av push meldinger
-            //p.Interval = 20000;
-            //p.AutoReset = true;
-            //p.Elapsed += new System.Timers.ElapsedEventHandler(CheckForPushMessage);
-            //p.Start();
+            p.Interval = 60*1000;
+            p.AutoReset = true;
+            p.Elapsed += new System.Timers.ElapsedEventHandler(CheckForPushMessage);
+            p.Start();
 
             string[] ports = SerialPort.GetPortNames();
             if (ports != null && ports.Length != 0)
@@ -233,27 +234,34 @@ namespace Brikkesjekk
 
         public void CheckForPushMessage(object sender, System.Timers.ElapsedEventArgs e) //Start prosedyre for sjekk av melding som ligger i stack
         {
+            int PushMessageNumber = 0;
             WebClient client = new WebClient();
             client.Encoding = Encoding.UTF8;
 
-                if (myStack_Messages.Count > 0) //Sjekker om det er meldinger som ligger i stack og ikke er sendt
+            if (myStack_Messages.Count > 0 && IsConnectedToInternet()) //Sjekker om det er meldinger som ligger i stack og ikke er sendt
+            {
+                foreach (var item in myStack_Messages)
                 {
-                    foreach (var item in myStack_Messages)
+                    try
                     {
-                        try
+                        var result1 = client.DownloadString(string.Format(item));
+                        if (result1.Contains("OK")) //Fjerner sist innleste melding dersom meldingserver OK
                         {
-                            var result1 = client.DownloadString(string.Format(item));
-                            if (result1.Contains("OK")) //Fjerner sist innleste melding dersom meldingserver OK
-                            {
-                                myStack_Messages.Pop();
-                            }
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Sjekk internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            PushMessageNumber++;  
                         }
                     }
+                    catch
+                    {
+                        //MessageBox.Show("Sjekk internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
+                
+                while (PushMessageNumber > 0)
+                {
+                    PushMessageNumber--;
+                    myStack_Messages.Pop();
+                }
+            }
         }
 
         void _spManager_NewSerialDataRecievedECU(object sender, SerialDataEventArgs e)
@@ -655,17 +663,6 @@ namespace Brikkesjekk
             }
         }
 
-        private void UnknownEcard_btn_Click_1(object sender, EventArgs e)
-        {
-            SetValueForEmitag = Ecard_box.Text;
-            SetValueForLopsid = lopsid_box.Text;
-            SetValueForLopsNavn = lopsnavn_box.Text;
-            SetValueForStartNo = StartNr_box.Text;
-            SetValueForID = ID_box.Text;
-            ChangeEcard_form f2 = new ChangeEcard_form(this);
-            f2.Show();
-        }
-
         public void EmitagParser(string ecbMessage) //Split the message from ECU and find the Ecard number
         {
             //Statusmelding fra ECU (ikke lest brikke):
@@ -741,6 +738,7 @@ namespace Brikkesjekk
                     GridTable.Rows.Clear();
                     dataGridView1.Refresh();
                 }
+                readBrikkesjekkfil_btn.Enabled = false;
                 readLiveResfil_btn.Text = "STOPP STARTLISTE LIVERES";
                 readLiveResfil_btn.BackColor = Color.LightSeaGreen;
                 _stopLiveRes = false;
@@ -750,6 +748,7 @@ namespace Brikkesjekk
             }
             else
             {
+                readBrikkesjekkfil_btn.Enabled = true;
                 readLiveResfil_btn.Text = "LES STARTLISTE LIVERES";
                 readLiveResfil_btn.BackColor = Color.DodgerBlue;
                 _stopLiveRes = true;
@@ -758,23 +757,51 @@ namespace Brikkesjekk
             }
         }
 
+        public bool IsConnectedToInternet() //Check connection to server liveres.live
+        {
+            string host = "liveres.live";
+            bool result = false;
+            Ping p = new Ping();
+            try
+            {
+                PingReply reply = p.Send(host, 1000);
+                if (reply.Status == IPStatus.Success)
+                    return true;
+            }
+            catch { }
+            return result;
+        }
+
         async Task Task_ReadStartlist(TimeSpan interval, CancellationToken token) //read start list from LiveRes every 5 min
         {
             while (true && _stopLiveRes == false)
             {
-                WebClient client = new WebClient();
-                client.Encoding = Encoding.UTF8;
-                string downloadString2 = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") + 
-                    "api.php?method=getrunners&comp=" + lopsid_box.Text + "&last_hash=" + _LiveResLastModifiedHash);
-                var objects = JsonConvert.DeserializeObject<dynamic>(downloadString2);
-                if (objects.status == "NOT MODIFIED")
+                if (IsConnectedToInternet() == true)
                 {
+                    try
+                    {
+                        WebClient client = new WebClient();
+                        client.Encoding = Encoding.UTF8;
+                        string downloadString2 = client.DownloadString(ConfigurationManager.AppSettings.Get("LiveResURL") +
+                            "api.php?method=getrunners&comp=" + lopsid_box.Text + "&last_hash=" + _LiveResLastModifiedHash);
+                        var objects = JsonConvert.DeserializeObject<dynamic>(downloadString2);
+                        if (objects.status == "NOT MODIFIED")
+                        {
+                        }
+                        else
+                        {
+                            readLiveResfil();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
                 }
-                else 
+                else
                 {
-                    readLiveResfil();
+                    MessageBox.Show("Les startliste LiveRes: Ingen internettforbindelse! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                await Task.Delay(interval, token);
+                        await Task.Delay(interval, token);
             }
         }
 
@@ -818,7 +845,7 @@ namespace Brikkesjekk
                         using (StreamWriter sr = File.AppendText(_LiveResfileName))
                         {
                             sr.WriteLine(obj["dbid"] + "," + obj["name"] + ", ," + obj["class"] + "," + obj["club"] + "," + obj["ecard1"]
-                                 + "," + obj["ecard2"] + "," + obj["ecard1"] + "," + obj["bib"]);
+                                 + "," + obj["ecard2"] + "," + obj["bib"]);
                         }
                         progressBar1.Value = ++i;
                     }
@@ -826,10 +853,12 @@ namespace Brikkesjekk
 
                     GridTable = JsonConvert.DeserializeObject<DataTable>(outputArray.ToString());
                     dataGridView1.DataSource = GridTable;
+                    dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
                     dataGridView1.EnableHeadersVisualStyles = false;
                     dataGridView1.RowHeadersWidth = 20;
                     dataGridView1.ColumnHeadersDefaultCellStyle.BackColor = Color.LightGray;
                     dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.AliceBlue;
+                    //dataGridView1.Columns["status"].Width = 10;
                 }
             }
             catch
@@ -843,7 +872,8 @@ namespace Brikkesjekk
         {
             SearchName_Box.Clear();
             var MaxRows = dataGridView1.Rows.Count;
-            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.ClearSelection();
+            //dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             try
             {
@@ -972,13 +1002,22 @@ namespace Brikkesjekk
                             {
                                 var lopid = int.Parse(lopsid_box.Text);
                                 var id_no = int.Parse(dataGridView1.Rows[row.Index].Cells[0].Value.ToString());
-                                try
+                                string MsgText = string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&dbid={1}",
+                                    lopid, id_no);
+
+                                if (IsConnectedToInternet() == true)
                                 {
-                                    var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=setecardchecked&comp={0}&dbid={1}",
-                                lopid, id_no));
-                                    Console.WriteLine(result1);
+                                    try
+                                    {
+                                        var result1 = client.DownloadString(MsgText);
+                                        Console.WriteLine(result1);
+                                    }
+                                    catch { }
                                 }
-                                catch { }
+                                else
+                                {
+                                    MainMenu.myStack_Messages.Push(MsgText);
+                                }
                             }
                         }
 
@@ -1063,7 +1102,7 @@ namespace Brikkesjekk
                     GridTable.Rows.Add(row["id"], row["startno"], "0", row["name"] + " " + row["ename"], row["name_1"], "", row["class"], row["ecard"], row["ecard2"]);
                 }
                 dataGridView1.DataSource = GridTable;
-                dataGridView1.RowHeadersWidth = 20;
+                dataGridView1.RowHeadersWidth = 10;
                 dataGridView1.Columns["bib"].DefaultCellStyle.BackColor = Color.LightSalmon;
             }
             catch (Exception ex)
@@ -1258,7 +1297,7 @@ namespace Brikkesjekk
             }
             catch
             {
-                MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("LiveRes arrangement: Ingen internettforbindelse! Koble PC til internett og start program på nytt", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1270,6 +1309,8 @@ namespace Brikkesjekk
         private void NotStarted_btn_Click(object sender, EventArgs e) //Send message "Not Started" to LiveRes
         {
             int IntStartNo;
+            Cursor.Current = Cursors.WaitCursor;
+
             if (int.TryParse(StartNr_box.Text, out IntStartNo))
             {
                 var result = MessageBox.Show("Vil du sende melding om at startnr **" + IntStartNo + "** ikke starter?", "Sett ikke startet", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
@@ -1283,34 +1324,36 @@ namespace Brikkesjekk
                         var dbidNo = int.Parse(SetValueForID);
                         using (var client = new WebClient())
                         {
-                            try
+                            string MsgText = string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
+                            lopid, dbidNo);
+                            if (IsConnectedToInternet() == true)
                             {
-                                string MsgText = string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
-                                lopid, dbidNo);
-                                myStack_Messages.Push(MsgText); 
-                                var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid={1}&dns=1&message=ikke startet",
-                                lopid, dbidNo));
-                                if (result1.Contains("OK")) //Fjerner sist innleste melding dersom meldingserver OK
+                                try
                                 {
-                                    myStack_Messages.Pop();
+                                    var result1 = client.DownloadString(string.Format(MsgText));
+                                    using (StreamWriter sr = File.AppendText(_LogfileName))
+                                    {
+                                        sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + IntStartNo + " ikke startet");
+                                    }
+                                    if ((File.Exists(@"Emailsent.wav")) && (WarningSoundNotFound_checkBox.Checked))
+                                    {
+                                        System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"Emailsent.wav");
+                                        player.Play();
+                                    }
                                 }
-                                using (StreamWriter sr = File.AppendText(_LogfileName))
-                                {
-                                    sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + IntStartNo + " ikke startet");
-                                }
-                                if ((File.Exists(@"Emailsent.wav")) && (WarningSoundNotFound_checkBox.Checked))
-                                {
-                                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"Emailsent.wav");
-                                    player.Play();
+                                catch
+                                {                         
                                 }
                             }
-                            catch
+                            else
                             {
-                                MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                myStack_Messages.Push(MsgText);
+                                MessageBox.Show("Ingen internettforbindelse! Sender melding på nytt når internett er oppe.", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
                         }
                     }
                 }
+                Cursor.Current = Cursors.Default;
             }
             else
             {
@@ -1323,6 +1366,8 @@ namespace Brikkesjekk
             int IntStartNo;
             int IntBrikkeNo;
             bool DialogSendMelding = false;
+
+            Cursor.Current = Cursors.WaitCursor;
 
             if ((int.TryParse(StartNr_box.Text, out IntStartNo)) && (int.TryParse(Ecard_box.Text, out IntBrikkeNo)))
             {
@@ -1342,27 +1387,35 @@ namespace Brikkesjekk
                     var lopid = lopsid_box.Text;
                     var brikkenr = int.Parse(SearchCard_Txtbox.Text);
                     var startnr = int.Parse(StartNr_box.Text);
+                    string MsgText = string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}&bib={2}", lopid, brikkenr,
+                            startnr);
 
                     using (var client = new WebClient())
                     {
-                        try
-                        {
-                            var result1 = client.DownloadString(string.Format(ConfigurationManager.AppSettings.Get("LiveResURL") + "messageapi.php?method=sendmessage&comp={0}&dbid=-{1}&ecardchange=1&message=startnummer:{2}&bib={2}", lopid, brikkenr,
-                            startnr));
+                        if (IsConnectedToInternet() == true)
+                        { 
+                            try
+                            {
+                                var result1 = client.DownloadString(MsgText);
 
-                            using (StreamWriter sr = File.AppendText(_LogfileName))
-                            {
-                                sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + startnr + " byttet brikke til " + brikkenr);
+                                using (StreamWriter sr = File.AppendText(_LogfileName))
+                                {
+                                    sr.WriteLine(DateTime.Now.ToString("HH:mm:ss") + "\t" + "Sendt melding: Startnr " + startnr + " byttet brikke til " + brikkenr);
+                                }
+                                if ((File.Exists(@"Emailsent.wav")) && (WarningSoundNotFound_checkBox.Checked))
+                                {
+                                    System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"Emailsent.wav");
+                                    player.Play();
+                                }
                             }
-                            if ((File.Exists(@"Emailsent.wav")) && (WarningSoundNotFound_checkBox.Checked))
+                            catch
                             {
-                                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"Emailsent.wav");
-                                player.Play();
                             }
                         }
-                        catch
+                        else
                         {
-                            MessageBox.Show("Ingen internettforbindelse!! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            myStack_Messages.Push(MsgText);
+                            MessageBox.Show("Ingen internettforbindelse! Sender melding på nytt når internett er oppe.", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         }
                     }
                 }
@@ -1371,6 +1424,7 @@ namespace Brikkesjekk
             {
                 MessageBox.Show("Feltet Startnummer eller Brikke 1 inneholder ikke tall!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            Cursor.Current = Cursors.Default;
         }
 
 
@@ -1422,7 +1476,7 @@ namespace Brikkesjekk
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + " - sjekk internettforbindelse" , "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message + " - sjekk internettforbindelse, start program på nytt" , "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1614,15 +1668,6 @@ namespace Brikkesjekk
                 string lastname = ((Competition)e.ListItem).date;
                 string firstname = ((Competition)e.ListItem).name;
                 e.Value = lastname + " - " + firstname;
-            }
-        }
-
-        private void StartNr_box_TextChanged(object sender, EventArgs e)
-        {
-            if (GridTable != null && GridTable.Rows.Count > 0 && _liveresCellClick == false)
-            {
-                //dataGridView1.DataSource = GridTable;
-                //(dataGridView1.DataSource as DataTable).DefaultView.RowFilter = string.Format("bib LIKE '%{0}%'", StartNr_box.Text);
             }
         }
 
