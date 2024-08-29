@@ -54,7 +54,7 @@ namespace Brikkesjekk
         System.Timers.Timer p = new System.Timers.Timer();
         public int TimerStartlisteLeft = 0;
         public string[] RunnerGreatingsArray;
-
+//        private EventHandler<SerialDataEventArgs> _spManager_NewSerialDataRecievedEScan;
 
         public class Competition
         {
@@ -83,6 +83,7 @@ namespace Brikkesjekk
             _spManager = new SerialPortManager();
             _spManager.NewSerialDataRecievedECU += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedECU);
             _spManager.NewSerialDataRecievedMTR += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedMTR);
+            _spManager.NewSerialDataRecievedEscan += new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedEscan);
 
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyEvent);
             this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
@@ -323,11 +324,21 @@ namespace Brikkesjekk
             }
         }
 
+        void _spManager_NewSerialDataRecievedEscan(object sender, SerialDataEventArgs e)
+        {
+            if (this.InvokeRequired)
+            {
+                // Using this.Invoke causes deadlock when closing serial port, and BeginInvoke is good practice anyway.
+                this.BeginInvoke(new EventHandler<SerialDataEventArgs>(_spManager_NewSerialDataRecievedEscan), new object[] { sender, e });
+                return;
+            }
+            string strMessage = Encoding.ASCII.GetString(e.Data);
+        }
 
         // Start listening to the ECU-unit
         private void btnStartECU_Click(object sender, EventArgs e)
         {
-            if (ActiveUsbPort == null)
+            if (ActiveUsbPort == null || ActiveUsbPort == "COM-port ikke funnet")
             {
                 MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -382,7 +393,7 @@ namespace Brikkesjekk
 
         private void btnReadMTR_Click(object sender, EventArgs e) //Read MTR
         {
-            if (ActiveUsbPort == null)
+            if (ActiveUsbPort == null || ActiveUsbPort == "COM-port ikke funnet")
             {
                 MessageBox.Show("Brikkeleser ikke funnet! Koble til brikkeleser og trykk 'Oppfrisk'", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -559,7 +570,8 @@ namespace Brikkesjekk
                 StartNr_box.BeginInvoke(new MethodInvoker(delegate
                 {
                     StartNr_box.ForeColor = Color.Red;
-                    StartNr_box.Text = "XX";
+                    StartNr_box.Text = "";
+                    StartNr_box.Select();
                 }));
             }
             if (Ecard_box != null && !Ecard_box.IsDisposed)
@@ -757,7 +769,7 @@ namespace Brikkesjekk
             }
             else
             {
-                TimerStartliste.Stop();
+                //TimerStartliste.Stop();
                 TimerStartliste_lbl.Text = "Lesing av startliste ikke aktiv";
                 readBrikkesjekkfil_btn.Enabled = true;
                 readLiveResfil_btn.Text = "LES STARTLISTE LIVERES";
@@ -814,7 +826,7 @@ namespace Brikkesjekk
                 {
                     MessageBox.Show("Les startliste LiveRes: Ingen internettforbindelse! Koble PC til internett", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                        await Task.Delay(interval, token);
+                await Task.Delay(interval, token);
             }
         }
 
@@ -906,8 +918,6 @@ namespace Brikkesjekk
                             EmitCard_picture.Visible = true;
                             EmiTag_picture.Visible = false;
                         }
-                        //ledBulb_funnet.On = true;
-                        //ledBulb_funnet.Color = Color.FromArgb(153, 255, 54); //LightGreen
                         dataGridView1.Rows[row.Index].Selected = true;
                         if (StartNr_box != null && !StartNr_box.IsDisposed)
                         {
@@ -1003,21 +1013,19 @@ namespace Brikkesjekk
 
                         if (TextToSpeechFound_checkBox.Checked)
                         {
-                            String TextHilsen;
-                            var NumberGreatings = RunnerGreatingsArray.Length;
-                            if (NumberGreatings > 0)
-                            {
-                                Random rnd = new Random();
-                                int MeldingNr = rnd.Next(1, NumberGreatings + 1);
-                                TextHilsen = RunnerGreatingsArray[MeldingNr];
-                            }
-                            else
-                            {
-                                TextHilsen = "";
-                            }
-
-
-                            TextToSpeech("Startnummer " + dataGridView1.Rows[row.Index].Cells[1].Value.ToString() + " "+ dataGridView1.Rows[row.Index].Cells[3].Value.ToString() + ". " + TextHilsen);
+                            //String TextHilsen;
+                            //var NumberGreatings = RunnerGreatingsArray.Length;
+                            //if (NumberGreatings > 0)
+                            //{
+                            //    Random rnd = new Random();
+                            //    int MeldingNr = rnd.Next(1, NumberGreatings + 1);
+                            //    TextHilsen = RunnerGreatingsArray[MeldingNr];
+                            //}
+                            //else
+                            //{
+                            //    TextHilsen = "";
+                            //}
+                            TextToSpeech("Startnummer " + dataGridView1.Rows[row.Index].Cells[1].Value.ToString() + " "+ dataGridView1.Rows[row.Index].Cells[3].Value.ToString());
                         }
 
                         NavnScrollInfo = " - (" + dataGridView1.Rows[row.Index].Cells[1].Value.ToString() + ") " +

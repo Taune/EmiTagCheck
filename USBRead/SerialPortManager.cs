@@ -22,6 +22,7 @@ namespace Brikkesjekk
         private string _latestRecieved = String.Empty;
         public event EventHandler<SerialDataEventArgs> NewSerialDataRecievedECU;
         public event EventHandler<SerialDataEventArgs> NewSerialDataRecievedMTR;
+        public event EventHandler<SerialDataEventArgs> NewSerialDataRecievedEscan;
         private List<int> message = new List<int>();
         private List<int> message_start = new List<int>();
         private string msgObj = "0";
@@ -78,6 +79,49 @@ namespace Brikkesjekk
             // Send data to whom ever interested
             if (NewSerialDataRecievedECU != null)
                 NewSerialDataRecievedECU(this, new SerialDataEventArgs(_InputBytes));
+        }
+
+        void _serialPort_DataReceivedEscan(object sender, SerialDataReceivedEventArgs e)
+        {
+            int dataLength = _serialPortA.BytesToRead;
+            string data = _serialPortA.ReadLine();
+            char[] charsToTrim = { ' ', '\'', '\u0003' };
+            string strTrim = data.Trim(charsToTrim);
+
+            byte[] _InputBytes = Encoding.ASCII.GetBytes(data);
+
+            // Send data to whom ever interested
+            if (NewSerialDataRecievedEscan != null)
+                NewSerialDataRecievedEscan(this, new SerialDataEventArgs(_InputBytes));
+        }
+
+        /// Connects to a serial port for ECU. Settings defind in ComSettings
+        public void StartListeningEscan()
+        {
+            // Closing serial port if it is open
+            if (_serialPortA != null && _serialPortA.IsOpen)
+                _serialPortA.Close();
+
+            try
+            {
+                // Setting serial port settings
+                _serialPortA = new SerialPort();
+                _serialPortA.PortName = MainMenu.ActiveUsbPort;
+                _serialPortA.BaudRate = ComSettingsECU.BaudRate;
+                _serialPortA.Parity = ComSettingsECU.Parity;
+                _serialPortA.StopBits = ComSettingsECU.StopBits;
+                _serialPortA.DataBits = ComSettingsECU.DataBits;
+                _serialPortA.Handshake = ComSettingsECU.hShake;
+                MainMenu.ECUComPortOpen = MainMenu.ActiveUsbPort;
+
+                // Subscribe to event and open serial port for data
+                _serialPortA.DataReceived += new SerialDataReceivedEventHandler(_serialPort_DataReceivedEscan);
+                _serialPortA.Open();
+            }
+            catch
+            {
+                MessageBox.Show("COM-port " + MainMenu.ActiveUsbPort + " i bruk. Velg annen COM-port!", "Feilmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// Connects to a serial port for ECU. Settings defind in ComSettings
@@ -146,6 +190,12 @@ namespace Brikkesjekk
             _serialPortA.Close();
         }
 
+        public void StopListeningEscan()
+        {
+            Task.Delay(50).Wait();
+            _serialPortA.Close();
+        }
+
         public void StopListeningMTR()
         {
             _serialPortB.Close();
@@ -179,7 +229,6 @@ namespace Brikkesjekk
 
         void mtrParseMsg(List<int> msg)
         {
-            //_spResultater = new Resultater_form();
             _MtrEcardfound = false;
             int MtrEcardNo = 0;
             int checksum = 0xFF + 0xFF + 0xFF + 0xFF;
@@ -199,13 +248,10 @@ namespace Brikkesjekk
             {
                 MtrEcardNo = 0;
             }
-            //return msgObj; 
             msgObj = MtrEcardNo.ToString();
 
             List<MTRDataCheckPoint> checkPoints = new List<MTRDataCheckPoint>();
-
         }
-
 
         //MTR--datamessage
         //    ----------------
