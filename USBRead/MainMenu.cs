@@ -172,7 +172,6 @@ namespace Brikkesjekk
                 NotStared_btn.Enabled = true;
                 ChangeEcardNo_btn.Enabled = true;
                 OppdaterFrekvens_box.Enabled = true;
-                TimerStartliste_lbl.Enabled = true;
             }
             if (LiveRes_checkBox.Checked == false)
             {
@@ -183,7 +182,6 @@ namespace Brikkesjekk
                 NotStared_btn.Enabled = false;
                 ChangeEcardNo_btn.Enabled = false;
                 OppdaterFrekvens_box.Enabled = false;
-                TimerStartliste_lbl.Enabled = false;
             }
 
             _stop = true;
@@ -765,12 +763,10 @@ namespace Brikkesjekk
                 CancellationTokenSource tokenSource = new CancellationTokenSource();
                 Task timerTask = Task_ReadStartlist(TimeSpan.FromMinutes(Int32.Parse(OppdaterFrekvens_box.Text)), tokenSource.Token);
                 _fileloaded = true;
-                TimerStartliste.Start();
+                //TimerStartliste.Start();
             }
             else
             {
-                //TimerStartliste.Stop();
-                TimerStartliste_lbl.Text = "Lesing av startliste ikke aktiv";
                 readBrikkesjekkfil_btn.Enabled = true;
                 readLiveResfil_btn.Text = "LES STARTLISTE LIVERES";
                 readLiveResfil_btn.BackColor = Color.DodgerBlue;
@@ -1160,7 +1156,6 @@ namespace Brikkesjekk
                 NotStared_btn.Enabled = true;
                 ChangeEcardNo_btn.Enabled = true;
                 OppdaterFrekvens_box.Enabled = true;
-                TimerStartliste_lbl.Enabled = true;
             }
             if (LiveRes_checkBox.Checked == false)
             {
@@ -1177,7 +1172,6 @@ namespace Brikkesjekk
                 NotStared_btn.Enabled = false;
                 ChangeEcardNo_btn.Enabled = false;
                 OppdaterFrekvens_box.Enabled = false;
-                TimerStartliste_lbl.Enabled = false;
             }
         }
 
@@ -1712,21 +1706,6 @@ namespace Brikkesjekk
         private void LiveresMessages_btn_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://liveres.live/message.php?comp=" + lopsid_box.Text);
-        }
-
-        private void TimerStartliste_Tick(object sender, EventArgs e)
-        {
-            if (TimerStartlisteLeft > 0)
-            {
-                TimerStartlisteLeft = TimerStartlisteLeft - 1;
-                TimerStartliste_lbl.Text = "Startliste sjekkes om " + TimerStartlisteLeft + " sekunder";
-                //progressBar1.Value = TimerStartlisteLeft;
-            }
-            else
-            {
-                TimerStartliste.Stop();
-                TimerStartliste_lbl.Text = "Time is up";
-            }
         }
     }
 }

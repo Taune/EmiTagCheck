@@ -95,8 +95,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.TimerStartliste = new System.Windows.Forms.Timer(this.components);
-            this.TimerStartliste_lbl = new System.Windows.Forms.Label();
             this.MTR_read_led = new Brikkesjekk.LedBulb();
             this.ECU_read_led = new Brikkesjekk.LedBulb();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -813,7 +811,7 @@
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(106, 17);
             this.version.TabIndex = 52;
-            this.version.Text = "Ver 27.08.2024";
+            this.version.Text = "Ver 28.12.2024";
             // 
             // progressBar1
             // 
@@ -957,22 +955,6 @@
             this.toolTip1.IsBalloon = true;
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
-            // TimerStartliste
-            // 
-            this.TimerStartliste.Interval = 1000;
-            this.TimerStartliste.Tick += new System.EventHandler(this.TimerStartliste_Tick);
-            // 
-            // TimerStartliste_lbl
-            // 
-            this.TimerStartliste_lbl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TimerStartliste_lbl.AutoSize = true;
-            this.TimerStartliste_lbl.Location = new System.Drawing.Point(614, 781);
-            this.TimerStartliste_lbl.Name = "TimerStartliste_lbl";
-            this.TimerStartliste_lbl.Size = new System.Drawing.Size(188, 17);
-            this.TimerStartliste_lbl.TabIndex = 65;
-            this.TimerStartliste_lbl.Text = "Lesing av startliste ikke aktiv";
-            // 
             // MTR_read_led
             // 
             this.MTR_read_led.Color = System.Drawing.Color.Red;
@@ -1001,7 +983,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(1504, 846);
-            this.Controls.Add(this.TimerStartliste_lbl);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.OppdaterFrekvens_box);
@@ -1121,8 +1102,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Timer TimerStartliste;
-        private System.Windows.Forms.Label TimerStartliste_lbl;
     }
 }
 
